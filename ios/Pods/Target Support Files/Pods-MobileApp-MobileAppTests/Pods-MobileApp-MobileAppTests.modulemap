@@ -1,0 +1,6 @@
+module Pods_MobileApp_MobileAppTests {
+  umbrella header "Pods-MobileApp-MobileAppTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
