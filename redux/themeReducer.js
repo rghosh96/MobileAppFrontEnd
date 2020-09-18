@@ -1,8 +1,8 @@
-import { pinkTheme, lavenderTheme } from '../styles/themes'
+import { oliveTheme } from '../theming/themes'
 
 
 const initialState = {
-    theme: {...pinkTheme} 
+    theme: {...oliveTheme} 
 }
 
 export default function(state = initialState, action) {
