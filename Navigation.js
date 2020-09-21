@@ -2,9 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import React from 'react'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import Dashboard from './components/Dashboard';
 import Settings from './components/Settings';
@@ -24,14 +22,14 @@ export const Navigation = () => {
             labeled={false}
             barStyle={{ 
                 backgroundColor: color, 
-                // borderRadius: 30,
-                // overflow: 'hidden',
-                // padding: 5,
-                // marginBottom: 19,
-                // marginLeft: 15,
-                // marginRight: 15,
-                // flex: .07,
-                // justifyContent: 'baseline',
+                borderRadius: 30,
+                overflow: 'hidden',
+                padding: 5,
+                marginBottom: 19,
+                marginLeft: 15,
+                marginRight: 15,
+                flex: .07,
+                justifyContent: 'baseline',
             }}>
         <Tab.Screen             
             name="Dashboard"
@@ -46,7 +44,7 @@ export const Navigation = () => {
             component={Settings}
             options={{
             tabBarIcon: ({ color }) => (
-                <AntDesign name="search" color={color} size={26}/>
+                <MaterialCommunityIcons name="account-search" color={color} size={26}/>
             ),
             }}
         />
@@ -55,7 +53,7 @@ export const Navigation = () => {
             component={Settings}
             options={{
             tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons name="message" color={color} size={26}/>
+                <MaterialCommunityIcons name="chat" color={color} size={26}/>
             ),
             }}
         />
@@ -64,7 +62,7 @@ export const Navigation = () => {
             component={Settings}
             options={{
             tabBarIcon: ({ color }) => (
-                <MaterialIcons name="people-alt" color={color} size={26} />
+                <MaterialCommunityIcons name="account-group" color={color} size={26} />
             ),
             }}
         />
