@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { pickTheme } from '../redux/actions'
-import { pinkTheme, lavenderTheme, oliveTheme } from '../theming/themes'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
-import Settings from './Settings'
-import { Container, HeaderContainer, HeaderText, Line, Button,
-  ButtonText, ProfileInfo, ProfileImage, ImageContainer, Content } from '../theming/dashStyle'
+import { Container, HeaderContainer, HeaderText, Connections, Text,
+  ButtonText, ProfileText, ProfileImage, ProfileContainer, ConnectionsContainer, 
+  PeopleImage, MatchesContainer, MatchesText, MatchesDash } from '../theming/dashStyle'
 
 
 class Dashboard extends Component {
@@ -19,25 +17,41 @@ class Dashboard extends Component {
                 <HeaderContainer>
                     <HeaderText>mobile app</HeaderText>
                 </HeaderContainer>
-                <Line></Line>
+                
           
 
-                <ImageContainer>
-                    <ProfileImage
-                        source={require('../rashi.jpeg')}
-                    />
-                    <ProfileInfo>
-                        your name {"\n"}
-                        your major {"\n"}
-                        your year
-                    </ProfileInfo>
-                </ImageContainer>
+                <ProfileContainer>
+                    <ProfileImage source={require('../mockData/rashi.jpeg')} />
+                    <ProfileText>
+                        rashi ghosh {"\n"}
+                        computer science {"\n"}
+                        senior
+                    </ProfileText>
+                </ProfileContainer>
                 
-                <Content>
-                  <Button onPress={() => this.props.navigation.navigate('Settings')}>
-                    <ButtonText>go to Settings ...</ButtonText>
-                  </Button>
-                </Content>
+                <MatchesContainer>
+                  <MatchesDash>
+                    <MatchesText>top 3 matches</MatchesText>
+                  </MatchesDash>
+                  <PeopleImage source={require('../mockData/pic1.jpg')} />
+                  <PeopleImage source={require('../mockData/pic4.jpg')} />
+                  <PeopleImage source={require('../mockData/pic3.jpg')} />
+                </MatchesContainer>
+
+                <MatchesContainer>
+                  <PeopleImage source={require('../mockData/pic2.jpg')} />
+                  <PeopleImage source={require('../mockData/pic5.jpg')} />
+                  <PeopleImage source={require('../mockData/pic6.jpg')} />
+                  <MatchesDash>
+                    <MatchesText>random matches</MatchesText>
+                  </MatchesDash>
+                </MatchesContainer>
+
+                <ConnectionsContainer>
+                  <Connections>11</Connections>
+                  <Text>total connections</Text>
+                </ConnectionsContainer>
+                
                 
             </Container>
         </ThemeProvider>

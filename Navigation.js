@@ -1,12 +1,13 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import Dashboard from './components/Dashboard';
+import Explore from './components/Explore';
+import Chat from './components/Chat';
+import Connections from './components/Connections';
 import Settings from './components/Settings';
-import { Label } from './theming/navStyle'
 
 
 const Tab = createMaterialBottomTabNavigator();
@@ -25,7 +26,7 @@ export const Navigation = () => {
                 borderRadius: 30,
                 overflow: 'hidden',
                 padding: 5,
-                marginBottom: 19,
+                marginBottom: 25,
                 marginLeft: 15,
                 marginRight: 15,
                 flex: .07,
@@ -41,7 +42,7 @@ export const Navigation = () => {
             }}  />
         <Tab.Screen 
             name="Explore"
-            component={Settings}
+            component={Explore}
             options={{
             tabBarIcon: ({ color }) => (
                 <MaterialCommunityIcons name="account-search" color={color} size={26}/>
@@ -50,7 +51,7 @@ export const Navigation = () => {
         />
         <Tab.Screen 
             name="Chat"
-            component={Settings}
+            component={Chat}
             options={{
             tabBarIcon: ({ color }) => (
                 <MaterialCommunityIcons name="chat" color={color} size={26}/>
@@ -59,7 +60,7 @@ export const Navigation = () => {
         />
         <Tab.Screen 
             name="Connections"
-            component={Settings}
+            component={Connections}
             options={{
             tabBarIcon: ({ color }) => (
                 <MaterialCommunityIcons name="account-group" color={color} size={26} />
