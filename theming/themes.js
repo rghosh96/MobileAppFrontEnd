@@ -1,6 +1,6 @@
 export const pinkTheme = {
     mode: "pink",
-    BG_COLOR: "#FFFFFF",
+    BG_COLOR: "#484848",
     PRIMARY_COLOR: "#FED1EA",
     GREY: "#ACAAAD"
 }
@@ -13,7 +13,7 @@ export const lavenderTheme = {
 }
 
 export const oliveTheme = {
-    mode: "lavender",
+    mode: "olive",
     BG_COLOR: "#FFFFFF",
     PRIMARY_COLOR: "#AAC2AE",
     GREY: "#ACAAAD"

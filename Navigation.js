@@ -13,7 +13,8 @@ import Settings from './components/Settings';
 const Tab = createMaterialBottomTabNavigator();
 export const Navigation = () => {
     console.log(useSelector)
-    const color = useSelector(state => state.themeReducer.theme.PRIMARY_COLOR)
+    const primary = useSelector(state => state.themeReducer.theme.PRIMARY_COLOR);
+    const bg = useSelector(state => state.themeReducer.theme.BG_COLOR);
     
     return(
     <NavigationContainer>
@@ -21,8 +22,9 @@ export const Navigation = () => {
             initialRouteName="Dashboard"
             activeColor="#f0edf6"
             labeled={false}
+            style={{backgroundColor: bg}}
             barStyle={{ 
-                backgroundColor: color, 
+                backgroundColor: primary, 
                 borderRadius: 30,
                 overflow: 'hidden',
                 padding: 5,

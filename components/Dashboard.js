@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { pickTheme } from '../redux/actions'
 import { connect } from 'react-redux';
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
 import { ThemeProvider } from 'styled-components/native';
 import { Container, HeaderContainer, HeaderText, Text } from '../theming/masterStyle'
 import { Connections, ProfileText, ProfileImage, ProfileContainer, ConnectionsContainer, 
@@ -8,14 +10,33 @@ import { Connections, ProfileText, ProfileImage, ProfileContainer, ConnectionsCo
 
 
 class Dashboard extends Component {
+  state = {
+    loaded: false,
+  }
+  // load fonts
+  async componentDidMount() {
+    try {
+      await Font.loadAsync({
+        header: require('../assets/fonts/ArchivoBlack-Regular.ttf'),
+        text: require('../assets/fonts/Spartan-Medium.ttf')
+    })
+    this.setState({ loaded: true })
+    } catch(e){
+      console.log("error loading fonts")
+    }
+  }
   render() {
+    console.log(this.state)
+    if (!this.state.loaded) {
+      return <AppLoading />
+    }
       console.log(this.props.theme)
     return (
         <ThemeProvider theme={ this.props.theme }>
             
             <Container>
                 <HeaderContainer>
-                    <HeaderText>mobile app</HeaderText>
+                    <HeaderText>dashboard</HeaderText>
                 </HeaderContainer>
                 
           

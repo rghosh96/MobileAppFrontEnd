@@ -2,7 +2,8 @@ import styled from 'styled-components/native';
 
 export const Connections = styled.Text`
   color: ${props => props.theme.GREY};
-  fontSize: 105px;
+  fontFamily: "header";
+  fontSize: 95px;
   fontWeight: 900;
   paddingBottom: 11px;
 `
@@ -19,7 +20,8 @@ export const ProfileText = styled.Text`
   color: ${props => props.theme.GREY};
   textAlign: left;
   margin: 15px;
-  fontSize: 21px;
+  fontSize: 19px;
+  fontFamily: "text";
 `;
 
 
@@ -62,7 +64,8 @@ export const MatchesDash = styled.View`
 export const MatchesText = styled.Text`
   color: ${props => props.theme.PRIMARY_COLOR};
   textAlign: center;
-  fontSize: 19px;
+  fontSize: 15px;
+  fontFamily: "text";
   paddingBottom: 5px;
   paddingLeft: 5px;
 `;

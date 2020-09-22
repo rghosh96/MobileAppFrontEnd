@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import ReactNative from 'react-native';
 
 export const Container = styled.View`
     flex: 1;
@@ -11,6 +12,7 @@ export const Container = styled.View`
 
 export const HeaderText = styled.Text`
   fontSize: 50px;
+  fontFamily: "header";
   color: ${props => props.theme.PRIMARY_COLOR};
   fontWeight: 900;
   paddingBottom: 11px;
@@ -24,6 +26,7 @@ export const HeaderContainer = styled.View`
 
 export const Text = styled.Text`
   color: ${props => props.theme.GREY};
+  fontFamily: "text";
   fontSize: 21px;
   marginBottom: 11px;
   textAlign: left;
