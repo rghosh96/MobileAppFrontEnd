@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { pickTheme } from '../redux/actions'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
-import { Container, HeaderContainer, HeaderText, Connections, Text,
-  ButtonText, ProfileText, ProfileImage, ProfileContainer, ConnectionsContainer, 
+import { Container, HeaderContainer, HeaderText, Text } from '../theming/masterStyle'
+import { Connections, ProfileText, ProfileImage, ProfileContainer, ConnectionsContainer, 
   PeopleImage, MatchesContainer, MatchesText, MatchesDash } from '../theming/dashStyle'
 
 

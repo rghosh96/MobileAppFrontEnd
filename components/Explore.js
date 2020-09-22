@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { pickTheme } from '../redux/actions'
-import { pinkTheme, lavenderTheme, oliveTheme } from '../theming/themes'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
-import { Container, HeaderContainer, HeaderText, Line, Button,
-  ButtonText, ProfileInfo, ProfileImage, ImageContainer, Content, Text } from '../theming/dashStyle'
+import { Container, HeaderContainer, HeaderText, Text } from '../theming/masterStyle'
 
 
 class Explore extends Component {
@@ -17,13 +15,7 @@ class Explore extends Component {
                 <HeaderContainer>
                     <HeaderText>explore.</HeaderText>
                 </HeaderContainer>
-                <Line></Line>
-                
-                <Content>
-                    <Text>boop</Text>
-                  
-                </Content>
-                
+                <Text>boop</Text>
             </Container>
         </ThemeProvider>
     );

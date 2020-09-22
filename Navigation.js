@@ -29,8 +29,7 @@ export const Navigation = () => {
                 marginBottom: 25,
                 marginLeft: 15,
                 marginRight: 15,
-                flex: .07,
-                justifyContent: 'baseline',
+                flex: .07
             }}>
         <Tab.Screen             
             name="Dashboard"
