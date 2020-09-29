@@ -31,7 +31,7 @@ class Settings extends Component {
                         <ButtonText>olive theme</ButtonText>
                     </Button>
                     
-                    <Button onPress={() => this.props.navigation.navigate('SignUp')}>
+                    <Button onPress={() => this.props.navigation.navigate('Dashboard')}>
                         <ButtonText>go to Dashboard ...</ButtonText>
                     </Button>
             </Container>

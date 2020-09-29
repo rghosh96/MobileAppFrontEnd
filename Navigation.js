@@ -13,31 +13,25 @@ import SignUp from './components/SignUp'
 import FirstLaunch from './components/FirstLaunch'
 
 const Tab = createMaterialBottomTabNavigator();
-const SettingStack = createStackNavigator();
 const DashboardStack = createStackNavigator();
 
-const SettingStackScreen = () => (
-    <SettingStack.Navigator screenOptions={{ headerShown: false }}>
-        <SettingStack.Screen name="Settings" component = {Settings} />
-        <SettingStack.Screen name="SignUp" component = {SignUp} />
-    </SettingStack.Navigator>
-)
-
-const DashboardStackScreen = () => (
-    <DashboardStack.Navigator screenOptions={{ headerShown: false }}>
-        <DashboardStack.Screen name="FirstLaunch" component = {FirstLaunch} />
-        <DashboardStack.Screen name="Dashboard" component = {Dashboard} />
-    </DashboardStack.Navigator>
+export const Navigation = () => (
+    <NavigationContainer>
+        <DashboardStack.Navigator screenOptions={{ headerShown: false }}>
+            <DashboardStack.Screen name="FirstLaunch" component = {FirstLaunch} />
+            <DashboardStack.Screen name="Dashboard" component = {TabNavigation} />
+            <DashboardStack.Screen name="SignUp" component = {SignUp} />
+        </DashboardStack.Navigator>
+    </NavigationContainer>
 )
 
 
-export const Navigation = () => {
+const TabNavigation = () => {
     console.log(useSelector)
     const primary = useSelector(state => state.themeReducer.theme.PRIMARY_COLOR);
     const bg = useSelector(state => state.themeReducer.theme.BG_COLOR);
     
     return(
-    <NavigationContainer>
         <Tab.Navigator 
             initialRouteName="Dashboard"
             activeColor="#f0edf6"
@@ -55,7 +49,7 @@ export const Navigation = () => {
             }}>
         <Tab.Screen             
             name="Dashboard"
-            component={DashboardStackScreen}
+            component={Dashboard}
             options={{
             tabBarIcon: ({ color }) => (
                 <MaterialCommunityIcons name="home" color={color} size={26}/>
@@ -90,7 +84,7 @@ export const Navigation = () => {
         />
         <Tab.Screen 
             name="Settings"
-            component={SettingStackScreen}
+            component={Settings}
             options={{
             tabBarIcon: ({ color }) => (
                 <MaterialCommunityIcons name="settings" color={color} size={26}/>
@@ -98,7 +92,6 @@ export const Navigation = () => {
             }}
         />
         </Tab.Navigator>
-    </NavigationContainer>
     )
 
 }

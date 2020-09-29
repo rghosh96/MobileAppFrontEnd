@@ -3,6 +3,7 @@ import { pickTheme } from '../redux/actions'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
 import { Container, HeaderContainer, HeaderText, Text } from '../theming/masterStyle'
+import { Button, ButtonText} from '../theming/settingsStyle'
 
 
 class SignUp extends Component {
@@ -15,7 +16,9 @@ class SignUp extends Component {
                 <HeaderContainer>
                     <HeaderText>Sign Up.</HeaderText>
                 </HeaderContainer>
-                <Text>boop</Text>
+                <Button onPress={() => this.props.navigation.navigate('Dashboard')}>
+                        <ButtonText>go to Dashboard ...</ButtonText>
+                    </Button>
             </Container>
         </ThemeProvider>
     );
