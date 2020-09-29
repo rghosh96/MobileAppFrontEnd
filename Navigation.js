@@ -15,10 +15,19 @@ import FirstLaunch from './components/FirstLaunch'
 const Tab = createMaterialBottomTabNavigator();
 const DashboardStack = createStackNavigator();
 
-export const Navigation = () => (
+export const FirstNav = () => (
     <NavigationContainer>
         <DashboardStack.Navigator screenOptions={{ headerShown: false }}>
             <DashboardStack.Screen name="FirstLaunch" component = {FirstLaunch} />
+            <DashboardStack.Screen name="Dashboard" component = {TabNavigation} />
+            <DashboardStack.Screen name="SignUp" component = {SignUp} />
+        </DashboardStack.Navigator>
+    </NavigationContainer>
+)
+
+export const Navigation = () => (
+    <NavigationContainer>
+        <DashboardStack.Navigator screenOptions={{ headerShown: false }}>
             <DashboardStack.Screen name="Dashboard" component = {TabNavigation} />
             <DashboardStack.Screen name="SignUp" component = {SignUp} />
         </DashboardStack.Navigator>

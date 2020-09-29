@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
 import { Container, HeaderContainer, HeaderText, Text } from '../theming/masterStyle'
 import { Button, ButtonText} from '../theming/settingsStyle'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import Onboarding from 'react-native-onboarding-swiper'
 import { Image, StyleSheet } from 'react-native';
-import { Navigation } from '../Navigation';
 
 const styles = StyleSheet.create({
     container: {
@@ -41,33 +41,40 @@ class FirstLaunch extends Component {
         }
       }
       render() {
-        console.log(this.state)
+        console.log(this.props.theme)
         if (!this.state.loaded) {
           return <AppLoading />
         }
-    return (
-        <ThemeProvider theme={ this.props.theme }>
-            <Onboarding
-                onSkip={() => this.props.navigation.navigate("SignUp")}
-                onDone={() => this.props.navigation.navigate("SignUp")}
-                pages={[
-                    {
-                    backgroundColor: '#fff',
-                    image: <Image style={styles.logo} source={require('../mockData/pic1.jpg')} />,
-                    title: 'Onboarding',
-                    subtitle: 'Done with React Native Onboarding Swiper',
-                    },
-                    {
-                    backgroundColor: '#fff',
-                    image: <Image style={styles.logo} source={require('../mockData/pic1.jpg')} />,
-                    title: 'Onboarding',
-                    subtitle: 'Done with React Native Onboarding Swiper',
-                    },
-                ]}
-            />
-        </ThemeProvider>
-    );
-  }
+        const primary = this.props.theme.PRIMARY_COLOR;
+        const bg = this.props.theme.BG_COLOR;
+        const grey = this.props.theme.GREY;
+        return (
+            <ThemeProvider theme={ this.props.theme }>
+                <Onboarding
+                    onSkip={() => this.props.navigation.navigate("SignUp")}
+                    onDone={() => this.props.navigation.navigate("SignUp")}
+                    pages={[
+                        {
+                            backgroundColor: bg,
+                            image: <Image style={styles.logo} source={require('../mockData/pic1.jpg')} />,
+                            title: 'Welcome!',
+                            titleStyles: {color: primary, fontFamily: "header"},
+                            subTitleStyles: {color: grey, fontFamily: "text"},
+                            subtitle: 'Welcome to this lovely app!',
+                        },
+                        {
+                            backgroundColor: primary,
+                            image: <Image style={styles.logo} source={require('../mockData/pic1.jpg')} />,
+                            title: 'Welcome!',
+                            titleStyles: {color: bg, fontFamily: "header"},
+                            subTitleStyles: {color: bg, fontFamily: "text"},
+                            subtitle: 'Welcome to this lovely app!',
+                        },
+                    ]}
+                />
+            </ThemeProvider>
+        );
+    }
 }
 
 function mapStateToProps(state) {
