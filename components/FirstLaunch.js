@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { pickTheme } from '../redux/actions'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
-import { Container, HeaderContainer, HeaderText, Text } from '../theming/masterStyle'
-import { Button, ButtonText} from '../theming/settingsStyle'
+import { Container, HeaderContainer, HeaderText, Text, Button, ButtonText } from '../theming/masterStyle'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';

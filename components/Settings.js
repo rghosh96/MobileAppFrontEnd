@@ -4,8 +4,7 @@ import { pinkTheme, lavenderTheme, oliveTheme } from '../theming/themes'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
 import Dashboard from './Dashboard'
-import { Container, HeaderContainer, HeaderText, Text } from '../theming/masterStyle'
-import { Button, ButtonText} from '../theming/settingsStyle'
+import { Container, HeaderContainer, HeaderText, Text, Button, ButtonText } from '../theming/masterStyle'
 
 
 class Settings extends Component {
@@ -31,8 +30,8 @@ class Settings extends Component {
                         <ButtonText>olive theme</ButtonText>
                     </Button>
                     
-                    <Button onPress={() => this.props.navigation.navigate('Dashboard')}>
-                        <ButtonText>go to Dashboard ...</ButtonText>
+                    <Button onPress={() => this.props.navigation.navigate('SignUp')}>
+                        <ButtonText>go to SignUp ...</ButtonText>
                     </Button>
             </Container>
         </ThemeProvider>

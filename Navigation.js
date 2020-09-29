@@ -15,6 +15,8 @@ import FirstLaunch from './components/FirstLaunch'
 const Tab = createMaterialBottomTabNavigator();
 const DashboardStack = createStackNavigator();
 
+
+// displays onboarding on first launch
 export const FirstNav = () => (
     <NavigationContainer>
         <DashboardStack.Navigator screenOptions={{ headerShown: false }}>
@@ -25,6 +27,7 @@ export const FirstNav = () => (
     </NavigationContainer>
 )
 
+// displays dashboard otherwise
 export const Navigation = () => (
     <NavigationContainer>
         <DashboardStack.Navigator screenOptions={{ headerShown: false }}>

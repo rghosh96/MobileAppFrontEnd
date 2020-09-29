@@ -32,3 +32,25 @@ export const Text = styled.Text`
   textAlign: left;
 `;
 
+export const Subtitle = styled.Text`
+  color: ${props => props.theme.GREY};
+  fontFamily: "text";
+  fontSize: 13px;
+  marginBottom: 11px;
+  textAlign: left;
+`;
+
+export const Button = styled.TouchableOpacity`
+  padding: 10px;
+  alignSelf: center;
+  borderRadius: 2px;
+  backgroundColor:${props => props.theme.PRIMARY_COLOR};
+  margin: 7px;
+`;
+
+export const ButtonText = styled.Text`
+  color: ${props => props.theme.BG_COLOR};
+  textAlign: center;
+  fontFamily: "header";
+`;
+
