@@ -13,13 +13,9 @@ const styles = StyleSheet.create({
     container: {
       paddingTop: 50,
     },
-    tinyLogo: {
-      width: 50,
-      height: 50,
-    },
     logo: {
-      width: 66,
-      height: 58,
+      width: 300,
+      height: 300,
     },
   });
 
@@ -52,22 +48,24 @@ class FirstLaunch extends Component {
                 <Onboarding
                     onSkip={() => this.props.navigation.navigate("SignUp")}
                     onDone={() => this.props.navigation.navigate("SignUp")}
+                    showNext = {false}
+                    showSkip = {false}
                     pages={[
                         {
                             backgroundColor: bg,
-                            image: <Image style={styles.logo} source={require('../mockData/pic1.jpg')} />,
-                            title: 'Welcome!',
+                            image: <Image style={styles.logo} source={require('../assets/images/image1.png')} />,
+                            title: 'welcome',
                             titleStyles: {color: primary, fontFamily: "header"},
                             subTitleStyles: {color: grey, fontFamily: "text"},
-                            subtitle: 'Welcome to this lovely app!',
+                            subtitle: 'a computer science social networking app to help cultivate diversity & bring together everyone',
                         },
                         {
                             backgroundColor: primary,
-                            image: <Image style={styles.logo} source={require('../mockData/pic1.jpg')} />,
-                            title: 'Welcome!',
+                            image: <Image style={styles.logo} source={require('../assets/images/image2.png')} />,
+                            title: 'expand your horizons',
                             titleStyles: {color: bg, fontFamily: "header"},
                             subTitleStyles: {color: bg, fontFamily: "text"},
-                            subtitle: 'Welcome to this lovely app!',
+                            subtitle: 'get ready to meet and get to know your fellow major mates! all you need is a uark login!',
                         },
                     ]}
                 />

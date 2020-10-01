@@ -33,7 +33,7 @@ export default function App() {
   } else {
     return (
       <Provider store={ store }>
-        <Navigation />
+        <FirstNav />
       </Provider>
       
     );
