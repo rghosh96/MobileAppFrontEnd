@@ -27,5 +27,14 @@ export const FormInput = styled.TextInput`
     fontFamily: "text";
 `;
 
+export const ErrorText = styled.Text`
+  color: ${props => props.theme.GREY};
+  fontFamily: "text";
+  fontSize: 13px;
+  marginBottom: 11px;
+  marginLeft: 7px;
+  textAlign: left;
+`;
+
 
 
