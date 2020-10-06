@@ -19,6 +19,7 @@ class SignUp extends Component {
                         initialValues={{ uarkEmail: '', uarkPassword: ''}}
                         onSubmit={(values) => {
                             console.log(values)
+                            this.props.navigation.navigate("Dashboard");
                         }}
                     >
                         {/* get access to props of Formik */}
