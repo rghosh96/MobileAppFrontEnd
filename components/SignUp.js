@@ -14,17 +14,55 @@ const SignUpSchema = yup.object({
 })
 
 class SignUp extends Component {
+    // state = {
+    //     loaded: false,
+    //     student: {
+    //         user:"",
+    //         password:""
+    //     }
+    //   }
+      
+    
+       
+    // componentDidMount() {
+    //     console.log("SIGN UP!!!")
+    //     const user={
+    //         method: 'POST',
+    //         headers:{'Content-Type': 'application/json'},
+    //     //     body: JSON.stringify(student)
+    //     body: JSON.stringify({user:'af027', password:"bipniq-wekmov-Qugse5"})
+    // }
+    
+    //     const fetchUserData = async() => {
+    //         const response = await fetch(`http://mobile-app.ddns.uark.edu/nodejsApp/login`, user)
+    //         const student = await response.json()
+    //         console.log(student);
+    //         this.setState({
+    //             loaded: true,
+    //             student: student
+    //         })
+    
+    //     }
+
+    //     try {
+    //         fetchUserData();
+    //     } catch (e) {
+    //         console.log("error !!!")
+    //     }
+    // }
   render() {
       console.log(this.props.theme)
+      console.log("SIGN UP!!!")
     return (
         <ThemeProvider theme={ this.props.theme }>
             
             <SignUpContent>      
                     <Formik 
-                        initialValues={{ uarkEmail: '', uarkPassword: ''}}
+                        initialValues={{ user: '', password: ''}}
                         validationSchema={SignUpSchema}
                         onSubmit={(values) => {
                             console.log(values)
+
                             this.props.navigation.navigate("Dashboard");
                         }}
                     >
@@ -39,13 +77,13 @@ class SignUp extends Component {
                                 </HeaderContainer>
                                 <FormInput 
                                     placeholder='UARK email' 
-                                    onChangeText={props.handleChange('uarkEmail')} 
+                                    onChangeText={props.handleChange('user')} 
                                     value = {props.values.uarkEmail}
                                 />
                                 <ErrorText>{props.touched.uarkEmail && props.errors.uarkEmail }</ErrorText>
                                 <FormInput 
                                     placeholder='UARK password' 
-                                    onChangeText={props.handleChange('uarkPassword')} 
+                                    onChangeText={props.handleChange('password')} 
                                     value = {props.values.uarkPassword}
                                     secureTextEntry
                                 />
