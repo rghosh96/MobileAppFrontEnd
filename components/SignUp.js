@@ -9,96 +9,87 @@ import * as yup from 'yup';
 
 // form validation
 const SignUpSchema = yup.object({
-    uarkEmail: yup.string().required('required!!!').email('not a valid email??!'),
-    uarkPassword: yup.string().required('required!!!')
+    user: yup.string().required('required!!!'),
+    password: yup.string().required('required!!!')
 })
 
 class SignUp extends Component {
-    // state = {
-    //     loaded: false,
-    //     student: {
-    //         user:"",
-    //         password:""
-    //     }
-    //   }
-      
-    
+    state = {
+        loaded: false,
+        uid: ''
+      }
        
-    // componentDidMount() {
-    //     console.log("SIGN UP!!!")
-    //     const user={
-    //         method: 'POST',
-    //         headers:{'Content-Type': 'application/json'},
-    //     //     body: JSON.stringify(student)
-    //     body: JSON.stringify({user:'af027', password:"bipniq-wekmov-Qugse5"})
-    // }
-    
-    //     const fetchUserData = async() => {
-    //         const response = await fetch(`http://mobile-app.ddns.uark.edu/nodejsApp/login`, user)
-    //         const student = await response.json()
-    //         console.log(student);
-    //         this.setState({
-    //             loaded: true,
-    //             student: student
-    //         })
-    
-    //     }
-
-    //     try {
-    //         fetchUserData();
-    //     } catch (e) {
-    //         console.log("error !!!")
-    //     }
-    // }
-  render() {
-      console.log(this.props.theme)
-      console.log("SIGN UP!!!")
-    return (
-        <ThemeProvider theme={ this.props.theme }>
-            
-            <SignUpContent>      
-                    <Formik 
-                        initialValues={{ user: '', password: ''}}
-                        validationSchema={SignUpSchema}
-                        onSubmit={(values) => {
-                            console.log(values)
-
-                            this.props.navigation.navigate("Dashboard");
-                        }}
-                    >
-                        {/* get access to props of Formik */}
-                        {(props) => (
-                            <FormArea>
-                                <HeaderContainer>
-                                    <HeaderText>sign in</HeaderText>
-                                    <Subtitle>what?! no sign up? nope! just sign in with your
-                                        uark credentials!
-                                    </Subtitle>
-                                </HeaderContainer>
-                                <FormInput 
-                                    placeholder='UARK email' 
-                                    onChangeText={props.handleChange('user')} 
-                                    value = {props.values.uarkEmail}
-                                />
-                                <ErrorText>{props.touched.uarkEmail && props.errors.uarkEmail }</ErrorText>
-                                <FormInput 
-                                    placeholder='UARK password' 
-                                    onChangeText={props.handleChange('password')} 
-                                    value = {props.values.uarkPassword}
-                                    secureTextEntry
-                                />
-                                <ErrorText>{props.touched.uarkPassword && props.errors.uarkPassword }</ErrorText>
-                                <Button title="Submit" onPress={() => props.handleSubmit()}>
-                                    <ButtonText>get started!</ButtonText>
-                                </Button>
-                            </FormArea>
-                        )}
-                    </Formik>
+    // calls api to authenticate username & password
+    authenticate(info) {
+        console.log(info)
+        const user={
+            method: 'POST',
+            headers:{'Content-Type': 'application/json'},
+            body: JSON.stringify({user: info.user, password:info.password})
+        }
+        fetch(`http://mobile-app.ddns.uark.edu/nodejsApp/login`, user)
+            .then((response) => response.text())
+            .then((json) => {
+                console.log(json)
+                if (json === "successful auth") {
+                    this.setState({uid: info.user})
+                } else {
+                    this.setState({uid: undefined})
+                }
+            })
+            .catch((error) => console.error(error))
+            .finally(() => {
+                console.log(this.state)
+                    this.setState({loaded: true})
+                    this.props.navigation.navigate("Dashboard");
+            })
+    }
+    render() {
+        const { data, loaded } = this.state;
+        return (
+            <ThemeProvider theme={ this.props.theme }>
                 
-            </SignUpContent>
-        </ThemeProvider>
-    );
-  }
+                <SignUpContent>      
+                        <Formik 
+                            initialValues={{ user: '', password: ''}}
+                            validationSchema={SignUpSchema}
+                            onSubmit={(values) => {
+                                this.authenticate(values)
+                            }}
+                        >
+                            {/* get access to props of Formik */}
+                            {(props) => (
+                                <FormArea>
+                                    <HeaderContainer>
+                                        <HeaderText>sign in</HeaderText>
+                                        <Subtitle>what?! no sign up? nope! just sign in with your
+                                            uark credentials!
+                                        </Subtitle>
+                                    </HeaderContainer>
+                                    <FormInput 
+                                        placeholder='UARK email' 
+                                        onChangeText={props.handleChange('user')} 
+                                        value = {props.values.uarkEmail}
+                                    />
+                                    <ErrorText>{props.touched.uarkEmail && props.errors.uarkEmail }</ErrorText>
+                                    <FormInput 
+                                        placeholder='UARK password' 
+                                        onChangeText={props.handleChange('password')} 
+                                        value = {props.values.uarkPassword}
+                                        secureTextEntry
+                                    />
+                                    <ErrorText>{props.touched.uarkPassword && props.errors.uarkPassword }</ErrorText>
+                                    <Button title="Submit" onPress={() => props.handleSubmit()}>
+                                        <ButtonText>get started!</ButtonText>
+                                    </Button>
+                                </FormArea>
+                            )}
+                        </Formik>
+                    
+                </SignUpContent>
+            </ThemeProvider>
+        );
+    }
 }
 
 function mapStateToProps(state) {
