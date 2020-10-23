@@ -21,7 +21,9 @@ class SignUp extends Component {
        
     // calls api to authenticate username & password
     authenticate(info) {
-        console.log(info)
+        console.log("in authenticate")
+        console.log(info.user)
+        console.log(info.password)
         const user={
             method: 'POST',
             headers:{'Content-Type': 'application/json'},
@@ -31,7 +33,8 @@ class SignUp extends Component {
             .then((response) => response.text())
             .then((json) => {
                 console.log(json)
-                if (json === "successful auth") {
+                console.log(typeof json)
+                if (json == "true") {
                     this.setState({uid: info.user})
                 } else {
                     this.setState({uid: undefined})
@@ -69,16 +72,16 @@ class SignUp extends Component {
                                     <FormInput 
                                         placeholder='UARK email' 
                                         onChangeText={props.handleChange('user')} 
-                                        value = {props.values.uarkEmail}
+                                        value = {props.values.user}
                                     />
-                                    <ErrorText>{props.touched.uarkEmail && props.errors.uarkEmail }</ErrorText>
+                                    <ErrorText>{props.touched.user && props.errors.user }</ErrorText>
                                     <FormInput 
                                         placeholder='UARK password' 
                                         onChangeText={props.handleChange('password')} 
-                                        value = {props.values.uarkPassword}
+                                        value = {props.values.password}
                                         secureTextEntry
                                     />
-                                    <ErrorText>{props.touched.uarkPassword && props.errors.uarkPassword }</ErrorText>
+                                    <ErrorText>{props.touched.password && props.errors.password }</ErrorText>
                                     <Button title="Submit" onPress={() => props.handleSubmit()}>
                                         <ButtonText>get started!</ButtonText>
                                     </Button>

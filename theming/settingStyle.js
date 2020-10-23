@@ -7,7 +7,6 @@ export const SettingContainer = styled.View`
     backgroundColor: ${props => props.theme.BG_COLOR};
     alignItems: flex-start;
     justifyContent: flex-start;
-    margin: 25px;
 `;
 
 
