@@ -29,7 +29,7 @@ class SignUp extends Component {
             headers:{'Content-Type': 'application/json'},
             body: JSON.stringify({user: info.user, password:info.password})
         }
-        fetch(`http://mobile-app.ddns.uark.edu/nodejsApp/login`, user)
+        fetch(`http://mobile-app.ddns.uark.edu/LDAP/login`, user)
             .then((response) => response.text())
             .then((json) => {
                 console.log(json)
