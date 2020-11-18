@@ -62,7 +62,7 @@ class FirstLaunch extends Component {
                         },
                         {
                             backgroundColor: primary,
-                            image: <LottieView style={{height: 200}}source={require('../assets/splash2.json')} autoPlay loop />,
+                            image: <LottieView style={{height: 200}}source={require('../assets/splash3.json')} autoPlay loop />,
                             title: 'expand your horizons',
                             titleStyles: {color: bg, fontFamily: "header"},
                             subTitleStyles: {color: bg, fontFamily: "text"},
