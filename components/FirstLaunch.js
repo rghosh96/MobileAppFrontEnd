@@ -8,6 +8,7 @@ import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import Onboarding from 'react-native-onboarding-swiper'
 import { Image, StyleSheet } from 'react-native';
+import LottieView from 'lottie-react-native';
 
 const styles = StyleSheet.create({
     container: {
@@ -53,7 +54,7 @@ class FirstLaunch extends Component {
                     pages={[
                         {
                             backgroundColor: bg,
-                            image: <Image style={styles.logo} source={require('../assets/images/image1.png')} />,
+                            image: <LottieView style={{height: 200}}source={require('../assets/splash.json')} autoPlay loop />,
                             title: 'welcome',
                             titleStyles: {color: primary, fontFamily: "header"},
                             subTitleStyles: {color: grey, fontFamily: "text"},
@@ -61,7 +62,7 @@ class FirstLaunch extends Component {
                         },
                         {
                             backgroundColor: primary,
-                            image: <Image style={styles.logo} source={require('../assets/images/image2.png')} />,
+                            image: <LottieView style={{height: 200}}source={require('../assets/splash2.json')} autoPlay loop />,
                             title: 'expand your horizons',
                             titleStyles: {color: bg, fontFamily: "header"},
                             subTitleStyles: {color: bg, fontFamily: "text"},
