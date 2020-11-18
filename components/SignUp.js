@@ -16,7 +16,7 @@ const SignUpSchema = yup.object({
 class SignUp extends Component {
     state = {
         loaded: false,
-        uid: ''
+        success: false
       }
        
     // calls api to authenticate username & password
@@ -27,24 +27,31 @@ class SignUp extends Component {
         const user={
             method: 'POST',
             headers:{'Content-Type': 'application/json'},
-            body: JSON.stringify({user: info.user, password:info.password})
+            body: JSON.stringify({user: info.user.toLowerCase(), password:info.password})
         }
+        console.log(user)
         fetch(`http://mobile-app.ddns.uark.edu/LDAP/login`, user)
             .then((response) => response.text())
             .then((json) => {
                 console.log(json)
+                let data = JSON.parse(json)
+                console.log(data.isError)
                 console.log(typeof json)
-                if (json == "true") {
-                    this.setState({uid: info.user})
+                if (data.isError === true) {
+                    this.setState({success: true})
                 } else {
-                    this.setState({uid: undefined})
+                    this.setState({success: false})
                 }
             })
             .catch((error) => console.error(error))
             .finally(() => {
                 console.log(this.state)
-                    this.setState({loaded: true})
+                if (this.state.success === true) {
+                    this.props.navigation.navigate("CreateProfile");
+                } else {
                     this.props.navigation.navigate("Dashboard");
+                }
+                    
             })
     }
     render() {
@@ -70,7 +77,8 @@ class SignUp extends Component {
                                         </Subtitle>
                                     </HeaderContainer>
                                     <FormInput 
-                                        placeholder='UARK email' 
+                                        placeholder='UARK username (do NOT include @uark.edu)' 
+                                        multiline
                                         onChangeText={props.handleChange('user')} 
                                         value = {props.values.user}
                                     />

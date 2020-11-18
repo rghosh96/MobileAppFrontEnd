@@ -21,7 +21,6 @@ export const HeaderText = styled.Text`
 export const HeaderContainer = styled.View`
     backgroundColor: ${props => props.theme.BG_COLOR};
     width: 100%;
-    padding: 0px 15px 0px 15px;
 `;
 
 export const Text = styled.Text`

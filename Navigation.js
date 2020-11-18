@@ -11,6 +11,7 @@ import Settings from './components/Settings';
 import { createStackNavigator } from '@react-navigation/stack';
 import SignUp from './components/SignUp'
 import FirstLaunch from './components/FirstLaunch'
+import CreateProfile from './components/CreateProfile'
 
 const Tab = createMaterialBottomTabNavigator();
 const DashboardStack = createStackNavigator();
@@ -22,7 +23,8 @@ export const FirstNav = () => (
         <DashboardStack.Navigator screenOptions={{ headerShown: false }}>
             <DashboardStack.Screen name="FirstLaunch" component = {FirstLaunch} />
             <DashboardStack.Screen name="Dashboard" component = {TabNavigation} />
-            <DashboardStack.Screen name="SignUp" component = {SignUp} />
+            <DashboardStack.Screen name="SignUp" component = {SignUp} /> 
+            <DashboardStack.Screen name="CreateProfile" component = {CreateProfile} />
         </DashboardStack.Navigator>
     </NavigationContainer>
 )
