@@ -2,21 +2,16 @@ import React, { Component } from 'react';
 import { pickTheme } from '../../redux/actions'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
-import { Subtitle, Text, HeaderContainer, HeaderText, Button, ButtonText, Divider } from '../../theming/masterStyle'
+import { Subtitle, Divider, HeaderContainer, HeaderText, Button, ButtonText } from '../../theming/masterStyle'
 import { Rating } from 'react-native-elements';
-import { CommentInput, FormArea, CreateProfileContent, RatingContainer, ErrorText, H1 } from '../../theming/createStyle'
+import { BioInput, TextInput, CommentInput, FormArea, CreateProfileContent, RatingContainer, ErrorText, H1 } from '../../theming/createStyle'
 import { Formik } from 'formik'
-import * as yup from 'yup';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 // TO DO: ASK FOR INTERESTS FIRST
 // THEN EXTRA BIO GENDER HOMETOWN ETC 
 // form validation
-const SignUpSchema = yup.object({
-    user: yup.string().required('required!!!'),
-    password: yup.string().required('required!!!')
-})
 
 class GetUserInterests extends Component {
     state = {
@@ -41,7 +36,7 @@ class GetUserInterests extends Component {
             readingComment: info.reading,
           })
           console.log(this.state)
-          this.props.navigation.navigate("Dashboard");
+          this.props.navigation.navigate("GetUserInfo");
       }
 
   render() {
@@ -49,12 +44,12 @@ class GetUserInterests extends Component {
     return (
         <ThemeProvider theme={ this.props.theme }>
             <KeyboardAwareScrollView
-            style={{ backgroundColor: this.props.theme.BG_COLOR }}
-            resetScrollToCoords={{ x: 0, y: 0 }}
-            scrollEnabled={false}
-            >
+                style={{ backgroundColor: this.props.theme.BG_COLOR }}
+                resetScrollToCoords={{ x: 0, y: 0 }}
+                scrollEnabled={false}
+                >
             <CreateProfileContent>   
-                        <Formik 
+            <Formik 
                             initialValues={{ 
                                 fashion: '', 
                                 food: '',
@@ -72,11 +67,11 @@ class GetUserInterests extends Component {
                                 <FormArea>
                                     <HeaderContainer>
                                         <HeaderText>real quick..</HeaderText>
+                                        <Subtitle>tell us a bit about your interests! use your finger to slide
+                                            to rate each of the areas, and leave an optional comment!
+                                        </Subtitle>
                                     </HeaderContainer>
-                                    <Subtitle>use your finger to slide over the following areas to tell us about your interests. 
-                                        you may add any additional comments about the interest area, but it is optional.
-                                    </Subtitle>
-                                    <Divider />
+                                    <Divider/>
                                     <RatingContainer>    
                                     <H1>fashion ({this.state.fashionRating}/5)&nbsp;</H1>
                                     <Rating
@@ -162,7 +157,6 @@ class GetUserInterests extends Component {
                                         multiline
                                         value = {props.values.readingComment}
                                     />     
-
                                     
                                     <Button title="Submit" onPress={() => props.handleSubmit()}>
                                         <ButtonText>i'm done!</ButtonText>
@@ -170,6 +164,7 @@ class GetUserInterests extends Component {
                                 </FormArea>
                             )}
                         </Formik>
+                    
                 </CreateProfileContent>
                 </KeyboardAwareScrollView>
         </ThemeProvider>
@@ -184,7 +179,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {pickTheme})(GetUserInterests);
-
 
 
 

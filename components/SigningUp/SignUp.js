@@ -3,12 +3,12 @@ import { pickTheme } from '../../redux/actions'
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage'
 import { ThemeProvider } from 'styled-components/native';
-import { HeaderContainer, HeaderText, Subtitle, Button, ButtonText } from '../../theming/masterStyle'
+import { HeaderContainer, HeaderText, Subtitle, Button, ButtonText, Center } from '../../theming/masterStyle'
 import { FormArea, SignUpContent, FormInput, ErrorText } from '../../theming/signupStyle'
 import { Formik } from 'formik'
 import * as yup from 'yup';
-import {Keyboard} from 'react-native'
-import { TouchableWithoutFeedback } from "react-native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import LottieView from 'lottie-react-native';
 
 // form validation
 const SignUpSchema = yup.object({
@@ -80,8 +80,12 @@ class SignUp extends Component {
         const { data, loaded } = this.state;
         return (
             <ThemeProvider theme={ this.props.theme }>
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-                <SignUpContent>      
+                <KeyboardAwareScrollView
+                style={{ backgroundColor: this.props.theme.BG_COLOR }}
+                resetScrollToCoords={{ x: 0, y: 0 }}
+                scrollEnabled={false}
+                >
+                <SignUpContent>     
                         <Formik 
                             initialValues={{ user: '', password: ''}}
                             validationSchema={SignUpSchema}
@@ -92,6 +96,7 @@ class SignUp extends Component {
                             {/* get access to props of Formik */}
                             {(props) => (
                                 <FormArea>
+                                    <Center><LottieView style={{height: 200}}source={require('../../assets/signup.json')} autoPlay loop /></Center> 
                                     <HeaderContainer>
                                         <HeaderText>sign in</HeaderText>
                                         <Subtitle>what?! no sign up? nope! just sign in with your
@@ -118,7 +123,7 @@ class SignUp extends Component {
                             )}
                         </Formik>
                 </SignUpContent>
-                </TouchableWithoutFeedback>
+                </KeyboardAwareScrollView>
             </ThemeProvider>
         );
     }

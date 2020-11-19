@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 
 export const BioInput = styled.TextInput`
     borderWidth: 1px;
-    borderColor: ${props => props.theme.GREY};
+    borderColor: ${props => props.theme.LIGHT_GREY};
     borderRadius: 5px;
     padding: 7px;
     margin: 7px;
@@ -12,7 +12,7 @@ export const BioInput = styled.TextInput`
 
 export const TextInput = styled.TextInput`
     borderWidth: 1px;
-    borderColor: ${props => props.theme.GREY};
+    borderColor: ${props => props.theme.LIGHT_GREY};
     borderRadius: 5px;
     padding: 7px;
     margin: 7px;
@@ -22,7 +22,7 @@ export const TextInput = styled.TextInput`
 
 export const CommentInput = styled.TextInput`
     borderWidth: 1px;
-    borderColor: ${props => props.theme.GREY};
+    borderColor: ${props => props.theme.LIGHT_GREY};
     borderRadius: 5px;
     padding: 7px;
     marginBottom: 10px;
@@ -80,6 +80,5 @@ export const H1 = styled.Text`
 
   textAlign: left;
 `;
-
 
 

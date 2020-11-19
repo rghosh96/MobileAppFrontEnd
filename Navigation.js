@@ -12,6 +12,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SignUp from './components/SigningUp/SignUp'
 import FirstLaunch from './components/FirstLaunch'
 import GetUserInterests from './components/SigningUp/GetUserInterests'
+import GetUserInfo from './components/SigningUp/GetUserInfo'
 
 const Tab = createMaterialBottomTabNavigator();
 const DashboardStack = createStackNavigator();
@@ -25,6 +26,7 @@ export const FirstNav = () => (
             <DashboardStack.Screen name="Dashboard" component = {TabNavigation} />
             <DashboardStack.Screen name="SignUp" component = {SignUp} /> 
             <DashboardStack.Screen name="GetUserInterests" component = {GetUserInterests} />
+            <DashboardStack.Screen name="GetUserInfo" component = {GetUserInfo} />
         </DashboardStack.Navigator>
     </NavigationContainer>
 )

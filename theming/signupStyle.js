@@ -12,7 +12,7 @@ export const SignUpContent = styled.View`
 export const FormArea = styled.View`
     flex: 1;
     backgroundColor: ${props => props.theme.BG_COLOR};
-    margin: 70px;
+    margin: 150px;
     justifyContent: center;
     width: 100%;
     padding: 40px;

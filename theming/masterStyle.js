@@ -10,11 +10,19 @@ export const Container = styled.View`
     justifyContent: flex-start;
 `;
 
+export const Center = styled.View`
+    flex: 1;
+    width: 100%;
+    alignItems: center;
+    justifyContent: center;
+`;
+
 export const Divider = styled.View`
   borderBottomColor: ${props => props.theme.GREY};
   borderBottomWidth: 1px;
   margin: 20px;
 `;
+
 
 export const HeaderText = styled.Text`
   fontSize: 45px;
