@@ -24,6 +24,15 @@ export const ProfileText = styled.Text`
   fontFamily: "text";
 `;
 
+export const HeaderText = styled.Text`
+  fontSize: 45px;
+  fontFamily: "header";
+  textAlign: center;
+  color: ${props => props.theme.PRIMARY_COLOR};
+  fontWeight: 900;
+  paddingBottom: 11px;
+`;
+
 
 export const ProfileImage = styled.Image`
   height: 135px;

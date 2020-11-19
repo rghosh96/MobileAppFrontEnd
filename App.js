@@ -19,6 +19,7 @@ export default function App() {
         AsyncStorage.setItem('alreadyLaunched', 'true');
         setIsFirstLaunch(true);
       } else {
+        AsyncStorage.setItem('alreadyLaunched', 'false');
         setIsFirstLaunch(false);
       }
     })

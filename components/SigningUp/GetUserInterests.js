@@ -1,47 +1,70 @@
 import React, { Component } from 'react';
-import { pickTheme } from '../redux/actions'
+import { pickTheme } from '../../redux/actions'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
-import { Subtitle, Text, HeaderContainer, HeaderText, Button, ButtonText } from '../theming/masterStyle'
+import { Subtitle, Text, HeaderContainer, HeaderText, Button, ButtonText, Divider } from '../../theming/masterStyle'
 import { Rating } from 'react-native-elements';
-import { BioInput, TextInput, CommentInput, FormArea, CreateProfileContent, RatingContainer, ErrorText, H1 } from '../theming/createStyle'
+import { CommentInput, FormArea, CreateProfileContent, RatingContainer, ErrorText, H1 } from '../../theming/createStyle'
 import { Formik } from 'formik'
 import * as yup from 'yup';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+
+// TO DO: ASK FOR INTERESTS FIRST
+// THEN EXTRA BIO GENDER HOMETOWN ETC 
 // form validation
 const SignUpSchema = yup.object({
     user: yup.string().required('required!!!'),
     password: yup.string().required('required!!!')
 })
 
-class CreateProfile extends Component {
+class GetUserInterests extends Component {
     state = {
-        bio: '',
         fashionRating: 0,
         foodRating: 0,
         gameRating: 0,
         outRating: 0,
-        readRating: 0
+        readRating: 0,
+        fashionComment: '',
+        foodComment: '',
+        gamingComment: '',
+        outdoorsComment: '',
+        readingComment: '',
+      }
+
+      setInterests(info) {
+          this.setState({
+            fashionComment: info.fashion,
+            foodComment: info.food,
+            gamingComment: info.gaming,
+            outdoorsComment: info.outdoors,
+            readingComment: info.reading,
+          })
+          console.log(this.state)
+          this.props.navigation.navigate("Dashboard");
       }
 
   render() {
       console.log(this.state)
     return (
         <ThemeProvider theme={ this.props.theme }>
-            
+            <KeyboardAwareScrollView
+            style={{ backgroundColor: this.props.theme.BG_COLOR }}
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            scrollEnabled={false}
+            >
             <CreateProfileContent>   
                         <Formik 
                             initialValues={{ 
-                                bio: '', 
-                                gender: '', 
-                                fashionComment: '',
-                                foodComment: '',
-                                gamingComment: '',
-                                outdoorComment: '',
-                                readingComment: '' }}
+                                fashion: '', 
+                                food: '',
+                                gaming: '',
+                                outdoors: '',
+                                reading: ''}}
                             // validationSchema={SignUpSchema}
                             onSubmit={(values) => {
                                 console.log(values)
+                                this.setInterests(values);
                             }}
                         >
                             {/* get access to props of Formik */}
@@ -49,121 +72,92 @@ class CreateProfile extends Component {
                                 <FormArea>
                                     <HeaderContainer>
                                         <HeaderText>real quick..</HeaderText>
-                                        <Subtitle>tell us a bit about yourself! create your profile.
-                                        </Subtitle>
                                     </HeaderContainer>
-                                    <H1>tell us a little bit about yourself.
-                                    </H1>
-                                    <BioInput 
-                                        placeholder='please enter a short bio! (250 words max)' 
-                                        onChangeText={props.handleChange('bio')} 
-                                        maxLength={150}
-                                        multiline
-                                        numberOfLines={7}
-                                        value = {props.values.bio}
-                                    />
-                                    <ErrorText>{props.touched.bio && props.errors.bio }</ErrorText>
-
-                                    <H1>what is your gender identity?</H1>
-                                    <TextInput 
-                                        placeholder='please tell us your gender!' 
-                                        onChangeText={props.handleChange('gender')} 
-                                        maxLength={50}
-                                        multiline
-                                        value = {props.values.gender}
-                                    />
-                                    <ErrorText>{props.touched.gender && props.errors.gender }</ErrorText>
-                                    
-                                    <H1>now let's talk about your interests.</H1>
-                                    <Subtitle>use your finger to slide over the following areas to rate
-                                        them! you may add any additional comments about the interest area, but it is optional.
+                                    <Subtitle>use your finger to slide over the following areas to tell us about your interests. 
+                                        you may add any additional comments about the interest area, but it is optional.
                                     </Subtitle>
-                                    <RatingContainer>
-                                    <Subtitle>fashion ({this.state.fashionRating}/5)&nbsp;</Subtitle>
+                                    <Divider />
+                                    <RatingContainer>    
+                                    <H1>fashion ({this.state.fashionRating}/5)&nbsp;</H1>
                                     <Rating
                                             type='heart'
                                             ratingCount={5}
-                                            imageSize={15}
-                                            fractions={1}
+                                            imageSize={25}
                                             startingValue={0}
                                             onFinishRating={rating => this.setState({fashionRating: rating})}
                                     />         
                                     </RatingContainer>
                                     <CommentInput 
-                                        placeholder='comments about fashion...' 
-                                        onChangeText={props.handleChange('fashionComment')} 
+                                        placeholder='maybe some trends, designers, if you like hair, nails, etc..' 
+                                        onChangeText={props.handleChange('fashion')} 
                                         maxLength={50}
                                         multiline
                                         value = {props.values.fashionComment}
                                     />
                                     <RatingContainer>
-                                    <Subtitle>food ({this.state.foodRating}/5) &nbsp;</Subtitle>
+                                    <H1>food ({this.state.foodRating}/5) &nbsp;</H1>
                                     <Rating
                                             type='heart'
                                             ratingCount={5}
-                                            imageSize={15}
-                                            fractions={1}
+                                            imageSize={25}
                                             startingValue={0}
                                             onFinishRating={rating => this.setState({foodRating: rating})}
                                     />   
                                     </RatingContainer>
                                     <CommentInput 
-                                        placeholder='comments about food...' 
-                                        onChangeText={props.handleChange('foodComment')} 
+                                        placeholder='what are your favorite cuisines? restaurants?' 
+                                        onChangeText={props.handleChange('food')} 
                                         maxLength={50}
                                         multiline
                                         value = {props.values.foodComment}
                                     />
                                     <RatingContainer>
-                                    <Subtitle>gaming ({this.state.gameRating}/5)&nbsp;</Subtitle>
+                                    <H1>gaming ({this.state.gameRating}/5)&nbsp;</H1>
                                     <Rating
                                             type='heart'
                                             ratingCount={5}
-                                            imageSize={15}
-                                            fractions={1}
+                                            imageSize={25}
                                             startingValue={0}
                                             onFinishRating={rating => this.setState({gameRating: rating})}
                                     />   
                                     </RatingContainer>
                                     <CommentInput 
-                                        placeholder='comments about gaming...' 
-                                        onChangeText={props.handleChange('gamingComment')} 
+                                        placeholder='what kind of games u playin (your fav console, etc)' 
+                                        onChangeText={props.handleChange('gaming')} 
                                         maxLength={50}
                                         multiline
                                         value = {props.values.gamingComment}
                                     />
                                     <RatingContainer>
-                                    <Subtitle>outdoors &nbsp;</Subtitle>
+                                    <H1>outdoors &nbsp;</H1>
                                     <Rating
                                             type='heart'
                                             ratingCount={5}
-                                            imageSize={15}
-                                            fractions={1}
+                                            imageSize={25}
                                             startingValue={0}
                                             onFinishRating={rating => this.setState({outRating: rating})}
                                     />    
                                     </RatingContainer>
                                     <CommentInput 
-                                        placeholder='comments about the outdoors...' 
-                                        onChangeText={props.handleChange('outdoorComment')} 
+                                        placeholder='hiking? biking? running? camping? fav trails?' 
+                                        onChangeText={props.handleChange('outdoor')} 
                                         maxLength={50}
                                         multiline
                                         value = {props.values.outdoorComment}
                                     />
                                     <RatingContainer>
-                                    <Subtitle>reading &nbsp;</Subtitle>
+                                    <H1>reading &nbsp;</H1>
                                     <Rating
                                             type='heart'
                                             ratingCount={5}
-                                            imageSize={15}
-                                            fractions={1}
+                                            imageSize={25}
                                             startingValue={0}
                                             onFinishRating={rating => this.setState({readRating: rating})}
                                     />    
                                     </RatingContainer>   
                                     <CommentInput 
-                                        placeholder='comments about reading...' 
-                                        onChangeText={props.handleChange('readingComment')} 
+                                        placeholder='whether it be productivity, fiction, or your algorithms textbook, give us ur fav titles!' 
+                                        onChangeText={props.handleChange('reading')} 
                                         maxLength={50}
                                         multiline
                                         value = {props.values.readingComment}
@@ -176,9 +170,8 @@ class CreateProfile extends Component {
                                 </FormArea>
                             )}
                         </Formik>
-                    
                 </CreateProfileContent>
-
+                </KeyboardAwareScrollView>
         </ThemeProvider>
     );
   }
@@ -190,7 +183,7 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {pickTheme})(CreateProfile);
+export default connect(mapStateToProps, {pickTheme})(GetUserInterests);
 
 
 

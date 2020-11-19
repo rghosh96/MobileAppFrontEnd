@@ -10,9 +10,16 @@ export const Container = styled.View`
     justifyContent: flex-start;
 `;
 
+export const Divider = styled.View`
+  borderBottomColor: ${props => props.theme.GREY};
+  borderBottomWidth: 1px;
+  margin: 20px;
+`;
+
 export const HeaderText = styled.Text`
-  fontSize: 50px;
+  fontSize: 45px;
   fontFamily: "header";
+  textAlign: left;
   color: ${props => props.theme.PRIMARY_COLOR};
   fontWeight: 900;
   paddingBottom: 11px;
@@ -34,7 +41,7 @@ export const Text = styled.Text`
 export const Subtitle = styled.Text`
   color: ${props => props.theme.GREY};
   fontFamily: "text";
-  fontSize: 13px;
+  fontSize: 17px;
   marginBottom: 11px;
   textAlign: left;
 `;

@@ -25,7 +25,7 @@ export const CommentInput = styled.TextInput`
     borderColor: ${props => props.theme.GREY};
     borderRadius: 5px;
     padding: 7px;
-    margin: 0px 7px 15px 7px;
+    marginBottom: 10px;
     height: 50px;
     fontFamily: "text";
 `
@@ -35,7 +35,7 @@ export const RatingContainer = styled.View`
   width: 100%;
   flexDirection: row;
   justifyContent: center;
-  alignItems: baseline;
+  alignItems: stretch;
 `;
 
 export const CreateProfileContent = styled.View`
@@ -46,11 +46,13 @@ export const CreateProfileContent = styled.View`
     justifyContent: center;
 `;
 
-export const FormArea = styled.ScrollView`
+export const FormArea = styled.View`
+    flex: 1;
     backgroundColor: ${props => props.theme.BG_COLOR};
     margin: 70px;
+    justifyContent: center;
     width: 100%;
-    padding: 0px 40px 0px 40px;
+    padding: 40px;
 `;
 
 export const FormInput = styled.TextInput`
@@ -74,8 +76,8 @@ export const ErrorText = styled.Text`
 export const H1 = styled.Text`
   color: ${props => props.theme.PRIMARY_COLOR};
   fontFamily: "header";
-  fontSize: 15px;
-  marginBottom: 11px;
+  fontSize: 23px;
+
   textAlign: left;
 `;
 

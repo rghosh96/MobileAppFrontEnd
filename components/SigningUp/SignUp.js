@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { pickTheme } from '../redux/actions'
+import { pickTheme } from '../../redux/actions'
 import { connect } from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage'
 import { ThemeProvider } from 'styled-components/native';
-import { HeaderContainer, HeaderText, Subtitle, Button, ButtonText } from '../theming/masterStyle'
-import { FormArea, SignUpContent, FormInput, ErrorText } from '../theming/signupStyle'
+import { HeaderContainer, HeaderText, Subtitle, Button, ButtonText } from '../../theming/masterStyle'
+import { FormArea, SignUpContent, FormInput, ErrorText } from '../../theming/signupStyle'
 import { Formik } from 'formik'
 import * as yup from 'yup';
+import {Keyboard} from 'react-native'
+import { TouchableWithoutFeedback } from "react-native";
 
 // form validation
 const SignUpSchema = yup.object({
@@ -18,26 +21,42 @@ class SignUp extends Component {
         loaded: false,
         success: false
       }
-       
+
+      async getToken(user) {
+        try {
+            console.log("before getting item");
+          let userId = await AsyncStorage.getItem("user");
+        } catch (error) {
+          console.log("Something went wrong", error);
+        }
+      }  
+
+      async storeToken(user) {
+        try {
+           await AsyncStorage.setItem("user", user);
+        } catch (error) {
+          console.log("Something went wrong", error);
+        }
+      }
     // calls api to authenticate username & password
     authenticate(info) {
         console.log("in authenticate")
-        console.log(info.user)
-        console.log(info.password)
+        console.log(info)
+        // create user body to send to api
         const user={
             method: 'POST',
             headers:{'Content-Type': 'application/json'},
             body: JSON.stringify({user: info.user.toLowerCase(), password:info.password})
         }
-        console.log(user)
+        // call api endpoint, sending in user to add to db
         fetch(`http://mobile-app.ddns.uark.edu/LDAP/login`, user)
             .then((response) => response.text())
             .then((json) => {
-                console.log(json)
+                // parse the response & extract data
                 let data = JSON.parse(json)
-                console.log(data.isError)
-                console.log(typeof json)
-                if (data.isError === true) {
+                console.log(data)
+                // if there was no error, and user was successfully added, success!
+                if (data.isError === false && data.result.includes("was added!")) {
                     this.setState({success: true})
                 } else {
                     this.setState({success: false})
@@ -45,11 +64,14 @@ class SignUp extends Component {
             })
             .catch((error) => console.error(error))
             .finally(() => {
-                console.log(this.state)
+                // if successful addition to db, navigate to create profile
                 if (this.state.success === true) {
-                    this.props.navigation.navigate("CreateProfile");
+                    this.storeToken(info.user.toLowerCase())
+                     console.log("successfully stored user in async storage!")
+                     this.getToken();
+                    this.props.navigation.navigate("GetUserInterests");
                 } else {
-                    this.props.navigation.navigate("Dashboard");
+                    this.props.navigation.navigate("GetUserInterests");
                 }
                     
             })
@@ -58,7 +80,7 @@ class SignUp extends Component {
         const { data, loaded } = this.state;
         return (
             <ThemeProvider theme={ this.props.theme }>
-                
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                 <SignUpContent>      
                         <Formik 
                             initialValues={{ user: '', password: ''}}
@@ -78,7 +100,6 @@ class SignUp extends Component {
                                     </HeaderContainer>
                                     <FormInput 
                                         placeholder='UARK username (do NOT include @uark.edu)' 
-                                        multiline
                                         onChangeText={props.handleChange('user')} 
                                         value = {props.values.user}
                                     />
@@ -96,8 +117,8 @@ class SignUp extends Component {
                                 </FormArea>
                             )}
                         </Formik>
-                    
                 </SignUpContent>
+                </TouchableWithoutFeedback>
             </ThemeProvider>
         );
     }

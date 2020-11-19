@@ -9,9 +9,9 @@ import Chat from './components/Chat';
 import Connections from './components/Connections';
 import Settings from './components/Settings';
 import { createStackNavigator } from '@react-navigation/stack';
-import SignUp from './components/SignUp'
+import SignUp from './components/SigningUp/SignUp'
 import FirstLaunch from './components/FirstLaunch'
-import CreateProfile from './components/CreateProfile'
+import GetUserInterests from './components/SigningUp/GetUserInterests'
 
 const Tab = createMaterialBottomTabNavigator();
 const DashboardStack = createStackNavigator();
@@ -24,7 +24,7 @@ export const FirstNav = () => (
             <DashboardStack.Screen name="FirstLaunch" component = {FirstLaunch} />
             <DashboardStack.Screen name="Dashboard" component = {TabNavigation} />
             <DashboardStack.Screen name="SignUp" component = {SignUp} /> 
-            <DashboardStack.Screen name="CreateProfile" component = {CreateProfile} />
+            <DashboardStack.Screen name="GetUserInterests" component = {GetUserInterests} />
         </DashboardStack.Navigator>
     </NavigationContainer>
 )

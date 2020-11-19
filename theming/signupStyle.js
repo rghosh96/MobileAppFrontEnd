@@ -25,6 +25,7 @@ export const FormInput = styled.TextInput`
     padding: 7px;
     margin: 7px;
     fontFamily: "text";
+    color: ${props => props.theme.PRIMARY_COLOR};
 `;
 
 export const ErrorText = styled.Text`
