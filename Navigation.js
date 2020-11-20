@@ -36,7 +36,6 @@ export const Navigation = () => (
     <NavigationContainer>
         <DashboardStack.Navigator screenOptions={{ headerShown: false }}>
             <DashboardStack.Screen name="Dashboard" component = {TabNavigation} />
-            <DashboardStack.Screen name="SignUp" component = {SignUp} />
         </DashboardStack.Navigator>
     </NavigationContainer>
 )

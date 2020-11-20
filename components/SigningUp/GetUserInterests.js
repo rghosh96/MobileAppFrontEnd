@@ -24,6 +24,7 @@ class GetUserInterests extends Component {
         outdoorsComment: '',
         readingComment: '',
       }
+      
 
       setInterests(info) {
         if (this.state.fashionRating === null || this.state.gameRating === null || this.state.foodRating === null

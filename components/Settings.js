@@ -112,10 +112,6 @@ class Settings extends Component {
       <Line />
 
     </List.Section>
-
-    <Button onPress={() => this.props.navigation.navigate('SignUp')}>
-                        <ButtonText>go to SignUp ...</ButtonText>
-                    </Button>
                     
                     </SettingContainer>
             </Container>

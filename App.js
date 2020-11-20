@@ -34,7 +34,7 @@ export default function App() {
   } else {
     return (
       <Provider store={ store }>
-        <FirstNav />
+        <Navigation />
       </Provider>
       
     );

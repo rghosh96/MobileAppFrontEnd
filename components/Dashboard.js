@@ -12,7 +12,6 @@ import { Connections, HeaderText, ProfileText, ProfileImage, ProfileContainer, C
 
 class Dashboard extends Component {
   state = {
-    loaded: false,
     user: '',
     userLoaded: false,
     userData: '',
@@ -54,6 +53,7 @@ class Dashboard extends Component {
       this.getUserData(this.state.user)
       if (userId !== null) {
         let firstLaunch = await AsyncStorage.getItem("alreadyLaunched")
+        console.log(firstLaunch)
         this.setState({isFirstLaunch: firstLaunch})
       }
     } catch (error) {
@@ -68,7 +68,6 @@ class Dashboard extends Component {
         header: require('../assets/fonts/ArchivoBlack-Regular.ttf'),
         text: require('../assets/fonts/Spartan-Medium.ttf')
     })
-    this.setState({ loaded: true })
     } catch(e){
       console.log("error loading fonts")
     }
@@ -85,10 +84,9 @@ class Dashboard extends Component {
     return (
         <ThemeProvider theme={ this.props.theme }>
             {console.log("INSIDE VIEW")}
-            {console.log(this.state.isFirstLaunch)}
             <Container>
                 <HeaderContainer>
-                  {this.state.isFirstLaunch ? <HeaderText>welcome back,</HeaderText> : <HeaderText>welcome,</HeaderText>}
+                  {this.state.isFirstLaunch ? <HeaderText>welcome,</HeaderText> : <HeaderText>welcome back,</HeaderText>}
                   <HeaderText>{this.state.userData.userFNAME}!</HeaderText>
                 </HeaderContainer>
                 <ProfileContainer>

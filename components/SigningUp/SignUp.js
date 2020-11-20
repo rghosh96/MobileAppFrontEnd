@@ -9,6 +9,7 @@ import { Formik } from 'formik'
 import * as yup from 'yup';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import LottieView from 'lottie-react-native';
+import { Alert } from "react-native";
 
 // form validation
 const SignUpSchema = yup.object({
@@ -59,7 +60,9 @@ class SignUp extends Component {
                 if (data.isError === false && data.result.includes("was added!")) {
                     this.setState({success: true})
                 } else {
-                    this.setState({success: false})
+                    if (data.result.includes("Incorrect authentication")) {
+                        this.setState({success: false})
+                    }
                 }
             })
             .catch((error) => console.error(error))
@@ -71,7 +74,14 @@ class SignUp extends Component {
                      this.getToken();
                     this.props.navigation.navigate("GetUserInterests");
                 } else {
-                    this.props.navigation.navigate("GetUserInterests");
+                    Alert.alert(
+                        "Hmmm...",
+                        "we couldn't recognize you. are you sure u entered ONLY your uark id and password correctly?",
+                        [
+                          { text: "let me double check ..", onPress: () => console.log("okay pressed") }
+                        ],
+                        { cancelable: false }
+                      );
                 }
                     
             })
