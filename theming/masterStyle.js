@@ -52,6 +52,7 @@ export const Subtitle = styled.Text`
   fontSize: 17px;
   marginBottom: 11px;
   textAlign: left;
+  zIndex: 1;
 `;
 
 export const Button = styled.TouchableOpacity`

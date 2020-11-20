@@ -20,7 +20,7 @@ export const FormArea = styled.View`
 
 export const FormInput = styled.TextInput`
     borderBottomWidth: 1px;
-    borderBottomColor: ${props => props.theme.GREY};
+    borderBottomColor: ${props => props.theme.LIGHT_GREY};
     borderRadius: 2px;
     padding: 7px;
     margin: 7px;

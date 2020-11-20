@@ -4,22 +4,20 @@ import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
 import { Subtitle, Divider, HeaderContainer, HeaderText, Button, ButtonText } from '../../theming/masterStyle'
 import { Rating } from 'react-native-elements';
-import { BioInput, TextInput, CommentInput, FormArea, CreateProfileContent, RatingContainer, ErrorText, H1 } from '../../theming/createStyle'
+import { CommentInput, FormArea, CreateProfileContent, RatingContainer, ErrorText, H1 } from '../../theming/createStyle'
 import { Formik } from 'formik'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { Alert } from "react-native";
 
 
-// TO DO: ASK FOR INTERESTS FIRST
-// THEN EXTRA BIO GENDER HOMETOWN ETC 
-// form validation
 
 class GetUserInterests extends Component {
     state = {
-        fashionRating: 0,
-        foodRating: 0,
-        gameRating: 0,
-        outRating: 0,
-        readRating: 0,
+        fashionRating: null,
+        foodRating: null,
+        gameRating: null,
+        outRating: null,
+        readRating: null,
         fashionComment: '',
         foodComment: '',
         gamingComment: '',
@@ -28,15 +26,28 @@ class GetUserInterests extends Component {
       }
 
       setInterests(info) {
-          this.setState({
-            fashionComment: info.fashion,
-            foodComment: info.food,
-            gamingComment: info.gaming,
-            outdoorsComment: info.outdoors,
-            readingComment: info.reading,
-          })
-          console.log(this.state)
-          this.props.navigation.navigate("GetUserInfo");
+        if (this.state.fashionRating === null || this.state.gameRating === null || this.state.foodRating === null
+            || this.state.outRating === null || this.state.readRating === null ){
+            Alert.alert(
+                "You're missing a rating!",
+                "please make sure you provided a rating for everything! ),:",
+                [
+                  { text: "oops let me fix that..", onPress: () => console.log("okay pressed") }
+                ],
+                { cancelable: false }
+              );
+        }
+        else {
+            this.setState({
+                fashionComment: info.fashion,
+                foodComment: info.food,
+                gamingComment: info.gaming,
+                outdoorsComment: info.outdoors,
+                readingComment: info.reading,
+              })
+              console.log(this.state)
+              this.props.navigation.navigate("GetUserInfo");
+        }
       }
 
   render() {
@@ -46,7 +57,7 @@ class GetUserInterests extends Component {
             <KeyboardAwareScrollView
                 style={{ backgroundColor: this.props.theme.BG_COLOR }}
                 resetScrollToCoords={{ x: 0, y: 0 }}
-                scrollEnabled={false}
+                scrollEnabled={true}
                 >
             <CreateProfileContent>   
             <Formik 
@@ -124,7 +135,7 @@ class GetUserInterests extends Component {
                                         value = {props.values.gamingComment}
                                     />
                                     <RatingContainer>
-                                    <H1>outdoors &nbsp;</H1>
+                                    <H1>outdoors ({this.state.outRating}/5)&nbsp;</H1>
                                     <Rating
                                             type='heart'
                                             ratingCount={5}
@@ -141,7 +152,7 @@ class GetUserInterests extends Component {
                                         value = {props.values.outdoorComment}
                                     />
                                     <RatingContainer>
-                                    <H1>reading &nbsp;</H1>
+                                    <H1>reading ({this.state.readRating}/5)&nbsp;</H1>
                                     <Rating
                                             type='heart'
                                             ratingCount={5}

@@ -3,35 +3,44 @@ import { pickTheme } from '../../redux/actions'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
 import { Subtitle, Text, HeaderContainer, HeaderText, Button, ButtonText } from '../../theming/masterStyle'
-import { Rating } from 'react-native-elements';
-import { BioInput, TextInput, CommentInput, FormArea, CreateProfileContent, RatingContainer, ErrorText, H1 } from '../../theming/createStyle'
+import { BioInput, SectionArea, SingleLineInput, FormArea, CreateProfileContent, ErrorText, H1, H2 } from '../../theming/createStyle'
 import { Formik } from 'formik'
 import * as yup from 'yup';
-import DropDownPicker from 'react-native-dropdown-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import RNPickerSelect from 'react-native-picker-select';
 
-
-
-
-
-
-// TO DO: ASK FOR INTERESTS FIRST
-// THEN EXTRA BIO GENDER HOMETOWN ETC 
 // form validation
-const SignUpSchema = yup.object({
-    user: yup.string().required('required!!!'),
-    password: yup.string().required('required!!!')
+const UserInfoSchema = yup.object({
+    gender: yup.string().required('required!!!'), 
+    classification: yup.string().required('required!!!'),
+    major: yup.string().required('required!!!'),
+    graddate: yup.string().required('required!!!'),
+    hometown: yup.string().required('required!!!'),
 })
 
 class GetUserInfo extends Component {
     state = {
-        bio: '',
-        fashionRating: 0,
-        foodRating: 0,
-        gameRating: 0,
-        outRating: 0,
-        readRating: 0
+        bio: '', 
+        gender: '', 
+        classification: '',
+        major: '',
+        graddate: '',
+        hometown: ''
       }
+
+      setInfo(info) {
+        this.setState({
+            bio: info.bio, 
+            gender: info.gender, 
+            classification: info.classification,
+            major: info.major,
+            graddate: info.graddate,
+            hometown: info.hometown
+        })
+        console.log(this.state)
+        this.props.navigation.navigate("Dashboard");
+    }
+
 
   render() {
       console.log(this.state)
@@ -40,10 +49,11 @@ class GetUserInfo extends Component {
             <KeyboardAwareScrollView
                 style={{ backgroundColor: this.props.theme.BG_COLOR }}
                 resetScrollToCoords={{ x: 0, y: 0 }}
-                scrollEnabled={false}
+                scrollEnabled={true}
                 >
             <CreateProfileContent>   
                         <Formik 
+                            validationSchema={UserInfoSchema}
                             initialValues={{ 
                                 bio: '', 
                                 gender: '', 
@@ -54,8 +64,7 @@ class GetUserInfo extends Component {
                             }}
                             // validationSchema={SignUpSchema}
                             onSubmit={(values) => {
-                                console.log(values)
-                                this.props.navigation.navigate("Dashboard");
+                                this.setInfo(values)
                             }}
                         >
                             {/* get access to props of Formik */}
@@ -67,8 +76,12 @@ class GetUserInfo extends Component {
                                         </Subtitle>
                                     </HeaderContainer>
                                     <H1>first, some general info.</H1>
-                                    <Subtitle>what is your classification?</Subtitle>
-                                    <DropDownPicker
+                                    <SectionArea>
+                                    <H2>what is your classification?</H2>
+                                    <ErrorText>{props.touched.classification && props.errors.classification }</ErrorText>
+                                    </SectionArea>
+                                    <RNPickerSelect
+                                        onValueChange={(value) => props.setFieldValue('classification', value)}
                                         items={[
                                             {label: 'freshman', value: 'freshman'},
                                             {label: 'sophomore', value: 'sophomore'},
@@ -77,35 +90,63 @@ class GetUserInfo extends Component {
                                             {label: 'super senior', value: 'supsen'},
                                             {label: 'grad student', value: 'grad'},
                                         ]}
-                                        defaultValue="freshman"
-                                        arrowColor= {this.props.theme.PRIMARY_COLOR}
-                                        containerStyle={{height: 40, margin: 5}}
-                                        style={{backgroundColor: this.props.theme.BG_COLOR }}
-                                        dropDownStyle={{backgroundColor: this.props.theme.BG_COLOR}}
-                                        labelStyle={{fontSize: 14, color: this.props.theme.GREY}}
-                                        activeLabelStyle={{fontWeight: 'bold', color: this.props.theme.PRIMARY_COLOR}}
-                                        onChangeItem={item => props.setFieldValue('classification', item.value)}
+                                        style={{inputIOS: {
+                                            padding: 10,
+                                            fontWeight: 'bold',
+                                            borderWidth: 1,
+                                            borderRadius: 5,
+                                            borderColor: this.props.theme.LIGHT_GREY,
+                                            color: this.props.theme.PRIMARY_COLOR,
+                                            margin: 10
+                                          },
+                                          inputAndroid: {
+                                            padding: 10,
+                                            fontWeight: 'bold',
+                                            borderWidth: 1,
+                                            borderRadius: 5,
+                                            borderColor: this.props.theme.LIGHT_GREY,
+                                            color: this.props.theme.PRIMARY_COLOR,
+                                            margin: 10
+                                          }, }}
                                     />
-
-                                    <Subtitle>what is your primary major?</Subtitle>
-                                    <DropDownPicker
+                                    
+                                    <SectionArea>
+                                    <H2>what is your primary major?</H2>
+                                    <ErrorText>{props.touched.major && props.errors.major }</ErrorText>
+                                    </SectionArea>
+                                    <RNPickerSelect
+                                        onValueChange={(value) => props.setFieldValue('major', value)}
                                         items={[
                                             {label: 'computer science', value: 'cs'},
                                             {label: 'computer engineering', value: 'ce'},
                                             {label: 'math', value: 'math'},
                                         ]}
-                                        defaultValue="cs"
-                                        arrowColor= {this.props.theme.PRIMARY_COLOR}
-                                        containerStyle={{height: 40, margin: 5}}
-                                        style={{backgroundColor: this.props.theme.BG_COLOR }}
-                                        dropDownStyle={{backgroundColor: this.props.theme.BG_COLOR}}
-                                        labelStyle={{fontSize: 14, color: this.props.theme.GREY}}
-                                        activeLabelStyle={{fontWeight: 'bold', color: this.props.theme.PRIMARY_COLOR}}
-                                        onChangeItem={item => props.setFieldValue('major', item.value)}
+                                        style={{inputIOS: {
+                                            padding: 10,
+                                            fontWeight: 'bold',
+                                            borderWidth: 1,
+                                            borderRadius: 5,
+                                            borderColor: this.props.theme.LIGHT_GREY,
+                                            color: this.props.theme.PRIMARY_COLOR,
+                                            margin: 10
+                                          },
+                                          inputAndroid: {
+                                            padding: 10,
+                                            fontWeight: 'bold',
+                                            borderWidth: 1,
+                                            borderRadius: 5,
+                                            borderColor: this.props.theme.LIGHT_GREY,
+                                            color: this.props.theme.PRIMARY_COLOR,
+                                            margin: 10
+                                          }, }}
                                     />
-
-                                    <Subtitle>when do u graduate?</Subtitle>
-                                    <DropDownPicker
+                                    
+                                    <SectionArea>      
+                                    <H2>when do u graduate?</H2>
+                                    <ErrorText>{props.touched.graddate && props.errors.graddate }</ErrorText>
+                                    </SectionArea> 
+                                    <RNPickerSelect
+                                        onValueChange={(value) => props.setFieldValue('graddate', value)}
                                         items={[
                                             {label: 'dec 2020', value: 'dec20'},
                                             {label: 'may 2021', value: 'may21'},
@@ -113,26 +154,56 @@ class GetUserInfo extends Component {
                                             {label: 'may 2022', value: 'may22'},
                                             {label: 'dec 2022', value: 'dec22'},
                                         ]}
-                                        defaultValue="dec20"
-                                        arrowColor= {this.props.theme.PRIMARY_COLOR}
-                                        containerStyle={{height: 40, margin: 5}}
-                                        style={{backgroundColor: this.props.theme.BG_COLOR }}
-                                        dropDownStyle={{backgroundColor: this.props.theme.BG_COLOR}}
-                                        labelStyle={{fontSize: 14, color: this.props.theme.GREY}}
-                                        activeLabelStyle={{fontWeight: 'bold', color: this.props.theme.PRIMARY_COLOR}}
-                                        onChangeItem={item => props.setFieldValue('graddate', item.value)}
+                                        style={{inputIOS: {
+                                            padding: 10,
+                                            fontWeight: 'bold',
+                                            borderWidth: 1,
+                                            borderRadius: 5,
+                                            borderColor: this.props.theme.LIGHT_GREY,
+                                            color: this.props.theme.PRIMARY_COLOR,
+                                            margin: 10
+                                          },
+                                          inputAndroid: {
+                                            padding: 10,
+                                            fontWeight: 'bold',
+                                            borderWidth: 1,
+                                            borderRadius: 5,
+                                            borderColor: this.props.theme.LIGHT_GREY,
+                                            color: this.props.theme.PRIMARY_COLOR,
+                                            margin: 10
+                                          }, }}
                                     />
 
-                                    <Subtitle>your hometown?</Subtitle>
-                                    <TextInput 
+                                    <H1>now tell us more about you!</H1>
+                                    <SectionArea>
+                                    <H2>your hometown?</H2>
+                                    <ErrorText>{props.touched.hometown && props.errors.hometown }</ErrorText>
+                                    </SectionArea>
+                                    
+                                    <SingleLineInput 
                                         placeholder='please tell us your hometown!' 
                                         onChangeText={props.handleChange('hometown')} 
                                         maxLength={50}
                                         multiline
                                         value = {props.values.hometown}
                                     />
-                                    <H1>tell us a little bit about yourself.
-                                    </H1>
+                                    
+                                    <SectionArea>
+                                    <H2>what is your gender identity?</H2>
+                                    <ErrorText>{props.touched.gender && props.errors.gender }</ErrorText>
+                                    </SectionArea>
+                                    <SingleLineInput 
+                                        placeholder='please tell us your gender!' 
+                                        onChangeText={props.handleChange('gender')} 
+                                        maxLength={50}
+                                        multiline
+                                        value = {props.values.gender}
+                                    />
+                                    
+                                    <SectionArea>
+                                    <H2>finally, a short bio</H2>
+                                    <ErrorText>{props.touched.bio && props.errors.bio }</ErrorText>
+                                    </SectionArea>
                                     <BioInput 
                                         placeholder='please enter a short bio! (250 words max)' 
                                         onChangeText={props.handleChange('bio')} 
@@ -141,19 +212,6 @@ class GetUserInfo extends Component {
                                         numberOfLines={7}
                                         value = {props.values.bio}
                                     />
-                                    <ErrorText>{props.touched.bio && props.errors.bio }</ErrorText>
-
-                                    <H1>what is your gender identity?</H1>
-                                    <TextInput 
-                                        placeholder='please tell us your gender!' 
-                                        onChangeText={props.handleChange('gender')} 
-                                        maxLength={50}
-                                        multiline
-                                        value = {props.values.gender}
-                                    />
-                                    <ErrorText>{props.touched.gender && props.errors.gender }</ErrorText>
-
-                                    
                                     <Button title="Submit" onPress={() => props.handleSubmit()}>
                                         <ButtonText>i'm done!</ButtonText>
                                     </Button>

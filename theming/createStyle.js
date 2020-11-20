@@ -26,7 +26,7 @@ export const CommentInput = styled.TextInput`
     borderRadius: 5px;
     padding: 7px;
     marginBottom: 10px;
-    height: 50px;
+    height: 70px;
     fontFamily: "text";
 `
 
@@ -36,6 +36,7 @@ export const RatingContainer = styled.View`
   flexDirection: row;
   justifyContent: center;
   alignItems: stretch;
+  margin: 10px;
 `;
 
 export const CreateProfileContent = styled.View`
@@ -55,6 +56,13 @@ export const FormArea = styled.View`
     padding: 40px;
 `;
 
+export const SectionArea = styled.View`
+    flex: 1;
+    flexDirection: row;
+    justifyContent: flex-start;
+    alignItems: baseline;
+`;
+
 export const FormInput = styled.TextInput`
     borderBottomWidth: 1px;
     borderBottomColor: ${props => props.theme.GREY};
@@ -65,10 +73,9 @@ export const FormInput = styled.TextInput`
 `;
 
 export const ErrorText = styled.Text`
-  color: ${props => props.theme.GREY};
+  color: ${props => props.theme.PRIMARY_COLOR};
   fontFamily: "text";
   fontSize: 13px;
-  marginBottom: 11px;
   marginLeft: 7px;
   textAlign: left;
 `;
@@ -77,8 +84,26 @@ export const H1 = styled.Text`
   color: ${props => props.theme.PRIMARY_COLOR};
   fontFamily: "header";
   fontSize: 23px;
-
   textAlign: left;
+`;
+
+export const H2 = styled.Text`
+  color: ${props => props.theme.GREY};
+  fontFamily: "text";
+  fontWeight: bold;
+  fontSize: 17px;
+  textAlign: left;
+  marginTop: 15px;
+`;
+
+export const SingleLineInput = styled.TextInput`
+    borderBottomWidth: 1px;
+    borderBottomColor: ${props => props.theme.LIGHT_GREY};
+    borderRadius: 2px;
+    padding: 7px;
+    margin: 7px;
+    fontFamily: "text";
+    color: ${props => props.theme.PRIMARY_COLOR};
 `;
 
 
