@@ -12,23 +12,31 @@ import { Alert } from "react-native";
 
 
 class GetUserInterests extends Component {
+    constructor(props) {
+        super(props)
+        console.log(props.route.params.user)
+    }
     state = {
+        user: this.props.route.params.user,
+        success: false,
         fashionRating: null,
         foodRating: null,
         gameRating: null,
         outRating: null,
+        musicRating: null,
         readRating: null,
-        fashionComment: '',
-        foodComment: '',
-        gamingComment: '',
-        outdoorsComment: '',
-        readingComment: '',
+        fashionComment: null,
+        foodComment: null,
+        gamingComment: null,
+        outdoorsComment: null,
+        musicComment: null,
+        readingComment: null,
       }
       
 
       setInterests(info) {
         if (this.state.fashionRating === null || this.state.gameRating === null || this.state.foodRating === null
-            || this.state.outRating === null || this.state.readRating === null ){
+            || this.state.outRating === null || this.state.musicRating === null || this.state.readRating === null ){
             Alert.alert(
                 "You're missing a rating!",
                 "please make sure you provided a rating for everything! ),:",
@@ -37,6 +45,7 @@ class GetUserInterests extends Component {
                 ],
                 { cancelable: false }
               );
+              console.log(typeof(this.state.fashionRating))
         }
         else {
             this.setState({
@@ -44,11 +53,71 @@ class GetUserInterests extends Component {
                 foodComment: info.food,
                 gamingComment: info.gaming,
                 outdoorsComment: info.outdoors,
+                musicComment: info.music,
                 readingComment: info.reading,
               })
               console.log(this.state)
-              this.props.navigation.navigate("GetUserInfo");
+              this.addInterestsDB();
         }
+      }
+
+      addInterestsDB() {
+        console.log("INSIDE ADD INTERSTEST")
+        console.log(this.state)
+        const interests={
+            method: 'POST',
+            headers:{'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                interestUSER: this.state.user, 
+                values: {
+                    interestFOOD: this.state.foodRating,
+                    interestFOOD_COMMENT: this.state.foodComment,
+                    interestFASHION: this.state.fashionRating,
+                    interestFASHION_COMMENT: this.state.fashionComment,
+                    interestOUTDOORS: this.state.outRating,
+                    interestOUTDOORS_COMMENT: this.state.outdoorsComment,
+                    interestGAMING: this.state.gameRating,
+                    interestGAMING_COMMENT: this.state.gamingComment,
+                    interestMUSIC: this.state.musicRating,
+                    interestMUSIC_COMMENT: this.state.musicComment,
+                    interestREADING: this.state.readRating,
+                    interestREADING_COMMENT: this.state.readingComment
+                }
+            })
+        }
+        console.log("INTERESTS JSON")
+        console.log(interests)
+        // call api endpoint, sending in user to add to db
+        fetch(`http://mobile-app.ddns.uark.edu/CRUDapis/interest/updateInterests`, interests)
+            .then((response) => response.text())
+            .then((json) => {
+                // parse the response & extract data
+                let data = JSON.parse(json)
+                console.log(data)
+                if (data.isError === false) {
+                    this.setState({success: true})
+                } else {
+                    this.setState({success: false})
+                }
+                
+            })
+            .catch((error) => console.error(error))
+            .finally(() => {
+                if (this.state.success === true) {
+                    this.props.navigation.navigate(
+                        "GetUserInfo",
+                        {user: this.state.user});
+                } else {
+                    Alert.alert(
+                        "Hmmm...",
+                        "there was an error, please try again ):",
+                        [
+                          { text: "okie", onPress: () => console.log("okay pressed") }
+                        ],
+                        { cancelable: false }
+                      );
+                }  
+            })
       }
 
   render() {
@@ -67,6 +136,7 @@ class GetUserInterests extends Component {
                                 food: '',
                                 gaming: '',
                                 outdoors: '',
+                                music: '',
                                 reading: ''}}
                             // validationSchema={SignUpSchema}
                             onSubmit={(values) => {
@@ -151,6 +221,23 @@ class GetUserInterests extends Component {
                                         maxLength={50}
                                         multiline
                                         value = {props.values.outdoorComment}
+                                    />
+                                    <RatingContainer>
+                                    <H1>music ({this.state.musicRating}/5)&nbsp;</H1>
+                                    <Rating
+                                            type='heart'
+                                            ratingCount={5}
+                                            imageSize={25}
+                                            startingValue={0}
+                                            onFinishRating={rating => this.setState({musicRating: rating})}
+                                    />    
+                                    </RatingContainer>
+                                    <CommentInput 
+                                        placeholder='fav artists? genres?' 
+                                        onChangeText={props.handleChange('music')} 
+                                        maxLength={50}
+                                        multiline
+                                        value = {props.values.musicRating}
                                     />
                                     <RatingContainer>
                                     <H1>reading ({this.state.readRating}/5)&nbsp;</H1>

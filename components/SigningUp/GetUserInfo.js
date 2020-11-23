@@ -8,6 +8,7 @@ import { Formik } from 'formik'
 import * as yup from 'yup';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import RNPickerSelect from 'react-native-picker-select';
+import { Alert } from "react-native";
 
 // form validation
 const UserInfoSchema = yup.object({
@@ -19,7 +20,15 @@ const UserInfoSchema = yup.object({
 })
 
 class GetUserInfo extends Component {
+    constructor(props) {
+        super(props)
+        console.log("IN GET USER INFO CONSTRUCTOR")
+        console.log(props.route.params.user)
+    }
+
     state = {
+        user: this.props.route.params.user,
+        success: false,
         bio: '', 
         gender: '', 
         classification: '',
@@ -38,7 +47,56 @@ class GetUserInfo extends Component {
             hometown: info.hometown
         })
         console.log(this.state)
-        this.props.navigation.navigate("Dashboard");
+        this.updateUserDB()
+    }
+
+    updateUserDB() {
+        const updatedUser={
+            method: 'POST',
+            headers:{'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                userID: this.state.user, 
+                values: {
+                    userHOMETOWN: this.state.hometown,
+                    userMAJOR: this.state.major,
+                    userGRAD_DATE: this.state.graddate,
+                    userGRADE_LEVEL: this.state.classification,
+                    userABOUT: this.state.bio,
+                    userGENDER: this.state.gender
+                }
+            })
+        }
+        console.log(updatedUser)
+        // call api endpoint, sending in user to add to db
+        fetch(`http://mobile-app.ddns.uark.edu/CRUDapis/users/updateUser`, updatedUser)
+            .then((response) => response.text())
+            .then((json) => {
+                // parse the response & extract data
+                let data = JSON.parse(json)
+                console.log(data)
+                if (data.isError === false) {
+                    this.setState({success: true})
+                } else {
+                    this.setState({success: false})
+                }
+                
+            })
+            .catch((error) => console.error(error))
+            .finally(() => {
+                if (this.state.success === true) {
+                    this.props.navigation.navigate(
+                        "Dashboard")
+                } else {
+                    Alert.alert(
+                        "Hmmm...",
+                        "there was an error, please try again ):",
+                        [
+                          { text: "okie", onPress: () => console.log("okay pressed") }
+                        ],
+                        { cancelable: false }
+                      );
+                }  
+            })
     }
 
 

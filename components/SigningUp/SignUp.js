@@ -57,7 +57,7 @@ class SignUp extends Component {
                 let data = JSON.parse(json)
                 console.log(data)
                 // if there was no error, and user was successfully added, success!
-                if (data.isError === false && data.result.includes("was added!")) {
+                if (data.isError === false && data.result.includes("was added")) {
                     this.setState({success: true})
                 } else {
                     if (data.result.includes("Incorrect authentication")) {
@@ -72,7 +72,9 @@ class SignUp extends Component {
                     this.storeToken(info.user.toLowerCase())
                      console.log("successfully stored user in async storage!")
                      this.getToken();
-                    this.props.navigation.navigate("GetUserInterests");
+                    this.props.navigation.navigate(
+                        "GetUserInterests",
+                        {user: info.user.toLowerCase()});
                 } else {
                     Alert.alert(
                         "Hmmm...",
