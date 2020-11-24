@@ -184,8 +184,8 @@ class GetUserInfo extends Component {
                                             {label: 'sophomore', value: 'sophomore'},
                                             {label: 'junior', value: 'junior'},
                                             {label: 'senior', value: 'senior'},
-                                            {label: 'super senior', value: 'supsen'},
-                                            {label: 'grad student', value: 'grad'},
+                                            {label: 'super senior', value: 'super senior'},
+                                            {label: 'grad student', value: 'grad student'},
                                         ]}
                                         style={{inputIOS: {
                                             padding: 10,
@@ -214,9 +214,9 @@ class GetUserInfo extends Component {
                                     <RNPickerSelect
                                         onValueChange={(value) => props.setFieldValue('major', value)}
                                         items={[
-                                            {label: 'computer science', value: 'cs'},
-                                            {label: 'computer engineering', value: 'ce'},
-                                            {label: 'math', value: 'math'},
+                                            {label: 'computer science', value: 'computer science'},
+                                            {label: 'computer engineering', value: 'computer engineering'},
+                                            {label: 'mathematics', value: 'mathematics'},
                                         ]}
                                         style={{inputIOS: {
                                             padding: 10,
@@ -245,11 +245,11 @@ class GetUserInfo extends Component {
                                     <RNPickerSelect
                                         onValueChange={(value) => props.setFieldValue('graddate', value)}
                                         items={[
-                                            {label: 'dec 2020', value: 'dec20'},
-                                            {label: 'may 2021', value: 'may21'},
-                                            {label: 'dec 2021', value: 'dec21'},
-                                            {label: 'may 2022', value: 'may22'},
-                                            {label: 'dec 2022', value: 'dec22'},
+                                            {label: 'dec 2020', value: 'dec 2020'},
+                                            {label: 'may 2021', value: 'may 2021'},
+                                            {label: 'dec 2021', value: 'dec 2021'},
+                                            {label: 'may 2022', value: 'may 2022'},
+                                            {label: 'dec 2022', value: 'dec 2022'},
                                         ]}
                                         style={{inputIOS: {
                                             padding: 10,

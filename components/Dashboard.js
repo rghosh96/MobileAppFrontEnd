@@ -94,8 +94,8 @@ class Dashboard extends Component {
                     <ProfileImage source={{uri: this.state.userData.userPROFILEPIC}} />
                     <ProfileText>
                         {this.state.userData.userFNAME} {this.state.userData.userLNAME} {"\n"}
-                        computer science {"\n"}
-                        senior
+                        {this.state.userData.userMAJOR} {"\n"}
+                        {this.state.userGRADE_LEVEL}
                     </ProfileText>
                 </ProfileContainer>
                 
