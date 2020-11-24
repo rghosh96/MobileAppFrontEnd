@@ -63,6 +63,20 @@ export const SectionArea = styled.View`
     alignItems: baseline;
 `;
 
+export const ProfileImage = styled.Image`
+  height: 135px;
+  width: 135px;
+  borderRadius: 100px;
+  margin: 30px;
+`;
+
+export const ImageUploadArea = styled.View`
+    flex: 1;
+    flexDirection: column;
+    justifyContent: center;
+    alignItems: center;
+`;
+
 export const FormInput = styled.TextInput`
     borderBottomWidth: 1px;
     borderBottomColor: ${props => props.theme.GREY};

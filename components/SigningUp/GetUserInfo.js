@@ -9,7 +9,11 @@ import * as yup from 'yup';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import RNPickerSelect from 'react-native-picker-select';
 import { Alert } from "react-native";
+import {CLOUD_NAME, CLOUD_PRESET, CLOUD_BASE_API, CLOUD_API_KEY, CLOUD_API_SECRET} from "@env"
+import ImagePickerExample from '../ImagePicker';
 
+
+console.log(CLOUD_NAME)
 // form validation
 const UserInfoSchema = yup.object({
     gender: yup.string().required('required!!!'), 
@@ -23,21 +27,51 @@ class GetUserInfo extends Component {
     constructor(props) {
         super(props)
         console.log("IN GET USER INFO CONSTRUCTOR")
-        console.log(props.route.params.user)
+        // console.log(props.route.params.user)
     }
 
     state = {
-        user: this.props.route.params.user,
+        user: 'rghosh',
         success: false,
         bio: '', 
         gender: '', 
         classification: '',
         major: '',
         graddate: '',
-        hometown: ''
+        hometown: '',
+        imageURI: '',
+        cloudinaryURL: null
+      }
+
+      setImageURI = (uri) => {
+        this.setState({ imageURI: uri })
+        console.log("just set image in getuserinfo")
+        console.log(this.state)
+        let cloudFile = {uri: this.state.imageURI, type: "jpg"
+            , name: this.state.user}
+        this.uploadToCloudinary(cloudFile);
+      }
+
+      uploadToCloudinary(photo) {
+          if (this.state.imageURI !== '') {
+              const data = new FormData();
+              data.append('cloud_name', CLOUD_NAME)
+              data.append('file', photo)
+              data.append('upload_preset', CLOUD_PRESET)
+              
+              fetch(CLOUD_BASE_API, {
+                  method: 'POST',
+                  body: data
+              }).then(res=>res.json()).then(data=> {
+                  console.log(data)
+                  console.log(data.secure_url)
+                  this.setState({ cloudinaryURL: data.secure_url })
+              })
+          }
       }
 
       setInfo(info) {
+        
         this.setState({
             bio: info.bio, 
             gender: info.gender, 
@@ -62,7 +96,8 @@ class GetUserInfo extends Component {
                     userGRAD_DATE: this.state.graddate,
                     userGRADE_LEVEL: this.state.classification,
                     userABOUT: this.state.bio,
-                    userGENDER: this.state.gender
+                    userGENDER: this.state.gender,
+                    userPROFILEPIC: this.state.cloudinaryURL
                 }
             })
         }
@@ -105,9 +140,10 @@ class GetUserInfo extends Component {
     return (
         <ThemeProvider theme={ this.props.theme }>
             <KeyboardAwareScrollView
-                style={{ backgroundColor: this.props.theme.BG_COLOR }}
+                style={{ backgroundColor: this.props.theme.BG_COLOR, flex: 1 }}
                 resetScrollToCoords={{ x: 0, y: 0 }}
                 scrollEnabled={true}
+                keyboardShouldPersistTaps={'handled'}
                 >
             <CreateProfileContent>   
                         <Formik 
@@ -134,7 +170,10 @@ class GetUserInfo extends Component {
                                         </Subtitle>
                                     </HeaderContainer>
                                     <H1>first, some general info.</H1>
+                                    <H2>Set a profile image!</H2>
+                                        <ImagePickerExample setImageURI={this.setImageURI}/>
                                     <SectionArea>
+                                        
                                     <H2>what is your classification?</H2>
                                     <ErrorText>{props.touched.classification && props.errors.classification }</ErrorText>
                                     </SectionArea>
@@ -245,6 +284,7 @@ class GetUserInfo extends Component {
                                         multiline
                                         value = {props.values.hometown}
                                     />
+
                                     
                                     <SectionArea>
                                     <H2>what is your gender identity?</H2>

@@ -35,9 +35,9 @@ export const HeaderText = styled.Text`
 
 
 export const ProfileImage = styled.Image`
-  height: 135px;
-  width: 135px;
-  borderRadius: 75px;
+  height: 175px;
+  width: 175px;
+  borderRadius: 100px;
 `;
 
 export const PeopleImage = styled.Image`

@@ -25,3 +25,8 @@ DerivedData
 #
 node_modules/
 npm-debug.log
+
+# Env file
+#
+.env
+

@@ -90,7 +90,8 @@ class Dashboard extends Component {
                   <HeaderText>{this.state.userData.userFNAME}!</HeaderText>
                 </HeaderContainer>
                 <ProfileContainer>
-                    <ProfileImage source={require('../mockData/rashi.jpeg')} />
+                  {console.log(this.state.userData.userPROFILEPIC)}
+                    <ProfileImage source={{uri: this.state.userData.userPROFILEPIC}} />
                     <ProfileText>
                         {this.state.userData.userFNAME} {this.state.userData.userLNAME} {"\n"}
                         computer science {"\n"}
