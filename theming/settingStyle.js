@@ -39,6 +39,10 @@ export const ImageUploadArea = styled.View`
     
 `;
 
+export const ImageUploadButtons = styled.View`
+  flexDirection: row;
+`;
+
 export const FormInput = styled.TextInput`
     borderBottomWidth: 1px;
     borderBottomColor: ${props => props.theme.PRIMARY_COLOR};

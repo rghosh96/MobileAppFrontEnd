@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { LightThemeModal, DarkThemeModal } from './ThemeModal'
-import { UserInputModal, UserBioInputModal, ProfileImageModal } from './UserInputModal'
+import { UserInputModal, UserBioInputModal, ProfileImageModal,
+  UserSelectClassificationModal } from './UserInputModal'
 import { pickTheme } from '../../redux/actions'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
@@ -12,6 +13,8 @@ import Modal from 'react-native-modal';
 import { HeaderText, Subtitle, Text } from '../../theming/masterStyle'
 import {CLOUD_NAME, CLOUD_PRESET, CLOUD_BASE_API} from "@env"
 import { SettingContainer, ProfileImage, ModalContainer, Line, Title, EditItem, UserAttribute, InfoArea, ListContainer } from '../../theming/settingStyle'
+
+
 
 class Settings extends Component {
   constructor(props) {
@@ -38,8 +41,11 @@ class Settings extends Component {
         bio: '',
         profilePic: '',
         imageURI: '',
-        uploadingImage: true,
+        uploadingImage: false,
+        imageSet: false
       };
+
+      
 
       updateState = (attribute, data) => {
         console.log("trynna update state")
@@ -62,6 +68,9 @@ class Settings extends Component {
       uploadToCloudinary(photo) {
         console.log("UPLOADING TO CLOUD ...")
           if (this.state.imageURI !== '') {
+            this.setState({ 
+              uploadingImage: false,
+              imageSet: false })
               const data = new FormData();
               data.append('cloud_name', CLOUD_NAME)
               data.append('file', photo)
@@ -74,7 +83,8 @@ class Settings extends Component {
                   console.log(data)
                   console.log(data.secure_url)
                   this.setState({ profilePic: data.secure_url,
-                    uploadingImage: false })
+                    uploadingImage: false,
+                    imageSet: true })
               })
           }
       }
@@ -180,7 +190,7 @@ class Settings extends Component {
               console.log(this.state)
               this.getUserData(this.state.user)
               this.setState({modalVisible: !this.state.modalVisible,
-                uploadingImage: true
+                imageSet: false
               }); 
           })
   }
@@ -195,7 +205,7 @@ class Settings extends Component {
       console.log("closing modal")
       this.setState({ 
         modalVisible: !this.state.modalVisible,
-        uploadingImage: true });
+        imageSet: false });
     }
 
 
@@ -217,6 +227,7 @@ class Settings extends Component {
             modalDisplay = <ProfileImageModal 
             updateUserDB={this.updateUserDB}
             setImageURI={this.setImageURI}
+            imageSet={this.state.imageSet}
             uploadingImage={this.state.uploadingImage}
             closeModal={this.closeModal} />
             break;
@@ -237,13 +248,57 @@ class Settings extends Component {
               closeModal={this.closeModal} />
             break;
 
-            case "updateBio":
-              modalDisplay = <UserBioInputModal 
-              infoType="bio"
+          case "updateBio":
+            modalDisplay = <UserBioInputModal 
+            infoType="bio"
+            updateState={this.updateState}
+            updateUserDB={this.updateUserDB}
+            closeModal={this.closeModal} />
+            break;
+
+          case "updateClassification":
+            modalDisplay = <UserSelectClassificationModal 
+              infoType="classification"
+              items={[
+                {label: 'freshman', value: 'freshman'},
+                {label: 'sophomore', value: 'sophomore'},
+                {label: 'junior', value: 'junior'},
+                {label: 'senior', value: 'senior'},
+                {label: 'super senior', value: 'super senior'},
+                {label: 'grad student', value: 'grad student'},
+              ]}
               updateState={this.updateState}
               updateUserDB={this.updateUserDB}
               closeModal={this.closeModal} />
-              break;
+            break;
+
+          case "updateGradDate":
+            modalDisplay = <UserSelectClassificationModal 
+              infoType="grad"
+              items={[
+                {label: 'dec 2020', value: 'dec 2020'},
+                {label: 'may 2021', value: 'may 2021'},
+                {label: 'dec 2021', value: 'dec 2021'},
+                {label: 'may 2022', value: 'may 2022'},
+                {label: 'dec 2022', value: 'dec 2022'},
+              ]}
+              updateState={this.updateState}
+              updateUserDB={this.updateUserDB}
+              closeModal={this.closeModal} />
+            break;
+
+          case "updateMajor":
+          modalDisplay = <UserSelectClassificationModal 
+            infoType="major"
+            items={[
+              {label: 'computer science', value: 'computer science'},
+              {label: 'computer engineering', value: 'computer engineering'},
+              {label: 'mathematics', value: 'mathematics'},
+            ]}
+            updateState={this.updateState}
+            updateUserDB={this.updateUserDB}
+            closeModal={this.closeModal} />
+          break;
 
           default: 
             break;
@@ -290,12 +345,14 @@ class Settings extends Component {
                     </InfoArea>
                     
                     <InfoArea>
-                    <EditItem>✎ classification</EditItem>
+                    <EditItem onPress={() => {
+                      this.setModalVisible(true, "updateClassification")}}>✎ classification</EditItem>
                     <UserAttribute>{this.state.userData.userGRADE_LEVEL}</UserAttribute>
                     </InfoArea>
 
                     <InfoArea>
-                    <EditItem>✎ primary major</EditItem>
+                    <EditItem onPress={() => {
+                      this.setModalVisible(true, "updateMajor")}}>✎ primary major</EditItem>
                     <UserAttribute>{this.state.userData.userMAJOR}</UserAttribute>
                     </InfoArea>
                     
@@ -306,7 +363,8 @@ class Settings extends Component {
                     </InfoArea>
                     
                     <InfoArea>
-                    <EditItem>✎ graduation date</EditItem>
+                    <EditItem onPress={() => {
+                      this.setModalVisible(true, "updateGradDate")}}>✎ graduation date</EditItem>
                     <UserAttribute>{this.state.userData.userGRAD_DATE}</UserAttribute>
                     </InfoArea>
 

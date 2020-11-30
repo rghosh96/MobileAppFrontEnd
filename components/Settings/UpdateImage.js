@@ -4,7 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import { Button, ButtonText } from '../../theming/masterStyle'
 import { ProfileImage } from '../../theming/createStyle'
-import { ImageUploadArea } from '../../theming/settingStyle'
+import { ImageUploadArea, ImageUploadButtons, SelectedTheme } from '../../theming/settingStyle'
 
 export default function ImagePickerExample(props) {
   const [image, setImage] = useState(null);
@@ -59,12 +59,14 @@ export default function ImagePickerExample(props) {
   return (
     <ImageUploadArea>
         {image && <ProfileImage source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-      <Button title="select image" onPress={pickImage}>
-      <ButtonText>pick image...</ButtonText>    
-      </Button>
-      <Button title="take image" onPress={takeImage}>
-      <ButtonText>take a photo...</ButtonText>    
-      </Button>
+        <ImageUploadButtons>
+      <SelectedTheme onPress={pickImage}>
+        select image
+      </SelectedTheme>
+      <SelectedTheme onPress={takeImage}>
+        take a photo  
+      </SelectedTheme>
+      </ImageUploadButtons>
       
     </ImageUploadArea>
   );
