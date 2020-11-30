@@ -21,7 +21,9 @@ const SignUpSchema = yup.object({
 class SignUp extends Component {
     state = {
         loaded: false,
-        success: false
+        success: false,
+        error: '',
+        alreadyInDB: false
       }
 
       async getToken(user) {
@@ -57,9 +59,12 @@ class SignUp extends Component {
                 // parse the response & extract data
                 let data = JSON.parse(json)
                 console.log(data)
+                this.setState({error: data.result})
                 // if there was no error, and user was successfully added, success!
                 if (data.isError === false && data.result.includes("was added")) {
                     this.setState({success: true})
+                } else if (data.result.includes("already in db")) {
+                    this.setState({success: true, alreadyInDB: true})
                 } else {
                     if (data.result.includes("Incorrect authentication")) {
                         this.setState({success: false})
@@ -73,13 +78,20 @@ class SignUp extends Component {
                     this.storeToken(info.user.toLowerCase())
                      console.log("successfully stored user in async storage!")
                      this.getToken();
+
+                     if (this.state.alreadyInDB === true) {
+                        this.props.navigation.navigate(
+                            "Dashboard",
+                            {user: info.user.toLowerCase()});
+                     } else {
                     this.props.navigation.navigate(
                         "GetUserInterests",
                         {user: info.user.toLowerCase()});
+                    }
                 } else {
                     Alert.alert(
                         "Hmmm...",
-                        "we couldn't recognize you. are you sure u entered ONLY your uark id and password correctly?",
+                        this.state.error,
                         [
                           { text: "let me double check ..", onPress: () => console.log("okay pressed") }
                         ],
