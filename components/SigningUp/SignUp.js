@@ -3,7 +3,8 @@ import { pickTheme } from '../../redux/actions'
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage'
 import { ThemeProvider } from 'styled-components/native';
-import { HeaderContainer, HeaderText, Subtitle, Button, ButtonText, Center } from '../../theming/masterStyle'
+import { HeaderText, Subtitle, Button, ButtonText, Center } from '../../theming/masterStyle'
+import { HeaderContainer } from '../../theming/createStyle'
 import { FormArea, SignUpContent, FormInput, ErrorText } from '../../theming/signupStyle'
 import { Formik } from 'formik'
 import * as yup from 'yup';

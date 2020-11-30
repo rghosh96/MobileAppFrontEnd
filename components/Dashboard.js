@@ -86,8 +86,7 @@ class Dashboard extends Component {
             {console.log("INSIDE VIEW")}
             <Container>
                 <HeaderContainer>
-                  {this.state.isFirstLaunch ? <HeaderText>welcome,</HeaderText> : <HeaderText>welcome back,</HeaderText>}
-                  <HeaderText>{this.state.userData.userFNAME}!</HeaderText>
+                  <HeaderText>dashboard</HeaderText>
                 </HeaderContainer>
                 <ProfileContainer>
                   {console.log(this.state.userData.userPROFILEPIC)}
@@ -95,7 +94,7 @@ class Dashboard extends Component {
                     <ProfileText>
                         {this.state.userData.userFNAME} {this.state.userData.userLNAME} {"\n"}
                         {this.state.userData.userMAJOR} {"\n"}
-                        {this.state.userGRADE_LEVEL}
+                        {this.state.userData.userGRADE_LEVEL}
                     </ProfileText>
                 </ProfileContainer>
                 

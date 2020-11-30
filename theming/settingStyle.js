@@ -35,6 +35,10 @@ export const ModalView = styled.View`
   opacity: 1;
 `;
 
+export const ImageUploadArea = styled.View`
+    
+`;
+
 export const FormInput = styled.TextInput`
     borderBottomWidth: 1px;
     borderBottomColor: ${props => props.theme.PRIMARY_COLOR};

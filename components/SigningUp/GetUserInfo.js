@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import { pickTheme } from '../../redux/actions'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
-import { Subtitle, Text, HeaderContainer, HeaderText, Button, ButtonText } from '../../theming/masterStyle'
-import { BioInput, SectionArea, SingleLineInput, FormArea, CreateProfileContent, ErrorText, H1, H2 } from '../../theming/createStyle'
+import { Subtitle, HeaderText, Button, ButtonText } from '../../theming/masterStyle'
+import { BioInput, SectionArea, SingleLineInput, FormArea, CreateProfileContent, ErrorText, H1, H2,
+    HeaderContainer } from '../../theming/createStyle'
 import { Formik } from 'formik'
 import * as yup from 'yup';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import RNPickerSelect from 'react-native-picker-select';
-import { Alert } from "react-native";
-import {CLOUD_NAME, CLOUD_PRESET, CLOUD_BASE_API, CLOUD_API_KEY, CLOUD_API_SECRET} from "@env"
+import { Alert, StyleSheet } from "react-native";
+import {CLOUD_NAME, CLOUD_PRESET, CLOUD_BASE_API} from "@env"
 import ImagePickerExample from '../ImagePicker';
 
 
@@ -31,7 +32,7 @@ class GetUserInfo extends Component {
     }
 
     state = {
-        user: 'rghosh',
+        user: this.props.route.params.user,
         success: false,
         bio: '', 
         gender: '', 
@@ -187,24 +188,7 @@ class GetUserInfo extends Component {
                                             {label: 'super senior', value: 'super senior'},
                                             {label: 'grad student', value: 'grad student'},
                                         ]}
-                                        style={{inputIOS: {
-                                            padding: 10,
-                                            fontWeight: 'bold',
-                                            borderWidth: 1,
-                                            borderRadius: 5,
-                                            borderColor: this.props.theme.LIGHT_GREY,
-                                            color: this.props.theme.PRIMARY_COLOR,
-                                            margin: 10
-                                          },
-                                          inputAndroid: {
-                                            padding: 10,
-                                            fontWeight: 'bold',
-                                            borderWidth: 1,
-                                            borderRadius: 5,
-                                            borderColor: this.props.theme.LIGHT_GREY,
-                                            color: this.props.theme.PRIMARY_COLOR,
-                                            margin: 10
-                                          }, }}
+                                        style={dropdown(this.props)}
                                     />
                                     
                                     <SectionArea>
@@ -218,24 +202,7 @@ class GetUserInfo extends Component {
                                             {label: 'computer engineering', value: 'computer engineering'},
                                             {label: 'mathematics', value: 'mathematics'},
                                         ]}
-                                        style={{inputIOS: {
-                                            padding: 10,
-                                            fontWeight: 'bold',
-                                            borderWidth: 1,
-                                            borderRadius: 5,
-                                            borderColor: this.props.theme.LIGHT_GREY,
-                                            color: this.props.theme.PRIMARY_COLOR,
-                                            margin: 10
-                                          },
-                                          inputAndroid: {
-                                            padding: 10,
-                                            fontWeight: 'bold',
-                                            borderWidth: 1,
-                                            borderRadius: 5,
-                                            borderColor: this.props.theme.LIGHT_GREY,
-                                            color: this.props.theme.PRIMARY_COLOR,
-                                            margin: 10
-                                          }, }}
+                                        style={dropdown(this.props)}
                                     />
                                     
                                     <SectionArea>      
@@ -251,24 +218,7 @@ class GetUserInfo extends Component {
                                             {label: 'may 2022', value: 'may 2022'},
                                             {label: 'dec 2022', value: 'dec 2022'},
                                         ]}
-                                        style={{inputIOS: {
-                                            padding: 10,
-                                            fontWeight: 'bold',
-                                            borderWidth: 1,
-                                            borderRadius: 5,
-                                            borderColor: this.props.theme.LIGHT_GREY,
-                                            color: this.props.theme.PRIMARY_COLOR,
-                                            margin: 10
-                                          },
-                                          inputAndroid: {
-                                            padding: 10,
-                                            fontWeight: 'bold',
-                                            borderWidth: 1,
-                                            borderRadius: 5,
-                                            borderColor: this.props.theme.LIGHT_GREY,
-                                            color: this.props.theme.PRIMARY_COLOR,
-                                            margin: 10
-                                          }, }}
+                                        style={dropdown(this.props)}
                                     />
 
                                     <H1>now tell us more about you!</H1>
@@ -279,9 +229,10 @@ class GetUserInfo extends Component {
                                     
                                     <SingleLineInput 
                                         placeholder='please tell us your hometown!' 
+                                        placeholderTextColor={this.props.theme.LIGHT_GREY}
+                                        color={this.props.theme.PRIMARY_COLOR}
                                         onChangeText={props.handleChange('hometown')} 
                                         maxLength={50}
-                                        multiline
                                         value = {props.values.hometown}
                                     />
 
@@ -293,8 +244,9 @@ class GetUserInfo extends Component {
                                     <SingleLineInput 
                                         placeholder='please tell us your gender!' 
                                         onChangeText={props.handleChange('gender')} 
+                                        placeholderTextColor={this.props.theme.LIGHT_GREY}
+                                        color={this.props.theme.PRIMARY_COLOR}
                                         maxLength={50}
-                                        multiline
                                         value = {props.values.gender}
                                     />
                                     
@@ -305,6 +257,7 @@ class GetUserInfo extends Component {
                                     <BioInput 
                                         placeholder='please enter a short bio! (250 words max)' 
                                         onChangeText={props.handleChange('bio')} 
+                                        color={this.props.theme.PRIMARY_COLOR}
                                         maxLength={150}
                                         multiline
                                         numberOfLines={7}
@@ -331,6 +284,27 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {pickTheme})(GetUserInfo);
+
+const dropdown = (props) => StyleSheet.create({
+    inputIOS: {
+        padding: 10,
+        fontWeight: 'bold',
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: props.theme.LIGHT_GREY,
+        color: props.theme.PRIMARY_COLOR,
+        margin: 10
+      },
+      inputAndroid: {
+        padding: 10,
+        fontWeight: 'bold',
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: props.theme.LIGHT_GREY,
+        color: props.theme.PRIMARY_COLOR,
+        margin: 10
+      }
+  });
 
 
 

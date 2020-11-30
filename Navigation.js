@@ -7,7 +7,7 @@ import Dashboard from './components/Dashboard';
 import Explore from './components/Explore';
 import Chat from './components/Chat';
 import Connections from './components/Connections';
-import Settings from './components/Settings';
+import Settings from './components/Settings/Settings';
 import { createStackNavigator } from '@react-navigation/stack';
 import SignUp from './components/SigningUp/SignUp'
 import FirstLaunch from './components/FirstLaunch'

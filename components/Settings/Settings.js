@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { pickTheme } from '../redux/actions'
-import { pinkTheme, lavenderTheme, oliveTheme } from '../theming/themes'
+import { LightThemeModal, DarkThemeModal } from './ThemeModal'
+import { UserInputModal, UserBioInputModal, ProfileImageModal } from './UserInputModal'
+import { pickTheme } from '../../redux/actions'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
 import AsyncStorage from '@react-native-community/async-storage'
@@ -8,11 +9,19 @@ import {Collapse,CollapseHeader, CollapseBody, AccordionList} from 'accordion-co
 import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Modal from 'react-native-modal';
-import { HeaderContainer, HeaderText, Button, ButtonText, Subtitle, Text } from '../theming/masterStyle'
-import { SettingContainer, ProfileImage, ModalView, ModalContainer, SelectedTheme, Line, Title,
-  ModalOptions, EditItem, UserAttribute, InfoArea, ListContainer, FormInput, BioInput } from '../theming/settingStyle'
+import { HeaderText, Subtitle, Text } from '../../theming/masterStyle'
+import {CLOUD_NAME, CLOUD_PRESET, CLOUD_BASE_API} from "@env"
+import { SettingContainer, ProfileImage, ModalContainer, Line, Title, EditItem, UserAttribute, InfoArea, ListContainer } from '../../theming/settingStyle'
 
 class Settings extends Component {
+  constructor(props) {
+    super(props);
+    this.closeModal = this.closeModal.bind(this)
+    this.updateUserDB = this.updateUserDB.bind(this)
+    this.updateState = this.updateState.bind(this)
+    this.setImageURI = this.setImageURI.bind(this)
+    this.uploadToCloudinary = this.uploadToCloudinary.bind(this)
+  }
   
     state = {
         modalVisible: false,
@@ -27,8 +36,48 @@ class Settings extends Component {
         hometown: '',
         major: '',
         bio: '',
-        profilePic: ''
+        profilePic: '',
+        imageURI: '',
+        uploadingImage: true,
       };
+
+      updateState = (attribute, data) => {
+        console.log("trynna update state")
+        console.log(attribute)
+        console.log(data)
+        this.setState({
+          [attribute]: data
+        })
+      }
+
+      setImageURI = (uri) => {
+        this.setState({ imageURI: uri })
+        console.log("just set image in SETTINGS")
+        console.log(this.state)
+        let cloudFile = {uri: this.state.imageURI, type: "jpg"
+            , name: this.state.user}
+        this.uploadToCloudinary(cloudFile);
+      }
+    
+      uploadToCloudinary(photo) {
+        console.log("UPLOADING TO CLOUD ...")
+          if (this.state.imageURI !== '') {
+              const data = new FormData();
+              data.append('cloud_name', CLOUD_NAME)
+              data.append('file', photo)
+              data.append('upload_preset', CLOUD_PRESET)
+              this.setState({uploadingImage: true})
+              fetch(CLOUD_BASE_API, {
+                  method: 'POST',
+                  body: data
+              }).then(res=>res.json()).then(data=> {
+                  console.log(data)
+                  console.log(data.secure_url)
+                  this.setState({ profilePic: data.secure_url,
+                    uploadingImage: false })
+              })
+          }
+      }
 
 
       getUserData(user) {
@@ -91,21 +140,20 @@ class Settings extends Component {
 
     updateUserDB = () => {
       console.log("updating user ...")
+      console.log(this.state.profilePic)
       const updatedUser={
           method: 'POST',
           headers:{'Content-Type': 'application/json'},
           body: JSON.stringify({
               userID: this.state.user, 
               values: {
-                  userFNAME: this.state.fName,
-                  userLNAME: this.state.lName,
                   userHOMETOWN: this.state.hometown,
                   userMAJOR: this.state.major,
                   userGRAD_DATE: this.state.grad,
                   userGRADE_LEVEL: this.state.classification,
                   userABOUT: this.state.bio,
                   userGENDER: this.state.gender,
-                  // userPROFILEPIC: this.state.cloudinaryURL
+                  userPROFILEPIC: this.state.profilePic
               }
           })
       }
@@ -131,7 +179,9 @@ class Settings extends Component {
               console.log("successfully updated")
               console.log(this.state)
               this.getUserData(this.state.user)
-              this.setState({modalVisible: !this.state.modalVisible}); 
+              this.setState({modalVisible: !this.state.modalVisible,
+                uploadingImage: true
+              }); 
           })
   }
 
@@ -144,7 +194,8 @@ class Settings extends Component {
     closeModal() {
       console.log("closing modal")
       this.setState({ 
-        modalVisible: !this.state.modalVisible });
+        modalVisible: !this.state.modalVisible,
+        uploadingImage: true });
     }
 
 
@@ -155,106 +206,43 @@ class Settings extends Component {
         let modalDisplay;
         switch(this.state.modalContent) {
           case "lightThemes":
-            modalDisplay = <ModalView>
-              <Title>Light Themes</Title>
-                  {this.props.theme.mode === "olive" ? <SelectedTheme onPress={() => this.props.pickTheme(oliveTheme)}>Olive Theme</SelectedTheme> : 
-                    <ModalOptions onPress={() => this.props.pickTheme(oliveTheme)}>Olive Theme</ModalOptions>}
-                  {this.props.theme.mode === "lavender" ? <SelectedTheme onPress={() => this.props.pickTheme(lavenderTheme)}>Lavender Theme</SelectedTheme> : 
-                    <ModalOptions onPress={() => this.props.pickTheme(lavenderTheme)}>Lavender Theme</ModalOptions>}
-                
-                  <Button onPress={() => { this.closeModal() }} >
-                    <ButtonText>Done</ButtonText>
-                  </Button>
-            </ModalView>
+            modalDisplay = <LightThemeModal closeModal={this.closeModal} />
             break;
 
           case "darkThemes":
-            modalDisplay = <ModalView>
-                <Title>Dark Themes</Title>
-                {this.props.theme.mode === "pink" ? <SelectedTheme onPress={() => this.props.pickTheme(pinkTheme)}>Salmon Theme</SelectedTheme> : 
-                  <ModalOptions onPress={() => this.props.pickTheme(pinkTheme)}>Salmon Theme</ModalOptions>}
-                
-                  <Button onPress={() => { this.closeModal() }} >
-                    <ButtonText>Done</ButtonText>
-                  </Button>
-            </ModalView>
+            modalDisplay = <DarkThemeModal closeModal={this.closeModal} />
             break;
 
-          case "updateName":
-            modalDisplay = <ModalView>
-                <Title>update name</Title>
-                <FormInput 
-                    placeholder='first name' 
-                    placeholderTextColor={this.props.theme.LIGHT_GREY}
-                    onChangeText={(fName) => this.setState({fName})}
-                />
-                <FormInput 
-                    placeholder='last name' 
-                    placeholderTextColor={this.props.theme.LIGHT_GREY}
-                    onChangeText={(lName) => this.setState({lName})}
-                />
-                  <Button onPress={() => { this.updateUserDB(); }} >
-                    <ButtonText>Done</ButtonText>
-                  </Button>
-                  <Button onPress={() => { this.closeModal() }} >
-                      <ButtonText>Cancel</ButtonText>
-                    </Button>
-            </ModalView>
+          case "updateProfilePic":
+            modalDisplay = <ProfileImageModal 
+            updateUserDB={this.updateUserDB}
+            setImageURI={this.setImageURI}
+            uploadingImage={this.state.uploadingImage}
+            closeModal={this.closeModal} />
             break;
 
-            case "updateGender":
-              modalDisplay = <ModalView>
-                  <Title>update gender</Title>
-                  <FormInput 
-                      placeholder='gender' 
-                      placeholderTextColor={this.props.theme.LIGHT_GREY}
-                      onChangeText={(gender) => this.setState({gender})}
-                  />
-                    <Button onPress={() => { this.updateUserDB(); }} >
-                      <ButtonText>Done</ButtonText>
-                    </Button>
-                    <Button onPress={() => { this.closeModal() }} >
-                      <ButtonText>Cancel</ButtonText>
-                    </Button>
-              </ModalView>
-              break;
+          case "updateGender":
+            modalDisplay = <UserInputModal 
+              infoType="gender"
+              updateState={this.updateState}
+              updateUserDB={this.updateUserDB}
+              closeModal={this.closeModal} />
+            break;
 
-            case "updateHometown":
-              modalDisplay = <ModalView>
-                  <Title>update gender</Title>
-                  <FormInput 
-                      placeholder='hometown' 
-                      placeholderTextColor={this.props.theme.LIGHT_GREY}
-                      onChangeText={(hometown) => this.setState({hometown})}
-                  />
-                    <Button onPress={() => { this.updateUserDB(); }} >
-                      <ButtonText>Done</ButtonText>
-                    </Button>
-                    <Button onPress={() => { this.closeModal() }} >
-                      <ButtonText>Cancel</ButtonText>
-                    </Button>
-              </ModalView>
-              break;
+          case "updateHometown":
+            modalDisplay = <UserInputModal 
+              infoType="hometown"
+              updateState={this.updateState}
+              updateUserDB={this.updateUserDB}
+              closeModal={this.closeModal} />
+            break;
 
             case "updateBio":
-              modalDisplay = 
-              <ModalView>
-                  <Title>update gender</Title>
-                  <BioInput 
-                      placeholder='bio' 
-                      placeholderTextColor={this.props.theme.LIGHT_GREY}
-                      onChangeText={(bio) => this.setState({bio})}
-                      maxLength={150}
-                      multiline
-                      numberOfLines={7}
-                  />
-                    <Button onPress={() => { this.updateUserDB(); }} >
-                      <ButtonText>Done</ButtonText>
-                    </Button>   
-                    <Button onPress={() => { this.closeModal() }} >
-                      <ButtonText>Cancel</ButtonText>
-                    </Button>  
-              </ModalView>
+              modalDisplay = <UserBioInputModal 
+              infoType="bio"
+              updateState={this.updateState}
+              updateUserDB={this.updateUserDB}
+              closeModal={this.closeModal} />
               break;
 
           default: 
@@ -266,11 +254,9 @@ class Settings extends Component {
         <ThemeProvider theme={ this.props.theme }>
            
             <SettingContainer>
-                <HeaderContainer>
                     <HeaderText>settings</HeaderText>
                     <Subtitle>here u view ur profile, update your info, change the app theme, etc!</Subtitle>
                     <Line />
-                </HeaderContainer>
 
                 <Collapse>
                     <CollapseHeader>
@@ -288,12 +274,12 @@ class Settings extends Component {
                 >
                     <InfoArea>  
                     <ProfileImage source={{uri: this.state.userData.userPROFILEPIC}} />
-                    <Text>✎</Text>
+                    <Text onPress={() => {
+                      this.setModalVisible(true, "updateProfilePic")}}>✎</Text>
                     </InfoArea>
 
                     <InfoArea>
-                    <EditItem onPress={() => {
-                      this.setModalVisible(true, "updateName")}}>✎ name</EditItem>
+                    <EditItem>name</EditItem>
                     <UserAttribute>{this.state.userData.userFNAME} {this.state.userData.userLNAME}</UserAttribute>
                     </InfoArea>
 
@@ -348,14 +334,26 @@ class Settings extends Component {
                     </ListContainer>
                     </CollapseBody>
                 </Collapse>
-                  
-
         <Line /> 
+        <Collapse>
+              <CollapseHeader>
+                <Title> ⊳ interests </Title>
+                <Subtitle>view & edit your current interests</Subtitle>
+              </CollapseHeader>
+              <CollapseBody>
+              <ListContainer>
+              <EditItem onPress={() => {
+                  this.setModalVisible(true, "lightThemes")}} >to do</EditItem>
+              </ListContainer>
+                
+              </CollapseBody>
+          </Collapse>
+        <Line />
 
           <Collapse>
               <CollapseHeader>
                 <Title> ⊳ themes </Title>
-                <Subtitle>tap to change the app theme!</Subtitle>
+                <Subtitle>change the app theme!</Subtitle>
               </CollapseHeader>
               <CollapseBody>
               <ListContainer>
@@ -370,23 +368,19 @@ class Settings extends Component {
 
           <Modal isVisible={this.state.modalVisible}>
             <ModalContainer>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        
             {modalDisplay}
-            </TouchableWithoutFeedback> 
+           
           </ModalContainer>
         </Modal>
 
-
         <AccordionList
-                  list={this.state.list}
-                  header={this._head}
-                  body={this._body}
-                  keyExtractor={item => item.key}
-                />
-
-      
-                   
-                   </SettingContainer>
+          list={this.state.list}
+          header={this._head}
+          body={this._body}
+          keyExtractor={item => item.key}
+        />        
+        </SettingContainer>
                   
         </ThemeProvider>
     );

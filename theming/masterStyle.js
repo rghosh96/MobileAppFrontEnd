@@ -36,6 +36,8 @@ export const HeaderText = styled.Text`
 export const HeaderContainer = styled.View`
     backgroundColor: ${props => props.theme.BG_COLOR};
     width: 100%;
+    paddingLeft: 20px;
+    paddingRight: 20px;
 `;
 
 export const Text = styled.Text`

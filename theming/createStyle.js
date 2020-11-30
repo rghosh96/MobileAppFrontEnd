@@ -1,5 +1,10 @@
 import styled from 'styled-components/native';
 
+export const HeaderContainer = styled.View`
+    backgroundColor: ${props => props.theme.BG_COLOR};
+    width: 100%;
+`;
+
 export const BioInput = styled.TextInput`
     borderWidth: 1px;
     borderColor: ${props => props.theme.LIGHT_GREY};

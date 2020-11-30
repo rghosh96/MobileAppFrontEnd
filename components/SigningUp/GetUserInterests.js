@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { pickTheme } from '../../redux/actions'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
-import { Subtitle, Divider, HeaderContainer, HeaderText, Button, ButtonText } from '../../theming/masterStyle'
+import { Subtitle, Divider, HeaderText, Button, ButtonText } from '../../theming/masterStyle'
 import { Rating } from 'react-native-elements';
-import { CommentInput, FormArea, CreateProfileContent, RatingContainer, ErrorText, H1 } from '../../theming/createStyle'
+import { CommentInput, FormArea, CreateProfileContent, RatingContainer, HeaderContainer, H1 } from '../../theming/createStyle'
 import { Formik } from 'formik'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Alert } from "react-native";

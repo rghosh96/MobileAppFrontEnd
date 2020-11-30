@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { pickTheme } from '../redux/actions'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
-import { Container, HeaderContainer, HeaderText, Text } from '../theming/masterStyle'
+import { Container, HeaderContainer, HeaderText, Subtitle } from '../theming/masterStyle'
 
 class Connections extends Component {
   render() {
@@ -12,12 +12,9 @@ class Connections extends Component {
             
             <Container>
                 <HeaderContainer>
-                    <HeaderText>connections.</HeaderText>
+                    <HeaderText>connections</HeaderText>
+                    <Subtitle>boop</Subtitle>
                 </HeaderContainer>
-
-                <Text>boop</Text>
-
-                
             </Container>
         </ThemeProvider>
     );

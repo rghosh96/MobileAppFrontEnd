@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { pickTheme } from '../redux/actions'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
-import { Container, HeaderContainer, HeaderText, Text } from '../theming/masterStyle'
+import { Container, HeaderContainer, HeaderText, Subtitle } from '../theming/masterStyle'
 
 
 class Explore extends Component {
@@ -13,9 +13,9 @@ class Explore extends Component {
             
             <Container>
                 <HeaderContainer>
-                    <HeaderText>explore.</HeaderText>
+                    <HeaderText>explore</HeaderText>
+                    <Subtitle>boop</Subtitle>
                 </HeaderContainer>
-                <Text>boop</Text>
             </Container>
         </ThemeProvider>
     );
