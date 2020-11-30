@@ -1,8 +1,9 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react'
+import { pickTheme } from './redux/actions'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Dashboard from './components/Dashboard';
 import Explore from './components/Explore';
 import Chat from './components/Chat';
@@ -13,6 +14,7 @@ import SignUp from './components/SigningUp/SignUp'
 import FirstLaunch from './components/FirstLaunch'
 import GetUserInterests from './components/SigningUp/GetUserInterests'
 import GetUserInfo from './components/SigningUp/GetUserInfo'
+import AsyncStorage from '@react-native-community/async-storage'
 
 const Tab = createMaterialBottomTabNavigator();
 const DashboardStack = createStackNavigator();
@@ -45,8 +47,18 @@ const TabNavigation = () => {
     console.log(useSelector)
     const primary = useSelector(state => state.themeReducer.theme.PRIMARY_COLOR);
     const bg = useSelector(state => state.themeReducer.theme.BG_COLOR);
+    const dispatch = useDispatch()
     console.log("BG")
     console.log(bg)
+
+    React.useEffect(() => {
+        AsyncStorage.getItem('theme').then(value => {
+            let savedTheme = JSON.parse(value)
+            console.log("IN NAVIGATION!")
+          console.log(savedTheme)
+          dispatch(pickTheme(savedTheme))
+        })
+      }, []);
     
     return(
         <Tab.Navigator 
