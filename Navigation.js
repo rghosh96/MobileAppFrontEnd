@@ -45,12 +45,14 @@ const TabNavigation = () => {
     console.log(useSelector)
     const primary = useSelector(state => state.themeReducer.theme.PRIMARY_COLOR);
     const bg = useSelector(state => state.themeReducer.theme.BG_COLOR);
+    console.log("BG")
+    console.log(bg)
     
     return(
         <Tab.Navigator 
             initialRouteName="Dashboard"
             activeColor="#f0edf6"
-            labeled={false}
+            labeled={true}
             style={{backgroundColor: bg}}
             barStyle={{ 
                 backgroundColor: primary, 

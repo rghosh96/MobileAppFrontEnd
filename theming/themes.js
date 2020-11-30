@@ -1,7 +1,7 @@
 export const pinkTheme = {
     mode: "pink",
     BG_COLOR: "#333333",
-    PRIMARY_COLOR: "#FED1EA",
+    PRIMARY_COLOR: "#dea5a4",
     GREY: "#ACAAAD",
     LIGHT_GREY: "#D3D3D3"
 }

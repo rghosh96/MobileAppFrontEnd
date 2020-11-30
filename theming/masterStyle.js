@@ -31,7 +31,6 @@ export const HeaderText = styled.Text`
   color: ${props => props.theme.PRIMARY_COLOR};
   fontWeight: 900;
   paddingBottom: 11px;
-  marginLeft: 20px;
 `;
 
 export const HeaderContainer = styled.View`
@@ -53,7 +52,6 @@ export const Subtitle = styled.Text`
   fontSize: 17px;
   marginBottom: 11px;
   textAlign: left;
-  zIndex: 1;
 `;
 
 export const Button = styled.TouchableOpacity`
