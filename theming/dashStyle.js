@@ -71,7 +71,7 @@ export const MatchesDash = styled.View`
 `
 
 export const MatchesText = styled.Text`
-  color: ${props => props.theme.PRIMARY_COLOR};
+  color: ${props => props.theme.GREY};
   textAlign: center;
   fontSize: 15px;
   fontFamily: "text";

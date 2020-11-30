@@ -1,6 +1,6 @@
 import React from 'react';
 import { pickTheme } from '../../redux/actions'
-import { pinkTheme, lavenderTheme, oliveTheme } from '../../theming/themes'
+import { pinkTheme, lavenderTheme, oliveTheme, rubyTheme } from '../../theming/themes'
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, ButtonText } from '../../theming/masterStyle'
 import {  ModalView, SelectedTheme, Title, ModalOptions} from '../../theming/settingStyle'
@@ -36,9 +36,13 @@ import AsyncStorage from '@react-native-community/async-storage'
             <Title>Dark Themes</Title>
             {mode === "pink" ? <SelectedTheme onPress={() => selectTheme(pinkTheme)}>Salmon Theme</SelectedTheme> : 
               <ModalOptions onPress={() =>selectTheme(pinkTheme)}>Salmon Theme</ModalOptions>}
+            {mode === "ruby" ? <SelectedTheme onPress={() => selectTheme(rubyTheme)}>Ruby Theme</SelectedTheme> : 
+              <ModalOptions onPress={() =>selectTheme(rubyTheme)}>Ruby Theme</ModalOptions>}
               <Button onPress={() => props.closeModal()} >
                 <ButtonText>Done</ButtonText>
               </Button>
+
+            
         </ModalView>
     )
     
