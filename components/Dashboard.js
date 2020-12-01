@@ -6,6 +6,7 @@ import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import { ThemeProvider } from 'styled-components/native';
 import { Container, HeaderContainer, Text } from '../theming/masterStyle'
+import LottieView from 'lottie-react-native';
 import { Connections, HeaderText, ProfileText, ProfileImage, ProfileContainer, ConnectionsContainer, 
   PeopleImage, MatchesContainer, MatchesText, MatchesDash } from '../theming/dashStyle'
 
@@ -31,7 +32,6 @@ class Dashboard extends Component {
             data = JSON.parse(json)
             if (data.isError === false) {
               console.log("we got user data!")
-              this.setState({userLoaded: true})
             }
         })
         .catch((error) => console.error(error))
@@ -51,14 +51,10 @@ class Dashboard extends Component {
       let userId = await AsyncStorage.getItem("user");
       this.setState({user: userId})
       this.getUserData(this.state.user)
-      if (userId !== null) {
-        let firstLaunch = await AsyncStorage.getItem("alreadyLaunched")
-        console.log(firstLaunch)
-        this.setState({isFirstLaunch: firstLaunch})
-      }
     } catch (error) {
       console.log("Something went wrong", error);
     }
+    this.setState({userLoaded: true})
   }  
 
   // load fonts
@@ -78,7 +74,7 @@ class Dashboard extends Component {
     {console.log("INSIDE DASHBOARD")}
     console.log(this.state)
     if (!this.state.userLoaded) {
-      return <AppLoading />
+      return <LottieView style={{height: 200}}source={require('../assets/loading.json')} autoPlay loop />
     }
       console.log(this.props.theme)
     return (

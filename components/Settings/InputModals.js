@@ -30,7 +30,30 @@ import RNPickerSelect from 'react-native-picker-select';
     )
 }
 
-export const UserSelectClassificationModal = (props) => {
+export const UserDropDownModal = (props) => {
+    console.log(props)
+    console.log(useSelector)
+    const lightGrey = useSelector(state => state.themeReducer.theme.LIGHT_GREY);
+    const primary = useSelector(state => state.themeReducer.theme.PRIMARY_COLOR);
+    return (
+        <ModalView>
+            <Title>update {props.infoType}</Title>
+            <RNPickerSelect
+                onValueChange={(value) => props.updateState(props.infoType, value)}
+                items={props.items}
+                style={dropdown(lightGrey, primary)}
+            />
+            <Button onPress={() => { props.updateUserDB(); }} >
+                <ButtonText>Done</ButtonText>
+            </Button>
+            <Button onPress={() => { props.closeModal() }} >
+                <ButtonText>Cancel</ButtonText>
+            </Button>
+        </ModalView>
+    )
+}
+
+export const UserRatingModal = (props) => {
     console.log(props)
     console.log(useSelector)
     const lightGrey = useSelector(state => state.themeReducer.theme.LIGHT_GREY);

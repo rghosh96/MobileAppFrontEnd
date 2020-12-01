@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { LightThemeModal, DarkThemeModal } from './ThemeModal'
 import { UserInputModal, UserBioInputModal, ProfileImageModal,
-  UserSelectClassificationModal } from './UserInputModal'
+  UserDropDownModal } from './InputModals'
+import { Rating } from 'react-native-ratings';
+import CustomRatings from '../CustomRatings'
+import { CommentInput, RatingContainer } from '../../theming/createStyle'
 import { pickTheme } from '../../redux/actions'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
@@ -29,7 +32,10 @@ class Settings extends Component {
     state = {
         modalVisible: false,
         user: '',
+        userLoaded: false,
+        interestsLoaded: false,
         userData: '',
+        userInterests: '',
         modalContent: '',
         fName: '',
         lName: '',
@@ -42,7 +48,19 @@ class Settings extends Component {
         profilePic: '',
         imageURI: '',
         uploadingImage: false,
-        imageSet: false
+        imageSet: false,
+        fashionRating: null,
+        foodRating: null,
+        gameRating: null,
+        outRating: null,
+        musicRating: null,
+        readRating: null,
+        fashionComment: null,
+        foodComment: null,
+        gamingComment: null,
+        outdoorsComment: null,
+        musicComment: null,
+        readingComment: null,
       };
 
       
@@ -101,14 +119,10 @@ class Settings extends Component {
             .then((json) => {
                 // parse the response & extract data
                 data = JSON.parse(json)
-                if (data.isError === false) {
-                  console.log("we got user data!")
-                  this.setState({userLoaded: true})
-                }
             })
             .catch((error) => console.error(error))
             .finally(() => {
-              if (this.state.userLoaded === true) {
+              if (data.isError === false) {
                 console.log("we got set the data!")
                 let userInfo = data.result[0]
                 this.setState({ 
@@ -123,17 +137,57 @@ class Settings extends Component {
                   profilePic: userInfo.userPROFILEPIC,
                   userData: data.result[0] })
               }
-                // if successful addition to db, navigate to create profile
-                console.log("finally block") 
+              this.setState({userLoaded: true})
+              // if successful addition to db, navigate to create profile
+              console.log("finally block") 
+            })
+      }
+
+      getUserInterests(user) {
+        console.log("in get user interests")
+        var data;
+        let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/interest/getInterests?USER_id=" + user;
+        console.log(apiEndpoint)
+        // call api endpoint, sending in user to add to db
+        fetch(apiEndpoint,)
+            .then((response) => response.text())
+            .then((json) => {
+              // parse the response & extract data
+              data = JSON.parse(json)
+              console.log(data)
+            })
+            .catch((error) => console.error(error))
+            .finally(() => {
+              if (data.isError === false) {
+                console.log("we got set the data!")
+                let interestsInfo = data.result[0]
+                this.setState({ 
+                  fashionRating: interestsInfo.interestFASHION,
+                  foodRating: interestsInfo.interestFOOD,
+                  gameRating: interestsInfo.interestGAMING,
+                  outRating: interestsInfo.interestOUTDOORS,
+                  musicRating: interestsInfo.interestMUSIC,
+                  readRating: interestsInfo.interestREADING,
+                  fashionComment: interestsInfo.interestFASHION_COMMENT,
+                  foodComment: interestsInfo.interestFOOD_COMMENT,
+                  gamingComment: interestsInfo.interestGAMING_COMMENT,
+                  outdoorsComment: interestsInfo.interestOUTDOORS_COMMENT,
+                  musicComment: interestsInfo.interestMUSIC_COMMENT,
+                  readingComment: interestsInfo.interestREADING_COMMENT, })
+              }
+              this.setState({interestsLoaded: true})
+              // if successful addition to db, navigate to create profile
+              console.log("finally block") 
             })
       }
     
-    async getToken(user) {
+    async getToken() {
       try {
           console.log("before getting item");
         let userId = await AsyncStorage.getItem("user");
         this.setState({user: userId})
         this.getUserData(this.state.user)
+        this.getUserInterests(this.state.user)
         if (userId !== null) {
           let firstLaunch = await AsyncStorage.getItem("alreadyLaunched")
           console.log(firstLaunch)
@@ -211,7 +265,6 @@ class Settings extends Component {
 
     render() {
         const { modalVisible } = this.state;
-
         // switch statement to determine modal contents
         let modalDisplay;
         switch(this.state.modalContent) {
@@ -257,7 +310,7 @@ class Settings extends Component {
             break;
 
           case "updateClassification":
-            modalDisplay = <UserSelectClassificationModal 
+            modalDisplay = <UserDropDownModal 
               infoType="classification"
               items={[
                 {label: 'freshman', value: 'freshman'},
@@ -273,7 +326,7 @@ class Settings extends Component {
             break;
 
           case "updateGradDate":
-            modalDisplay = <UserSelectClassificationModal 
+            modalDisplay = <UserDropDownModal 
               infoType="grad"
               items={[
                 {label: 'dec 2020', value: 'dec 2020'},
@@ -307,7 +360,7 @@ class Settings extends Component {
 
     return (
         <ThemeProvider theme={ this.props.theme }>
-           
+           {console.log(this.props.theme)}
             <SettingContainer>
                     <HeaderText>settings</HeaderText>
                     <Subtitle>here u view ur profile, update your info, change the app theme, etc!</Subtitle>
@@ -315,7 +368,7 @@ class Settings extends Component {
 
                 <Collapse>
                     <CollapseHeader>
-                        <Title> ⊳ profile info </Title>
+                        <Title> ⊳ general user info </Title>
                         <Subtitle>view & edit ur profile info</Subtitle>
                     </CollapseHeader>
                     <CollapseBody>
@@ -395,13 +448,27 @@ class Settings extends Component {
         <Line /> 
         <Collapse>
               <CollapseHeader>
-                <Title> ⊳ interests </Title>
+                <Title> ⊳ user interests info </Title>
                 <Subtitle>view & edit your current interests</Subtitle>
               </CollapseHeader>
               <CollapseBody>
               <ListContainer>
               <EditItem onPress={() => {
                   this.setModalVisible(true, "lightThemes")}} >to do</EditItem>
+              <CustomRatings 
+                infoType="fashionRating" 
+                updateState={this.updateState}
+                rating={this.state.fashionRating} 
+                icon="shop"/>
+              {console.log("FASHION RATING IS")}
+              {console.log(this.state.fashionRating)}
+              <CommentInput 
+                  placeholder='maybe some trends, designers, if you like hair, nails, etc..' 
+                  onChangeText={comment => this.setState({fashionComment: comment} )}
+                  maxLength={50}
+                  multiline
+                  value = {this.state.fashionComment}
+              />
               </ListContainer>
                 
               </CollapseBody>

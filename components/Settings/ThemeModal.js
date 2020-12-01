@@ -40,10 +40,8 @@ import AsyncStorage from '@react-native-community/async-storage'
               <ModalOptions onPress={() =>selectTheme(rubyTheme)}>Ruby Theme</ModalOptions>}
               <Button onPress={() => props.closeModal()} >
                 <ButtonText>Done</ButtonText>
-              </Button>
-
-            
-        </ModalView>
+              </Button>   
+        </ModalView> 
     )
     
 }

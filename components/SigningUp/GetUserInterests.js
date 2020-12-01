@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
 import { Subtitle, Divider, HeaderText, Button, ButtonText } from '../../theming/masterStyle'
 import { Rating } from 'react-native-elements';
+import CustomRatings from '../CustomRatings'
 import { CommentInput, FormArea, CreateProfileContent, RatingContainer, HeaderContainer, H1 } from '../../theming/createStyle'
 import { Formik } from 'formik'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -15,6 +16,7 @@ class GetUserInterests extends Component {
     constructor(props) {
         super(props)
         console.log(props.route.params.user)
+        this.updateState = this.updateState.bind(this)
     }
     state = {
         user: this.props.route.params.user,
@@ -32,7 +34,15 @@ class GetUserInterests extends Component {
         musicComment: null,
         readingComment: null,
       }
-      
+
+      updateState = (attribute, data) => {
+        console.log("trynna update state")
+        console.log(attribute)
+        console.log(data)
+        this.setState({
+          [attribute]: data
+        })
+      }
 
       setInterests(info) {
         if (this.state.fashionRating === null || this.state.gameRating === null || this.state.foodRating === null
@@ -156,13 +166,12 @@ class GetUserInterests extends Component {
                                     <Divider/>
                                     <RatingContainer>    
                                     <H1>fashion ({this.state.fashionRating}/5)&nbsp;</H1>
-                                    <Rating
-                                            type='heart'
-                                            ratingCount={5}
-                                            imageSize={25}
-                                            startingValue={0}
-                                            onFinishRating={rating => this.setState({fashionRating: rating})}
-                                    />         
+                                    <CustomRatings 
+                                        infoType="fashionRating" 
+                                        updateState={this.updateState}
+                                        rating={this.state.fashionRating} 
+                                        icon="shopping"
+                                    />       
                                     </RatingContainer>
                                     <CommentInput 
                                         placeholder='maybe some trends, designers, if you like hair, nails, etc..' 
@@ -173,12 +182,11 @@ class GetUserInterests extends Component {
                                     />
                                     <RatingContainer>
                                     <H1>food ({this.state.foodRating}/5) &nbsp;</H1>
-                                    <Rating
-                                            type='heart'
-                                            ratingCount={5}
-                                            imageSize={25}
-                                            startingValue={0}
-                                            onFinishRating={rating => this.setState({foodRating: rating})}
+                                    <CustomRatings 
+                                        infoType="foodRating" 
+                                        updateState={this.updateState}
+                                        rating={this.state.foodRating} 
+                                        icon="food-apple"
                                     />   
                                     </RatingContainer>
                                     <CommentInput 
@@ -190,13 +198,12 @@ class GetUserInterests extends Component {
                                     />
                                     <RatingContainer>
                                     <H1>gaming ({this.state.gameRating}/5)&nbsp;</H1>
-                                    <Rating
-                                            type='heart'
-                                            ratingCount={5}
-                                            imageSize={25}
-                                            startingValue={0}
-                                            onFinishRating={rating => this.setState({gameRating: rating})}
-                                    />   
+                                    <CustomRatings 
+                                        infoType="gameRating" 
+                                        updateState={this.updateState}
+                                        rating={this.state.gameRating} 
+                                        icon="gamepad-variant"
+                                    />    
                                     </RatingContainer>
                                     <CommentInput 
                                         placeholder='what kind of games u playin (your fav console, etc)' 
@@ -207,13 +214,12 @@ class GetUserInterests extends Component {
                                     />
                                     <RatingContainer>
                                     <H1>outdoors ({this.state.outRating}/5)&nbsp;</H1>
-                                    <Rating
-                                            type='heart'
-                                            ratingCount={5}
-                                            imageSize={25}
-                                            startingValue={0}
-                                            onFinishRating={rating => this.setState({outRating: rating})}
-                                    />    
+                                    <CustomRatings 
+                                        infoType="outRating" 
+                                        updateState={this.updateState}
+                                        rating={this.state.outRating} 
+                                        icon="pine-tree"
+                                    />     
                                     </RatingContainer>
                                     <CommentInput 
                                         placeholder='hiking? biking? running? camping? fav trails?' 
@@ -224,13 +230,12 @@ class GetUserInterests extends Component {
                                     />
                                     <RatingContainer>
                                     <H1>music ({this.state.musicRating}/5)&nbsp;</H1>
-                                    <Rating
-                                            type='heart'
-                                            ratingCount={5}
-                                            imageSize={25}
-                                            startingValue={0}
-                                            onFinishRating={rating => this.setState({musicRating: rating})}
-                                    />    
+                                    <CustomRatings 
+                                        infoType="musicRating" 
+                                        updateState={this.updateState}
+                                        rating={this.state.musicRating} 
+                                        icon="music-note"
+                                    />     
                                     </RatingContainer>
                                     <CommentInput 
                                         placeholder='fav artists? genres?' 
@@ -241,13 +246,12 @@ class GetUserInterests extends Component {
                                     />
                                     <RatingContainer>
                                     <H1>reading ({this.state.readRating}/5)&nbsp;</H1>
-                                    <Rating
-                                            type='heart'
-                                            ratingCount={5}
-                                            imageSize={25}
-                                            startingValue={0}
-                                            onFinishRating={rating => this.setState({readRating: rating})}
-                                    />    
+                                    <CustomRatings 
+                                        infoType="readRating" 
+                                        updateState={this.updateState}
+                                        rating={this.state.readRating} 
+                                        icon="book"
+                                    />      
                                     </RatingContainer>   
                                     <CommentInput 
                                         placeholder='whether it be productivity, fiction, or your algorithms textbook, give us ur fav titles!' 
