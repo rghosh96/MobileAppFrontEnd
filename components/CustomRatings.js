@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { useSelector } from 'react-redux';
 import { RatingContainer } from '../theming/ratingStyle'

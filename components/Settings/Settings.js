@@ -11,7 +11,7 @@ import {Collapse,CollapseHeader, CollapseBody, AccordionList} from 'accordion-co
 import { Keyboard, TouchableWithoutFeedback, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Modal from 'react-native-modal';
-import { HeaderText, Subtitle, Text } from '../../theming/masterStyle'
+import { HeaderText, Subtitle, Text, Button, ButtonText } from '../../theming/masterStyle'
 import {CLOUD_NAME, CLOUD_PRESET, CLOUD_BASE_API} from "@env"
 import { SettingContainer, ProfileImage, ModalContainer, Line, Title, EditItem, UserAttribute, InfoArea, 
   RatingContainer, ListContainer } from '../../theming/settingStyle'
@@ -405,6 +405,7 @@ class Settings extends Component {
             ratingType="fashionRating"
             commentType="fashionComment"
             rating={this.state.fashionRating}
+            comment={this.state.fashionComment}
             icon="shopping"
             updateState={this.updateState}
             updateInterests={this.updateInterests}
@@ -416,6 +417,7 @@ class Settings extends Component {
             title="food interests"
             ratingType="foodRating"
             commentType="foodComment"
+            comment={this.state.foodComment}
             rating={this.state.foodRating}
             icon="food-apple"
             updateState={this.updateState}
@@ -429,6 +431,7 @@ class Settings extends Component {
             ratingType="gameRating"
             commentType="gamingComment"
             rating={this.state.gameRating}
+            comment={this.state.gamingComment}
             icon="gamepad-variant"
             updateState={this.updateState}
             updateInterests={this.updateInterests}
@@ -441,6 +444,7 @@ class Settings extends Component {
             ratingType="outRating"
             commentType="outdoorsComment"
             rating={this.state.outRating}
+            comment={this.state.outdoorsComment}
             icon="pine-tree"
             updateState={this.updateState}
             updateInterests={this.updateInterests}
@@ -453,6 +457,7 @@ class Settings extends Component {
             ratingType="musicRating"
             commentType="musicComment"
             rating={this.state.musicRating}
+            comment={this.state.musicComment}
             icon="music-note"
             updateState={this.updateState}
             updateInterests={this.updateInterests}
@@ -465,6 +470,7 @@ class Settings extends Component {
             ratingType="readRating"
             commentType="readingComment"
             rating={this.state.readRating}
+            comment={this.state.readingComment}
             icon="book"
             updateState={this.updateState}
             updateInterests={this.updateInterests}
@@ -690,13 +696,15 @@ class Settings extends Component {
                 <Subtitle>change the app theme!</Subtitle>
               </CollapseHeader>
               <CollapseBody>
-              <ListContainer>
-              <EditItem onPress={() => {
-                  this.setModalVisible(true, "lightThemes")}} >light themes</EditItem>
-              <EditItem onPress={() => {
-                  this.setModalVisible(true, "darkThemes")}} >dark themes</EditItem>
-              </ListContainer>
-                
+                <Button onPress={() => {
+                  this.setModalVisible(true, "lightThemes")}}>
+                <ButtonText  >light themes</ButtonText>
+                </Button>
+              
+                <Button onPress={() => {
+                  this.setModalVisible(true, "darkThemes")}}>
+                <ButtonText  >dark themes</ButtonText>
+                </Button>
               </CollapseBody>
           </Collapse>
 

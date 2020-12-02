@@ -89,7 +89,6 @@ export const UserBioInputModal = (props) => {
                 onChangeText={(input) => props.updateState(props.infoType, input)}
                 maxLength={150}
                 multiline
-                numberOfLines={7}
             />
             <Button onPress={() => { props.updateUserDB(); }} >
                 <ButtonText>Done</ButtonText>

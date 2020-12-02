@@ -61,7 +61,7 @@ export const BioInput = styled.TextInput`
     padding: 7px;
     margin: 7px;
     width: 250px;
-    height: 100px;
+    height: 65px;
     fontFamily: "text";
 `
 
