@@ -171,6 +171,7 @@ class GetUserInterests extends Component {
                                         updateState={this.updateState}
                                         rating={this.state.fashionRating} 
                                         icon="shopping"
+                                        readOnly={false}
                                     />       
                                     </RatingContainer>
                                     <CommentInput 
@@ -187,6 +188,7 @@ class GetUserInterests extends Component {
                                         updateState={this.updateState}
                                         rating={this.state.foodRating} 
                                         icon="food-apple"
+                                        readOnly={false}
                                     />   
                                     </RatingContainer>
                                     <CommentInput 
@@ -203,6 +205,7 @@ class GetUserInterests extends Component {
                                         updateState={this.updateState}
                                         rating={this.state.gameRating} 
                                         icon="gamepad-variant"
+                                        readOnly={false}
                                     />    
                                     </RatingContainer>
                                     <CommentInput 
@@ -219,6 +222,7 @@ class GetUserInterests extends Component {
                                         updateState={this.updateState}
                                         rating={this.state.outRating} 
                                         icon="pine-tree"
+                                        readOnly={false}
                                     />     
                                     </RatingContainer>
                                     <CommentInput 
@@ -235,6 +239,7 @@ class GetUserInterests extends Component {
                                         updateState={this.updateState}
                                         rating={this.state.musicRating} 
                                         icon="music-note"
+                                        readOnly={false}
                                     />     
                                     </RatingContainer>
                                     <CommentInput 
@@ -251,6 +256,7 @@ class GetUserInterests extends Component {
                                         updateState={this.updateState}
                                         rating={this.state.readRating} 
                                         icon="book"
+                                        readOnly={false}
                                     />      
                                     </RatingContainer>   
                                     <CommentInput 

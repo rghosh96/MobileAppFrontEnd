@@ -136,3 +136,10 @@ export const Container = styled.View`
     width: 100%;
     backgroundColor: ${props => props.theme.BG_COLOR};
 `;
+
+export const RatingContainer = styled.View`
+    width: 325px;
+    justifyContent: center;
+    flexDirection: column;
+    padding: 15px;
+`;

@@ -33,6 +33,13 @@ export const HeaderText = styled.Text`
   paddingBottom: 11px;
 `;
 
+export const Line = styled.View`
+  borderBottomWidth: 1px;
+  borderBottomColor: ${props => props.theme.GREY};
+  alignSelf: stretch;
+  margin: 11px;
+`
+
 export const HeaderContainer = styled.View`
     backgroundColor: ${props => props.theme.BG_COLOR};
     width: 100%;

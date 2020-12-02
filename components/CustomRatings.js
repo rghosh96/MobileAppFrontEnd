@@ -19,10 +19,22 @@ const CustomRatings = (props) => {
                 color={ i <=props.rating ? theme.PRIMARY_COLOR : theme.GREY }
                 size={21} style={{marginRight: 3}} />
             </TouchableWithoutFeedback> 
-        )}
+        )
+    }
+
+    let readOnlyRating = []
+    for (let i= 1; i <= 5; i++) {
+        readOnlyRating.push(
+                <MaterialCommunityIcons 
+                name={props.icon}
+                color={ i <=props.rating ? theme.PRIMARY_COLOR : theme.GREY }
+                size={21} style={{marginRight: 3}} />
+        )
+    }
+
     return (
         <RatingContainer>
-        {rating}
+        {props.readOnly ? readOnlyRating : rating}
         </RatingContainer>
     )
 }

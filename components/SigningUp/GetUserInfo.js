@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { pickTheme } from '../../redux/actions'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
-import { Subtitle, HeaderText, Button, ButtonText } from '../../theming/masterStyle'
+import { Subtitle, HeaderText, Button, ButtonText, Line } from '../../theming/masterStyle'
 import { BioInput, SectionArea, SingleLineInput, FormArea, CreateProfileContent, ErrorText, H1, H2,
     HeaderContainer } from '../../theming/createStyle'
 import { Formik } from 'formik'
@@ -170,6 +170,7 @@ class GetUserInfo extends Component {
                                         <Subtitle>you're almost done! just need some last tidbits ..
                                         </Subtitle>
                                     </HeaderContainer>
+                                    <Line/>
                                     <H1>first, some general info.</H1>
                                     <H2>Set a profile image!</H2>
                                         <ImagePickerExample setImageURI={this.setImageURI}/>
@@ -179,6 +180,7 @@ class GetUserInfo extends Component {
                                     <ErrorText>{props.touched.classification && props.errors.classification }</ErrorText>
                                     </SectionArea>
                                     <RNPickerSelect
+                                        placeholder={{ label: 'i am a ... ▽', value: null}}
                                         onValueChange={(value) => props.setFieldValue('classification', value)}
                                         items={[
                                             {label: 'freshman', value: 'freshman'},
@@ -196,6 +198,7 @@ class GetUserInfo extends Component {
                                     <ErrorText>{props.touched.major && props.errors.major }</ErrorText>
                                     </SectionArea>
                                     <RNPickerSelect
+                                        placeholder={{ label: 'my major is ... ▽', value: null}}
                                         onValueChange={(value) => props.setFieldValue('major', value)}
                                         items={[
                                             {label: 'computer science', value: 'computer science'},
@@ -210,6 +213,7 @@ class GetUserInfo extends Component {
                                     <ErrorText>{props.touched.graddate && props.errors.graddate }</ErrorText>
                                     </SectionArea> 
                                     <RNPickerSelect
+                                        placeholder={{ label: 'i graduate ... ▽', value: null}}
                                         onValueChange={(value) => props.setFieldValue('graddate', value)}
                                         items={[
                                             {label: 'dec 2020', value: 'dec 2020'},
@@ -220,7 +224,7 @@ class GetUserInfo extends Component {
                                         ]}
                                         style={dropdown(this.props)}
                                     />
-
+                                    <Line/>
                                     <H1>now tell us more about you!</H1>
                                     <SectionArea>
                                     <H2>your hometown?</H2>

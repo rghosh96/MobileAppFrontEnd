@@ -130,12 +130,14 @@ class SignUp extends Component {
                                     </HeaderContainer>
                                     <FormInput 
                                         placeholder='UARK username (do NOT include @uark.edu)' 
+                                        placeholderTextColor={this.props.theme.LIGHT_GREY}
                                         onChangeText={props.handleChange('user')} 
                                         value = {props.values.user}
                                     />
                                     <ErrorText>{props.touched.user && props.errors.user }</ErrorText>
                                     <FormInput 
                                         placeholder='UARK password' 
+                                        placeholderTextColor={this.props.theme.LIGHT_GREY}
                                         onChangeText={props.handleChange('password')} 
                                         value = {props.values.password}
                                         secureTextEntry

@@ -31,8 +31,9 @@ export const CommentInput = styled.TextInput`
     borderRadius: 5px;
     padding: 7px;
     marginBottom: 10px;
-    height: 70px;
+    height: 50px;
     fontFamily: "text";
+    color: ${props => props.theme.PRIMARY_COLOR};
 `
 
 export const RatingContainer = styled.View`
