@@ -3,7 +3,8 @@ export const pinkTheme = {
     BG_COLOR: "#333333",
     PRIMARY_COLOR: "#dea5a4",
     GREY: "#ACAAAD",
-    LIGHT_GREY: "#D3D3D3"
+    LIGHT_GREY: "#D3D3D3",
+    BG_COMPLIMENT: "#545454"
 }
 
 export const rubyTheme = {
@@ -11,7 +12,8 @@ export const rubyTheme = {
     BG_COLOR: "#000000",
     PRIMARY_COLOR: "#BA0000",
     GREY: "#ACAAAD",
-    LIGHT_GREY: "#D3D3D3"
+    LIGHT_GREY: "#D3D3D3",
+    BG_COMPLIMENT: "#333333"
 }
 
 export const lavenderTheme = {
@@ -19,7 +21,8 @@ export const lavenderTheme = {
     BG_COLOR: "#FFFFFF",
     PRIMARY_COLOR: "#AFABDA",
     GREY: "#808080",
-    LIGHT_GREY: "#A8A8A8"
+    LIGHT_GREY: "#A8A8A8",
+    BG_COMPLIMENT: "#e6e6e6"
 }
 
 export const oliveTheme = {
@@ -27,6 +30,7 @@ export const oliveTheme = {
     BG_COLOR: "#FFFFFF",
     PRIMARY_COLOR: "#AAC2AE",
     GREY: "#808080",
-    LIGHT_GREY: "#A8A8A8"
+    LIGHT_GREY: "#A8A8A8",
+    BG_COMPLIMENT: "#e6e6e6"
 }
 

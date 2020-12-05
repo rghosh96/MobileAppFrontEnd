@@ -18,8 +18,7 @@ export const ModalContainer = styled.View`
     alignItems: center;
 `;
 
-export const ListContainer = styled.View`
-    flex: 1;
+export const ListContainer = styled.ScrollView`
     paddingRight: 10px;
     paddingLeft: 10px;
 `;

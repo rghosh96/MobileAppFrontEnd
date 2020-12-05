@@ -486,24 +486,21 @@ class Settings extends Component {
         <ThemeProvider theme={ this.props.theme }>
            {console.log(this.props.theme)}
             <SettingContainer>
+              <View>
                     <HeaderText>settings</HeaderText>
                     <Subtitle>here u view ur profile, update your info, change the app theme, etc!</Subtitle>
                     <Line />
-
+                    </View>
+                <View style={{flex: .7}}>
                 <Collapse>
                     <CollapseHeader>
                         <Title> ⊳ general user info </Title>
                         <Subtitle>view & edit ur profile info</Subtitle>
                     </CollapseHeader>
-                    <CollapseBody>
+                    <CollapseBody style={{flex: 1}}>
                     <Subtitle>tap items with the pencil to edit the information</Subtitle>
-                    <ListContainer>
-                    <KeyboardAwareScrollView
-                    style={{ backgroundColor: this.props.theme.BG_COLOR, maxHeight: 500}}
-                    resetScrollToCoords={{ x: 0, y: 0 }}
-                    scrollEnabled={true}
-                    keyboardShouldPersistTaps={'handled'}
-                    >
+                    <ListContainer >
+                  
                     <InfoArea>  
                     <ProfileImage source={{uri: this.state.userData.userPROFILEPIC}} />
                     <Text onPress={() => {
@@ -565,21 +562,21 @@ class Settings extends Component {
                     <EditItem>enrolled courses</EditItem>
                     <UserAttribute>{this.state.userData.userCLASSES}</UserAttribute>
                     </InfoArea>
-                    </KeyboardAwareScrollView>
+                   
                     </ListContainer>
                     </CollapseBody>
                 </Collapse>
         <Line /> 
-        <Collapse>
+        <Collapse >
               <CollapseHeader>
                 <Title> ⊳ user interests info </Title>
                 <Subtitle>view & edit your current interests</Subtitle>
               </CollapseHeader>
-              <CollapseBody>
+              <CollapseBody style={{flex: 1}}>
               <Subtitle>tap to edit your interest info!</Subtitle>
-              <ListContainer>
+              <ListContainer style={{flex: .75}}>
               <KeyboardAwareScrollView
-                    style={{ backgroundColor: this.props.theme.BG_COLOR, maxHeight: 400}}
+                    style={{ backgroundColor: this.props.theme.BG_COLOR}}
                     resetScrollToCoords={{ x: 0, y: 0 }}
                     scrollEnabled={true}
                     keyboardShouldPersistTaps={'handled'}
@@ -722,6 +719,7 @@ class Settings extends Component {
           body={this._body}
           keyExtractor={item => item.key}
         />        
+        </View>
         </SettingContainer>
                   
         </ThemeProvider>

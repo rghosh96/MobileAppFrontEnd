@@ -43,7 +43,7 @@ class Dashboard extends Component {
             // if successful addition to db, navigate to create profile
             console.log("finally block") 
         })
-}
+  }
 
   async getToken(user) {
     try {

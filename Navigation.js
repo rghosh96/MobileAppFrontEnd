@@ -5,7 +5,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import Dashboard from './components/Dashboard';
-import Explore from './components/Explore';
+import Explore from './components/Explore/Explore';
 import Chat from './components/Chat';
 import Connections from './components/Connections';
 import Settings from './components/Settings/Settings';
@@ -64,8 +64,8 @@ const TabNavigation = () => {
         <Tab.Navigator 
             initialRouteName="Dashboard"
             activeColor="#f0edf6"
-            labeled={true}
             style={{backgroundColor: bg}}
+            labeled={true}
             barStyle={{ 
                 backgroundColor: primary, 
                 borderRadius: 30,
@@ -74,7 +74,7 @@ const TabNavigation = () => {
                 marginBottom: 25,
                 marginLeft: 15,
                 marginRight: 15,
-                flex: .07
+                flex: .07,
             }}>
         <Tab.Screen             
             name="Dashboard"

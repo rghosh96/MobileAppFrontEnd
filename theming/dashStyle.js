@@ -20,7 +20,7 @@ export const ProfileText = styled.Text`
   color: ${props => props.theme.GREY};
   textAlign: left;
   margin: 15px;
-  fontSize: 19px;
+  fontSize: 17px;
   fontFamily: "text";
 `;
 
@@ -35,8 +35,8 @@ export const HeaderText = styled.Text`
 
 
 export const ProfileImage = styled.Image`
-  height: 175px;
-  width: 175px;
+  height: 165px;
+  width: 165px;
   borderRadius: 100px;
 `;
 
@@ -60,7 +60,7 @@ export const MatchesContainer = styled.View`
   flex: .175;
   width: 100%;
   flexDirection: row;
-  justifyContent: space-between;
+  justifyContent: space-around;
   alignItems: center;
 `;
 
