@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
+import * as Font from 'expo-font';
 import themeReducer from './redux/themeReducer';
-import {Navigation, FirstNav} from './Navigation'
+import {Navigation, FirstNav, ReturningUser} from './Navigation'
 import AsyncStorage from '@react-native-community/async-storage'
 
 const store = createStore(combineReducers({themeReducer}), applyMiddleware(thunk))
@@ -12,6 +13,17 @@ const store = createStore(combineReducers({themeReducer}), applyMiddleware(thunk
 
 export default function App() {
   const [isFirstLaunch, setIsFirstLaunch] = React.useState(null)
+  const [user, setUser] = React.useState(null)
+  const [fontsLoaded, setFontsLoaded] = React.useState(false)
+
+  useEffect(() => {
+    Font.loadAsync({
+        header: require('./assets/fonts/ArchivoBlack-Regular.ttf'),
+        text: require('./assets/fonts/Spartan-Medium.ttf')
+    }).then(() => {
+      setFontsLoaded(true)
+    })
+  }, []);
 
   useEffect(() => {
     AsyncStorage.getItem('alreadyLaunched').then(value => {
@@ -23,13 +35,26 @@ export default function App() {
         setIsFirstLaunch(false);
       }
     })
+    AsyncStorage.getItem('user').then(value => {
+      if (value == null) {
+        AsyncStorage.setItem('user', value);
+        setUser(true);
+      } else {
+        setUser(false);
+      }
+    })
   }, []);
 
+ 
   if (isFirstLaunch === null) {
     return null;
-  } else if (isFirstLaunch === true) {
+  } else if (isFirstLaunch === true && user===false) {
     return ( <Provider store={ store }>
       <FirstNav />
+    </Provider>) 
+  } else if (isFirstLaunch === false && user ===false && fontsLoaded) {
+    return ( <Provider store={ store }>
+      <ReturningUser />
     </Provider>) 
   } else {
     return (
@@ -39,7 +64,6 @@ export default function App() {
       
     );
   }
-  
 }
 
 

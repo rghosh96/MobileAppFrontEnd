@@ -244,6 +244,19 @@ class Settings extends Component {
       }
     }
 
+    async resetToken() {
+      try {
+        await AsyncStorage.setItem("user", null);
+     } catch (error) {
+       console.log("Something went wrong", error);
+     }
+     this.props.navigation.navigate("SignUp")
+    }
+
+    signOut = () => {
+      this.resetToken();
+    }
+
     async componentDidMount() {
       this.getToken()
     }
@@ -720,6 +733,9 @@ class Settings extends Component {
           keyExtractor={item => item.key}
         />        
         </View>
+        <Button onPress={() => { this.signOut() }} >
+            <ButtonText>Sign Out</ButtonText>
+            </Button> 
         </SettingContainer>
                   
         </ThemeProvider>

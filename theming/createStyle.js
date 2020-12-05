@@ -107,6 +107,16 @@ export const H1 = styled.Text`
   textAlign: left;
 `;
 
+export const ExpText = styled.Text`
+  color: ${props => props.theme.LIGHT_GREY};
+  fontFamily: "text";
+  fontSize: 11px;
+  textAlign: left;
+  marginLeft: 10px;
+  marginRight: 10px;
+  marginTop: 5px;
+`;
+
 export const H2 = styled.Text`
   color: ${props => props.theme.GREY};
   fontFamily: "text";

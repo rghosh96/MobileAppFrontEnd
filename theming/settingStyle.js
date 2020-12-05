@@ -34,6 +34,8 @@ export const ModalView = styled.View`
   opacity: 1;
 `;
 
+
+
 export const ImageUploadArea = styled.View`
     
 `;

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
 import { Subtitle, HeaderText, Button, ButtonText, Line } from '../../theming/masterStyle'
 import { BioInput, SectionArea, SingleLineInput, FormArea, CreateProfileContent, ErrorText, H1, H2,
-    HeaderContainer } from '../../theming/createStyle'
+    HeaderContainer, ExpText } from '../../theming/createStyle'
 import { Formik } from 'formik'
 import * as yup from 'yup';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -40,6 +40,7 @@ class GetUserInfo extends Component {
         major: '',
         graddate: '',
         hometown: '',
+        exp: '',
         imageURI: '',
         cloudinaryURL: null
       }
@@ -79,7 +80,8 @@ class GetUserInfo extends Component {
             classification: info.classification,
             major: info.major,
             graddate: info.graddate,
-            hometown: info.hometown
+            hometown: info.hometown,
+            exp: info.exp
         })
         console.log(this.state)
         this.updateUserDB()
@@ -98,6 +100,7 @@ class GetUserInfo extends Component {
                     userGRADE_LEVEL: this.state.classification,
                     userABOUT: this.state.bio,
                     userGENDER: this.state.gender,
+                    userPROGRAM_EXP: this.state.exp,
                     userPROFILEPIC: this.state.cloudinaryURL
                 }
             })
@@ -204,6 +207,25 @@ class GetUserInfo extends Component {
                                             {label: 'computer science', value: 'computer science'},
                                             {label: 'computer engineering', value: 'computer engineering'},
                                             {label: 'mathematics', value: 'mathematics'},
+                                        ]}
+                                        style={dropdown(this.props)}
+                                    />
+
+                                    <SectionArea>      
+                                    <H2>what is ur level of programming experience?</H2>
+                                    
+                                    <ErrorText>{props.touched.exp && props.errors.exp }</ErrorText>
+                                    </SectionArea> 
+                                    <ExpText>little - i've never coded in my life!!</ExpText>
+                                    <ExpText>moderate - introduced in hs, have coded before, or have taken a couple programming courses</ExpText>
+                                    <ExpText>a lot - i'm an upperclassman, have had a coding job, or have been coding since i was like 5</ExpText>
+                                    <RNPickerSelect
+                                        placeholder={{ label: 'i would say say... ▽', value: null}}
+                                        onValueChange={(value) => props.setFieldValue('exp', value)}
+                                        items={[
+                                            {label: 'little', value: 'little - never coded in my life!!'},
+                                            {label: 'moderate', value: 'a bit - introduced in hs, have coded before, or have taken a couple programming courses'},
+                                            {label: 'a lot', value: 'a lot - am an upperclassman, have had a coding job, or have been coding since i was like 5'},
                                         ]}
                                         style={dropdown(this.props)}
                                     />
