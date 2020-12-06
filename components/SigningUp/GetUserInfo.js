@@ -223,9 +223,9 @@ class GetUserInfo extends Component {
                                         placeholder={{ label: 'i would say say... ▽', value: null}}
                                         onValueChange={(value) => props.setFieldValue('exp', value)}
                                         items={[
-                                            {label: 'little', value: 'little - never coded in my life!!'},
-                                            {label: 'moderate', value: 'a bit - introduced in hs, have coded before, or have taken a couple programming courses'},
-                                            {label: 'a lot', value: 'a lot - am an upperclassman, have had a coding job, or have been coding since i was like 5'},
+                                            {label: 'little', value: '1'},
+                                            {label: 'moderate', value: '2'},
+                                            {label: 'a lot', value: '3'},
                                         ]}
                                         style={dropdown(this.props)}
                                     />

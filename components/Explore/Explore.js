@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
 import AsyncStorage from '@react-native-community/async-storage'
 import Modal from 'react-native-modal';
-import ProfileModal from './ProfileModal'
-import ProfileCard from './ProfileCard'
+import ProfileModal from '../ProfileModal'
+import ProfileCard from '../ProfileCard'
 import { ModalContainer } from '../../theming/settingStyle'
 import { AllUsersList } from '../../theming/exploreStyle'
 import { HeaderText, Subtitle, Container, Text, HeaderContainer } from '../../theming/masterStyle'
@@ -17,14 +17,17 @@ class Explore extends Component {
         super(props);
         this.closeModal = this.closeModal.bind(this)
         this.setModalVisible = this.setModalVisible.bind(this)
+        this.likeUser = this.likeUser.bind(this)
       }
 
     state = {
+        user: '',
         allUsers: [],
         modalContent: '',
         modalVisible: false,
         modalUser: null,
         userInterests: null,
+        matches: []
     }
 
     getAllUsers() {
@@ -52,6 +55,26 @@ class Explore extends Component {
             console.log("finally block") 
         })
     }
+
+    getAllMatches(user) {
+        console.log("in get user interests")
+        var data;
+        let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/interaction/getMatches?USER_id=" + user;
+        console.log(apiEndpoint)
+        // call api endpoint, sending in user to add to db
+        fetch(apiEndpoint)
+            .then((response) => response.text())
+            .then((json) => {
+              // parse the response & extract data
+              data = JSON.parse(json)
+              console.log(data)
+              this.setState({ matches: data.result })
+            })
+            .catch((error) => console.error(error))
+            .finally(() => {
+              console.log("finally block") 
+            })
+      }
 
     getUserInterests(user) {
         console.log("in get user interests")
@@ -83,6 +106,50 @@ class Explore extends Component {
             })
       }
 
+      likeUser(likedUser, likeAction) {
+        console.log("in interactions")
+        console.log(this.state.user)
+        console.log(likedUser)
+        console.log(likeAction)
+        // create user body to send to api
+        const like={
+            method: 'POST',
+            headers:{'Content-Type': 'application/json'},
+            body: JSON.stringify(
+                {user1: this.state.user, 
+                user2:likedUser, 
+                action: likeAction})
+        }
+        console.log(like)
+        // call api endpoint, sending in user to add to db
+        fetch(`http://mobile-app.ddns.uark.edu/CRUDapis/interaction/addInteraction`, like)
+            .then((response) => response.text())
+            .then((json) => {
+                // parse the response & extract data
+                let data = JSON.parse(json)
+                console.log(data)
+            })
+            .catch((error) => console.error(error))
+            .finally(() => {
+                // if successful addition to db, navigate to create profile
+                console.log("finally block for interactions")
+                this.getAllMatches(this.state.user)
+            })
+      }
+
+      async getToken() {
+        try {
+            console.log("before getting item");
+          let userId = await AsyncStorage.getItem("user");
+          this.setState({user: userId})
+          this.getAllUsers(this.state.user)
+          this.getAllMatches(this.state.user)
+        } catch (error) {
+          console.log("Something went wrong", error);
+        }
+        this.setState({userLoaded: true})
+      }  
+
     setModalVisible(user) {
         console.log("set modal visible")
         this.getUserInterests(user)
@@ -97,7 +164,10 @@ class Explore extends Component {
 
       async componentDidMount() {
         console.log("in component did mount")
-        this.getAllUsers()
+        this.getToken()
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            this.getToken()
+          });
       }
 
   render() {
@@ -129,14 +199,22 @@ class Explore extends Component {
                 </HeaderContainer>
                 
                 <AllUsersList>
-                    {console.log("ALL USERS LIST")}
-                    {console.log(this.state.allUsers)}
-                   {this.state.allUsers.map((user) => {
-                       return (
+                    {/* {console.log("ALL USERS LIST")}
+                    {console.log(this.state.allUsers)} */}
+                    {console.log(this.state.matches)}
+                   {this.state.allUsers.map((user, index) => {
+                       console.log("INSIDE MAP " + user.userID)
+                       
+                       let isLiked = this.state.matches.includes(user.userID)
+                       console.log("is liked? " + isLiked)
+                       return user.userID != this.state.user ? (
                         <ProfileCard 
                             setModalVisible={this.setModalVisible}
-                            user={user}/>
-                       )
+                            user={user}
+                            key={index}
+                            likeUser={this.likeUser}
+                            isLiked={isLiked}/> 
+                       )  :  null 
                     })}
                 </AllUsersList>
                 

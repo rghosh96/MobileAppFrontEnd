@@ -23,6 +23,23 @@ export default function App() {
     }).then(() => {
       setFontsLoaded(true)
     })
+    AsyncStorage.getItem('alreadyLaunched').then(value => {
+      if (value == null) {
+        AsyncStorage.setItem('alreadyLaunched', 'true');
+        setIsFirstLaunch(true);
+      } else {
+        AsyncStorage.setItem('alreadyLaunched', 'false');
+        setIsFirstLaunch(false);
+      }
+    })
+    AsyncStorage.getItem('user').then(value => {
+      if (value == null) {
+        AsyncStorage.setItem('user', value);
+        setUser(true);
+      } else {
+        setUser(false);
+      }
+    })
   }, []);
 
   useEffect(() => {
@@ -45,10 +62,11 @@ export default function App() {
     })
   }, []);
 
- 
+ console.log(user)
+
   if (isFirstLaunch === null) {
     return null;
-  } else if (isFirstLaunch === true && user===false) {
+  } else if (isFirstLaunch === true && user===false && fontsLoaded) {
     return ( <Provider store={ store }>
       <FirstNav />
     </Provider>) 
@@ -56,14 +74,14 @@ export default function App() {
     return ( <Provider store={ store }>
       <ReturningUser />
     </Provider>) 
-  } else {
+  } else if (user === true && fontsLoaded) {
     return (
       <Provider store={ store }>
         <Navigation />
       </Provider>
       
     );
-  }
+  } else { return null}
 }
 
 

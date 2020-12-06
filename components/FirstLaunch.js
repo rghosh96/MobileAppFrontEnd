@@ -24,18 +24,7 @@ class FirstLaunch extends Component {
     state = {
         loaded: false,
       }
-      // load fonts
-      async componentDidMount() {
-        try {
-          await Font.loadAsync({
-            header: require('../assets/fonts/ArchivoBlack-Regular.ttf'),
-            text: require('../assets/fonts/Spartan-Medium.ttf')
-        })
-        this.setState({ loaded: true })
-        } catch(e){
-          console.log("error loading fonts")
-        }
-      }
+
       render() {
         console.log(this.props.theme)
         if (!this.state.loaded) {

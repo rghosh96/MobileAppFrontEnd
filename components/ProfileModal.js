@@ -1,11 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Button, ButtonText, Subtitle } from '../../theming/masterStyle'
-import { Title, Line } from '../../theming/settingStyle'
-import { ModalView, Header, ModalTitle, ModalSubtitle, ProfileImage, InterestsView, InterestHeader } from '../../theming/exploreStyle'
-import CustomRatings from '../CustomRatings'
+import { Button, ButtonText, Subtitle } from '../theming/masterStyle'
+import { Title, Line } from '../theming/settingStyle'
+import { ModalView, Header, ModalTitle, ModalSubtitle, ProfileImage, InterestsView, InterestHeader } from '../theming/exploreStyle'
+import CustomRatings from './CustomRatings'
 import { ScrollView } from 'react-native'
-import LikeButton from './LikeButton'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 
 
@@ -28,6 +28,12 @@ import LikeButton from './LikeButton'
             
             <ModalTitle>Hometown:</ModalTitle>
             <Subtitle>{props.user.userHOMETOWN}</Subtitle>
+
+            <ModalTitle>Programming Experience: </ModalTitle>
+            {props.user.userPROGRAM_EXP == 1 ? <Subtitle>little</Subtitle> : null}
+            {props.user.userPROGRAM_EXP == 2 ? <Subtitle>moderate</Subtitle> : null}
+            {props.user.userPROGRAM_EXP == 3 ? <Subtitle>a lot</Subtitle> : null}
+
             <ModalTitle>Classes:</ModalTitle>
             <Subtitle>{props.user.userCLASSES}</Subtitle>
             <ModalTitle>Interests:</ModalTitle>
@@ -110,9 +116,6 @@ import LikeButton from './LikeButton'
             props.userInterests.interestREADING_COMMENT : "--"}</ModalSubtitle>
             </InterestsView>
             <Line />
-                <Subtitle>Like {props.user.userFNAME}? </Subtitle>
-                <ModalSubtitle>yes!!</ModalSubtitle>
-                <LikeButton type="account-heart" bg={primary}/>
             <Button onPress={() => { props.closeModal(); }} >
                 <ButtonText>Done</ButtonText>
             </Button>

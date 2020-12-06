@@ -8,7 +8,8 @@ const LikeButton = (props) => {
             <MaterialCommunityIcons 
                 name={type}
                 color={ props.bg}
-                size={41} />
+                size={41}
+                onPress={props.likeUser(props.userID, "yes")} />
         
     )
 }

@@ -1,16 +1,17 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { CardContainer, ProfileImage, InfoSection,
-    Subtitle, Title  } from '../../theming/exploreStyle'
-import LikeButton from './LikeButton'
+    Subtitle, Title  } from '../theming/exploreStyle'
+import LikeButton from './Explore/LikeButton'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 
 
 const ProfileCard = (props) => {
     console.log("IN PROFILE CARD")
-    console.log(props.user)
+    console.log(props.isLiked)
     console.log(useSelector)
-    const liked = "heart"
+    const icon = props.isLiked ? "heart" : "heart-outline"
     const bg = useSelector(state => state.themeReducer.theme.BG_COLOR);
     const imageURI = props.user.userPROFILEPIC != null ? props.user.userPROFILEPIC : ""
     return (
@@ -25,7 +26,11 @@ const ProfileCard = (props) => {
                 <Subtitle>{props.user.userMAJOR}</Subtitle>
             </InfoSection>
 
-            <LikeButton type={liked} bg={bg} />
+            <MaterialCommunityIcons 
+                name={icon}
+                color={ bg}
+                size={41}
+                onPress={props.isLiked ? () => props.likeUser(props.user.userID, "no") : () => props.likeUser(props.user.userID, "yes")} />
 
         </CardContainer>
         

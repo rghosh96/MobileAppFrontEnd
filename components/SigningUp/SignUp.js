@@ -30,6 +30,7 @@ class SignUp extends Component {
         try {
             console.log("before getting item");
           let userId = await AsyncStorage.getItem("user");
+          console.log(userId)
         } catch (error) {
           console.log("Something went wrong", error);
         }

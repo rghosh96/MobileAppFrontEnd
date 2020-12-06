@@ -733,9 +733,9 @@ class Settings extends Component {
           keyExtractor={item => item.key}
         />        
         </View>
-        <Button onPress={() => { this.signOut() }} >
+        {/* <Button onPress={() => { this.signOut() }} >
             <ButtonText>Sign Out</ButtonText>
-            </Button> 
+            </Button>  */}
         </SettingContainer>
                   
         </ThemeProvider>
