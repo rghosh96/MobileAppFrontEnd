@@ -27,7 +27,7 @@ const ProfileCard = (props) => {
             </InfoSection>
 
             <MaterialCommunityIcons 
-                name={icon}
+                name={props.icon}
                 color={ bg}
                 size={41}
                 onPress={props.isLiked ? () => props.likeUser(props.user.userID, "no") : () => props.likeUser(props.user.userID, "yes")} />

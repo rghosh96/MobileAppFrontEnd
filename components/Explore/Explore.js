@@ -206,13 +206,17 @@ class Explore extends Component {
                        console.log("INSIDE MAP " + user.userID)
                        
                        let isLiked = this.state.matches.includes(user.userID)
+                       let icon;
                        console.log("is liked? " + isLiked)
+                       isLiked ? icon = "heart" : icon = "heart-outline"
+                       console.log(icon)
                        return user.userID != this.state.user ? (
                         <ProfileCard 
                             setModalVisible={this.setModalVisible}
                             user={user}
                             key={index}
                             likeUser={this.likeUser}
+                            icon={icon}
                             isLiked={isLiked}/> 
                        )  :  null 
                     })}

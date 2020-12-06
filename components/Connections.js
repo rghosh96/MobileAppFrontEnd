@@ -9,6 +9,7 @@ import ProfileCard from './ProfileCard'
 import { AllUsersList } from '../theming/exploreStyle'
 import Modal from 'react-native-modal';
 import { ModalContainer } from '../theming/settingStyle'
+import { AppLoading } from 'expo';
 
 class Connections extends Component {
     constructor(props) {
@@ -29,13 +30,12 @@ class Connections extends Component {
         modalVisible: false,
         modalUser: null,
         userInterests: null,
+        loading: false
       }
 
       likeUser(likedUser, likeAction) {
+          this.setState({loading: false})
         console.log("in interactions")
-        console.log(this.state.user)
-        console.log(likedUser)
-        console.log(likeAction)
         // create user body to send to api
         const like={
             method: 'POST',
@@ -58,8 +58,7 @@ class Connections extends Component {
             .finally(() => {
                 // if successful addition to db, navigate to create profile
                 console.log("finally block for interactions")
-                likeAction === "no" ?
-                this.getAllMatches(this.state.user, true) : this.getAllMatches(this.state.user, false) 
+                this.getAllMatches(this.state.user) 
             })
       }
 
@@ -93,7 +92,7 @@ class Connections extends Component {
               console.log("finally block") 
             })
       }
-    getAllMatches(user, remove) {
+    getAllMatches(user) {
         console.log("in get all matches")
         var data;
         let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/interaction/getMatches?USER_id=" + user;
@@ -111,22 +110,19 @@ class Connections extends Component {
             .finally(() => {
               if (data.isError === false) {
                 console.log("we got set the data!")
-                
               }
             //   this.setState({interestsLoaded: true})
               // if successful addition to db, navigate to create profile
               console.log("finally block") 
-              if (this.state.matches.length === 0) {
                    this.setState({likedUsers: []})
-                } else {
                     for (var i = 0; i < this.state.matches.length; i++) {
-                        this.getUserData(this.state.matches[i], remove)
-                    }
-                }     
+                        this.getUserData(this.state.matches[i])
+                }   
+                this.setState({loading: true})  
             })
       }
 
-      getUserData(user, remove) {
+      getUserData(user) {
         console.log("in get user data")
         var data;
         let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/users/getUser?USER_id=" + user;
@@ -138,18 +134,8 @@ class Connections extends Component {
                 // parse the response & extract data
                 data = JSON.parse(json)
                 if (data.isError === false) {
-                  console.log("REMOVE IS")
-                  console.log(remove)
-                  if (remove === true) {
-                      let newArray = this.state.likedUsers.filter(rUser => 
-                        rUser.userID === user 
-                        )
-                        console.log("NEW ARRAY")
-                      console.log(newArray)
-                      this.setState({ likedUsers: newArray})
-                  } else {
                     this.setState({ likedUsers: [...this.state.likedUsers, data.result[0]] })
-                  }
+                  
                 } else {console.log("ERROR")
             console.log(data)}
             })
@@ -208,36 +194,37 @@ class Connections extends Component {
         default:
             break;
         }
+        let connectionsDisplay;
+        this.state.matches.length === 0 ?
+            connectionsDisplay =  <AllUsersList>
+            <Subtitle>you have no connections ... yet! check back occasionally!</Subtitle>
+            </AllUsersList>
+            :
+            connectionsDisplay = <AllUsersList>
+            {this.state.likedUsers.map((user, index) => {
+                return  (
+                 <ProfileCard 
+                     setModalVisible={this.setModalVisible}
+                     user={user}
+                     key={index}
+                     likeUser={this.likeUser}
+                     icon="heart"
+                     isLiked={true}/> 
+                ) 
+             })}
+         </AllUsersList>
+    if (!this.state.loading)
+    {
+        return (<AppLoading/>)
+    } else {
     return (
         <ThemeProvider theme={ this.props.theme }>
             
             <Container>
                 <HeaderContainer>
                     <HeaderText>connections</HeaderText>
-                    <Subtitle>here are all your connections!</Subtitle>
-                    {console.log(this.state.matches)}
-                    {console.log(this.state.likedUsers)}
                 </HeaderContainer>
-                {this.state.matches.length === 0 ? 
-                <AllUsersList>
-                <Subtitle>you have no connections ... yet! check back occasionally!</Subtitle>
-                </AllUsersList>
-                :
-                <AllUsersList>
-                   {this.state.likedUsers.map((user, index) => {
-                       return  (
-                        <ProfileCard 
-                            setModalVisible={this.setModalVisible}
-                            user={user}
-                            key={index}
-                            likeUser={this.likeUser}
-                            isLiked={true}/> 
-                       ) 
-                    })}
-                </AllUsersList>
-                }
-                
-                
+                {connectionsDisplay}
                 <Modal isVisible={this.state.modalVisible}>
                     <ModalContainer>
                         {modalDisplay}
@@ -246,7 +233,7 @@ class Connections extends Component {
             </Container>
         </ThemeProvider>
     );
-  }
+  } }
 }
 
 function mapStateToProps(state) {

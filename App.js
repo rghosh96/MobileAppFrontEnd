@@ -33,7 +33,7 @@ export default function App() {
       }
     })
     AsyncStorage.getItem('user').then(value => {
-      if (value == null) {
+      if (value != null) {
         AsyncStorage.setItem('user', value);
         setUser(true);
       } else {
@@ -42,25 +42,6 @@ export default function App() {
     })
   }, []);
 
-  useEffect(() => {
-    AsyncStorage.getItem('alreadyLaunched').then(value => {
-      if (value == null) {
-        AsyncStorage.setItem('alreadyLaunched', 'true');
-        setIsFirstLaunch(true);
-      } else {
-        AsyncStorage.setItem('alreadyLaunched', 'false');
-        setIsFirstLaunch(false);
-      }
-    })
-    AsyncStorage.getItem('user').then(value => {
-      if (value == null) {
-        AsyncStorage.setItem('user', value);
-        setUser(true);
-      } else {
-        setUser(false);
-      }
-    })
-  }, []);
 
  console.log(user)
 
