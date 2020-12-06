@@ -18,8 +18,9 @@ class Dashboard extends Component {
     userLoaded: false,
     userData: '',
     isFirstLaunch: true,
+    numMatches: null,
     randomMatches: [],
-     loaded: false
+    loaded: false
   }
 
   getUserData(user, request) {
@@ -81,13 +82,36 @@ class Dashboard extends Component {
         })
   }
 
-  async getToken(user) {
+  getAllMatches(user) {
+    console.log("in get all matches")
+    var data;
+    let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/interaction/getMatches?USER_id=" + user;
+    console.log(apiEndpoint)
+    // call api endpoint, sending in user to add to db
+    fetch(apiEndpoint)
+        .then((response) => response.text())
+        .then((json) => {
+          // parse the response & extract data
+          data = JSON.parse(json)
+          console.log(data)
+          this.setState({ numMatches: data.result.length })
+        })
+        .catch((error) => console.error(error))
+        .finally(() => {
+        //   this.setState({interestsLoaded: true})
+          // if successful addition to db, navigate to create profile
+          console.log("finally block")  
+        })
+  }
+
+  async getToken() {
     try {
         console.log("before getting item");
       let userId = await AsyncStorage.getItem("user");
       this.setState({user: userId})
       this.getUserData(this.state.user, 0)
       this.getRandomMatches(this.state.user)
+      this.getAllMatches(this.state.user)
     } catch (error) {
       console.log("Something went wrong", error);
     }
@@ -162,7 +186,7 @@ class Dashboard extends Component {
                 </MatchesContainer>
 
                 <ConnectionsContainer>
-                  <Connections>11</Connections>
+                  <Connections>{this.state.numMatches}</Connections>
                   <Text>total connections</Text>
                 </ConnectionsContainer>
                 
