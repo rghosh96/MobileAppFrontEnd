@@ -190,7 +190,7 @@ class Chat extends Component {
         
             <ChatContainer>
             <ChatHeaderContainer>
-              <MaterialCommunityIcons  name="keyboard-backspace" onPress={() => this.props.navigation.navigate('ChatList')} size={35} color={this.props.theme.PRIMARY_COLOR} />
+              <MaterialCommunityIcons  name="keyboard-backspace" onPress={() => this.props.navigation.navigate('Chat')} size={35} color={this.props.theme.PRIMARY_COLOR} />
               <ChatHeader>{this.state.f_name}</ChatHeader>
             </ChatHeaderContainer>
             <Line />

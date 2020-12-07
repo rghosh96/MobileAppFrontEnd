@@ -47,7 +47,7 @@ export const Navigation = () => (
         <DashboardStack.Navigator screenOptions={{ headerShown: false }}>
             <DashboardStack.Screen name="Dashboard" component = {TabNavigation} />
             <DashboardStack.Screen name="SignUp" component = {SignUp} /> 
-            <DashboardStack.Screen name="Chat" component = {Chat} /> 
+            <DashboardStack.Screen name="IndivChat" component = {Chat} /> 
             <DashboardStack.Screen name="ProfileSettings" component = {ProfileSettings} /> 
             <DashboardStack.Screen name="InterestSettings" component = {InterestSettings} /> 
             <DashboardStack.Screen name="ThemeSettings" component = {ThemeSettings} /> 
@@ -61,7 +61,7 @@ export const ReturningUser = () => (
         <DashboardStack.Navigator screenOptions={{ headerShown: false }}>
             <DashboardStack.Screen name="SignUp" component = {SignUp} /> 
             <DashboardStack.Screen name="Dashboard" component = {TabNavigation} />
-            <DashboardStack.Screen name="Chat" component = {Chat} /> 
+            <DashboardStack.Screen name="IndivChat" component = {Chat} /> 
             <DashboardStack.Screen name="ProfileSettings" component = {ProfileSettings} /> 
             <DashboardStack.Screen name="InterestSettings" component = {InterestSettings} /> 
             <DashboardStack.Screen name="ThemeSettings" component = {ThemeSettings} /> 

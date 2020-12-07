@@ -141,7 +141,7 @@ class ChatList extends Component {
         <View key={index}>
           <TouchableOpacity 
             onPress={() =>
-              this.props.navigation.navigate('Chat', {
+              this.props.navigation.navigate('IndivChat', {
                 name: match.userFNAME,
                 avatar: match.userPROFILE_PIC,
                 uname: match.userID,
