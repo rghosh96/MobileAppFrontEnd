@@ -1,25 +1,22 @@
 import React, { Component } from 'react';
+import { ThemeProvider } from 'styled-components/native';
+import { pickTheme } from '../../redux/actions'
+import { connect } from 'react-redux';
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
-  Image,
-  Alert,
-  ScrollView,
-  Dimensions,
-  TextInput,
-  FlatList,
-  Button,
-  AsyncStorage
+  KeyboardAvoidingView,
+  TextInput
 } from 'react-native';
 
 import firebaseSDK from '../../firebaseSDK'
+import { ChatContainer, ChatList, SendButton, ChatHeader, ChatHeaderContainer, ChatFooter, ChatInput, ChatText } from '../../theming/chatStyle';
+import { Subtitle } from '../../theming/masterStyle'
+import { Line } from '../../theming/settingStyle'
 
-const screenWidth = Math.round(Dimensions.get('window').width);
-const screenHeight = Math.round(Dimensions.get('window').height);
-
-export default class Chat extends Component {
+class Chat extends Component {
 
   constructor(props) {
 
@@ -108,13 +105,7 @@ export default class Chat extends Component {
     let Data=this.state.chatData 
 
     let chats=Data.map((c_data, index)=>{
-
-      console.log('f_name = ' + this.state.f_name);
-      console.log('c_data.fname = ' + c_data.fname);
-      console.log('u_name = ' + this.state.u_name);
-      console.log('c_data.user.uname = ' + c_data.user.uname);
-      console.log('text = ' + c_data.text)
-//      console.log(c_data)
+    console.log(this.props.theme)
 
           if(
             // if you are sender, name on message is f_name and reciever will be u_name
@@ -129,7 +120,7 @@ export default class Chat extends Component {
 
                     <View  key={index} style={{
 
-                      backgroundColor:"#91d0fb",
+                      backgroundColor:this.props.theme.PRIMARY_COLOR,
 
                       //padding:15,
 
@@ -149,7 +140,7 @@ export default class Chat extends Component {
 
                       }}>  
 
-                    <Text style={{fontSize:16,color:"#000" }}> {c_data.text}</Text>
+                    <ChatText> {c_data.text}</ChatText>
 
                     </View>
 
@@ -161,7 +152,7 @@ export default class Chat extends Component {
 
                     <View  key={index} style={{
 
-                      backgroundColor:"#dedede",
+                      backgroundColor:this.props.theme.SECONDARY_COLOR,
 
                       //padding:15,
 
@@ -179,7 +170,7 @@ export default class Chat extends Component {
 
                       }}>             
 
-                          <Text style={{fontSize:16,color:"#000" }}> {c_data.text}</Text>
+                          <ChatText> {c_data.text}</ChatText>
 
                     </View>
 
@@ -195,59 +186,36 @@ export default class Chat extends Component {
 
     return (
 
-        <View style={styles.container}>
-
-            <View style={{
-
-                height:screenHeight - 150,
-
-                marginVertical: 20,
-
-                flex: 1,
-
-                flexDirection: 'row',
-
-                backgroundColor:"#eeeeee",
-
-                borderRadius:10,
-
-                padding:0,
-
-              }}>
-
-              <ScrollView>       
-
-                  {chats} 
-
-              </ScrollView>
-
-            </View>
-
-            <View style={styles.footer}>
-
-                <View style={styles.inputContainer}>
-
-                  <TextInput style={styles.inputs}
-
-                      placeholder="Write a message..."
-
-                      underlineColorAndroid='transparent'
-
-                      ref={input => { this.textInput = input }}
-
-                      onChangeText={(msg) => this.setState({text:msg})}/>
-
-                </View>
-
-                <TouchableOpacity style={styles.btnSend} onPress={this.onSend}>
-
-                    <Image source={{uri:"https://www.searchpng.com/wp-content/uploads/2019/02/Send-Icon-PNG-1.png"}} style={styles.iconSend}  />
-
-                </TouchableOpacity>
-
-            </View>
-
-        </View>
+      <ThemeProvider theme={ this.props.theme }>
+        
+            <ChatContainer>
+            <ChatHeaderContainer>
+              <MaterialCommunityIcons  name="keyboard-backspace" onPress={() => this.props.navigation.navigate('ChatList')} size={35} color={this.props.theme.PRIMARY_COLOR} />
+              <ChatHeader>{this.state.f_name}</ChatHeader>
+            </ChatHeaderContainer>
+            <Line />
+                  <ChatList>       
+                      {chats} 
+                  </ChatList>
+                </ChatContainer>
+                <KeyboardAvoidingView
+                style={{ backgroundColor: this.props.theme.PRIMARY_COLOR }}
+                behavior={Platform.OS == "ios" ? "padding" : "height"}
+                >
+                <ChatFooter>
+                    <ChatInput>
+                      <TextInput style={styles.inputs}
+                          placeholder="send a chat ...!"
+                          underlineColorAndroid='transparent'
+                          ref={input => { this.textInput = input }}
+                          onChangeText={(msg) => this.setState({text:msg})}/>
+                    </ChatInput>
+                    <SendButton onPress={this.onSend}>
+                      <MaterialCommunityIcons name="send-circle" size={35} color={this.props.theme.PRIMARY_COLOR} />
+                    </SendButton>
+                </ChatFooter>
+                </KeyboardAvoidingView>
+        </ThemeProvider>
 
       )
 
@@ -279,36 +247,26 @@ const styles = StyleSheet.create({
 
     backgroundColor: '#eeeeee',
 
-    paddingHorizontal:10,
+    paddingHorizontal:30,
 
-    padding:5,
+    padding:20,
+    marginBottom: 50
 
   },
 
   btnSend:{
-
     backgroundColor:"#00BFFF",
-
     width:40,
-
     height:40,
-
     borderRadius:360,
-
     alignItems:'center',
-
     justifyContent:'center',
-
   },
 
   iconSend:{
-
     width:30,
-
     height:30,
-
     alignSelf:'center',
-
   },
 
   inputContainer: {
@@ -398,3 +356,11 @@ const styles = StyleSheet.create({
   },
 
 })
+
+function mapStateToProps(state) {
+  return {
+      theme: state.themeReducer.theme
+  }
+}
+
+export default connect(mapStateToProps, {pickTheme})(Chat);

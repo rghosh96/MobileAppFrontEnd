@@ -4,7 +4,7 @@ export const pinkTheme = {
     PRIMARY_COLOR: "#dea5a4",
     GREY: "#ACAAAD",
     LIGHT_GREY: "#D3D3D3",
-    BG_COMPLIMENT: "#545454"
+    SECONDARY_COLOR: "#ffc0bf"
 }
 
 export const rubyTheme = {
@@ -13,7 +13,7 @@ export const rubyTheme = {
     PRIMARY_COLOR: "#BA0000",
     GREY: "#ACAAAD",
     LIGHT_GREY: "#D3D3D3",
-    BG_COMPLIMENT: "#333333"
+    SECONDARY_COLOR: "#eb0e0e"
 }
 
 export const lavenderTheme = {
@@ -22,7 +22,7 @@ export const lavenderTheme = {
     PRIMARY_COLOR: "#AFABDA",
     GREY: "#808080",
     LIGHT_GREY: "#A8A8A8",
-    BG_COMPLIMENT: "#e6e6e6"
+    SECONDARY_COLOR: "#928fb5"
 }
 
 export const oliveTheme = {
@@ -31,6 +31,6 @@ export const oliveTheme = {
     PRIMARY_COLOR: "#AAC2AE",
     GREY: "#808080",
     LIGHT_GREY: "#A8A8A8",
-    BG_COMPLIMENT: "#e6e6e6"
+    SECONDARY_COLOR: "#92a695"
 }
 

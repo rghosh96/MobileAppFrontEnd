@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import { ThemeProvider } from 'styled-components/native';
+import { pickTheme } from '../../redux/actions'
+import { connect } from 'react-redux';
+import { CardContainer, ProfileImage, AllUsersList,
+     Title  } from '../../theming/exploreStyle'
 import {
   StyleSheet,
   Text,
@@ -10,12 +15,13 @@ import {
   TextInput,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
+import { HeaderText, Subtitle, Container, HeaderContainer } from '../../theming/masterStyle'
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 
 import firebaseSDK from '../../firebaseSDK';
 
-export default class ChatList extends Component {
+class ChatList extends Component {
   constructor() {
     super();
     this.state = {
@@ -85,13 +91,7 @@ export default class ChatList extends Component {
     _retrieveData = async () => {
         console.log("IN RETRIEVE DATA")
         console.log(this.state.userData)
-        // console.log("A");
-        // console.log(this.props);
-        // console.log("B");
-        //console.log(this.props.route.params.email);
         let name = this.state.userData.userLNAME;
-        //console.log(name);
-        // Probably change email to username or screen name
         let email = this.state.userData.userEMAIL;
         let avatar = this.state.userPROFILEPIC;
         let u_id = firebaseSDK.uid;
@@ -138,75 +138,47 @@ export default class ChatList extends Component {
     let Data = this.state.auth_data;
     let User = matches.map((match, index) => {
       return (
-        <View style={styles.backarrow} key={index}>
+        <View key={index}>
           <TouchableOpacity 
             onPress={() =>
               this.props.navigation.navigate('Chat', {
                 name: match.userFNAME,
                 avatar: match.userPROFILE_PIC,
                 uname: match.userID,
-              })
+            })
             }>
-            <View style={styles.list}>
-              <View style={styles.forwidth_left}>
-                <TouchableOpacity>
-                  <Image
-                    style={{
-                      width: 70,
-                      height: 70,
-                      borderRadius: 87,
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                    }}
-                    source={require('./Images/no_image.jpg')}
-                  />
+            <CardContainer>
+                    <TouchableOpacity>
+                    <ProfileImage source={{uri: match.userPROFILEPIC}} />
                 </TouchableOpacity>
-              </View>
-
-              <View style={styles.forwidth_right}>
-                <Text style={styles.price}> {match.userFNAME} {match.userLNAME} </Text>
-
-              </View>
-            </View>
+                <View style={styles.forwidth_right}>
+                <Title> {match.userFNAME} {match.userLNAME} </Title>
+                </View>
+            </CardContainer>
           </TouchableOpacity>
         </View>
       );
     });
 
     // console.log(User);
-
+    console.log(this.props)
 
     return (
-      <View style={styles.container}>
-        <TouchableOpacity>
-          <View style={styles.top_header}>
-            <TouchableOpacity>
-              <Image
-                style={styles.nav_icon}
-                source={require('./Images/nav.png')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style={styles.search_header}>
-                <Image
-                  style={styles.search_icon}
-                  source={require('./Images/search.png')}
-                />
-                <TextInput
-                  style={styles.search_box}
-                  keyboardType="web-search"
-                  placeholder="search name"
-                />
-              </View>
-            </TouchableOpacity>
-          </View>
-        </TouchableOpacity>
-        <View style={styles.home_padding}>
+        <ThemeProvider theme={ this.props.theme }>
+        <Container>
+        <HeaderContainer>
+            <HeaderText>chat</HeaderText>
+            <Subtitle>here you can chat with all your current matches. tap a user to chat!
+            </Subtitle>
+        </HeaderContainer>
+   
+        <AllUsersList>
           {/* // SCROLLVIEW HERE */}
-          <ScrollView>{User}</ScrollView>
-        </View>
-      </View>
+          {User}
+        </AllUsersList>
+     
+      </Container>
+      </ThemeProvider>
     );
   }
 }
@@ -274,3 +246,11 @@ const styles = StyleSheet.create({
     //marginRight: 20
   },
 });
+
+function mapStateToProps(state) {
+    return {
+        theme: state.themeReducer.theme
+    }
+}
+
+export default connect(mapStateToProps, {pickTheme})(ChatList);

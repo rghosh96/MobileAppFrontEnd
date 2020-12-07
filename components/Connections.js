@@ -221,9 +221,11 @@ class Connections extends Component {
         <ThemeProvider theme={ this.props.theme }>
             
             <Container>
-                <HeaderContainer>
-                    <HeaderText>connections</HeaderText>
-                </HeaderContainer>
+            <HeaderContainer>
+                <HeaderText>connections</HeaderText>
+                <Subtitle>here you can view all your current connections and their profiles.
+                </Subtitle>
+            </HeaderContainer>
                 {connectionsDisplay}
                 <Modal isVisible={this.state.modalVisible}>
                     <ModalContainer>
