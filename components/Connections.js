@@ -30,7 +30,7 @@ class Connections extends Component {
         modalVisible: false,
         modalUser: null,
         userInterests: null,
-        loading: false
+        loading: true
       }
 
       likeUser(likedUser, likeAction) {
@@ -116,9 +116,9 @@ class Connections extends Component {
               console.log("finally block") 
                    this.setState({likedUsers: []})
                     for (var i = 0; i < this.state.matches.length; i++) {
+                      console.log(i)
                         this.getUserData(this.state.matches[i])
                 }   
-                this.setState({loading: true})  
             })
       }
 
@@ -194,13 +194,21 @@ class Connections extends Component {
         default:
             break;
         }
-        let connectionsDisplay;
-        this.state.matches.length === 0 ?
-            connectionsDisplay =  <AllUsersList>
+    return (
+        <ThemeProvider theme={ this.props.theme }>
+            
+            <Container>
+            <HeaderContainer>
+                <HeaderText>connections</HeaderText>
+                <Subtitle>here you can view all your current connections and their profiles.
+                </Subtitle>
+            </HeaderContainer>
+            { this.state.matches.length === 0 ?
+            <AllUsersList>
             <Subtitle>you have no connections ... yet! check back occasionally!</Subtitle>
             </AllUsersList>
             :
-            connectionsDisplay = <AllUsersList>
+            <AllUsersList>
             {this.state.likedUsers.map((user, index) => {
                 return  (
                  <ProfileCard 
@@ -212,21 +220,7 @@ class Connections extends Component {
                      isLiked={true}/> 
                 ) 
              })}
-         </AllUsersList>
-    if (!this.state.loading)
-    {
-        return (<AppLoading/>)
-    } else {
-    return (
-        <ThemeProvider theme={ this.props.theme }>
-            
-            <Container>
-            <HeaderContainer>
-                <HeaderText>connections</HeaderText>
-                <Subtitle>here you can view all your current connections and their profiles.
-                </Subtitle>
-            </HeaderContainer>
-                {connectionsDisplay}
+         </AllUsersList> }
                 <Modal isVisible={this.state.modalVisible}>
                     <ModalContainer>
                         {modalDisplay}
@@ -235,7 +229,7 @@ class Connections extends Component {
             </Container>
         </ThemeProvider>
     );
-  } }
+  } 
 }
 
 function mapStateToProps(state) {

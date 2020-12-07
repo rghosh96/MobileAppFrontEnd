@@ -104,7 +104,7 @@ const TabNavigation = () => {
                 flex: .07,
             }}>
         <Tab.Screen             
-            name="Dashboard"
+            name="Home"
             component={Dashboard}
             options={{
             tabBarIcon: ({ color }) => (
@@ -121,7 +121,7 @@ const TabNavigation = () => {
             }}
         />
         <Tab.Screen 
-            name="ChatList"
+            name="Chat"
             component={ChatList}
             options={{
             tabBarIcon: ({ color }) => (

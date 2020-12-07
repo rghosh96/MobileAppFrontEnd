@@ -32,7 +32,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
             <ModalTitle>Programming Experience: </ModalTitle>
             {props.user.userPROGRAM_EXP == 1 ? <Subtitle>little</Subtitle> : null}
             {props.user.userPROGRAM_EXP == 2 ? <Subtitle>moderate</Subtitle> : null}
-            {props.user.userPROGRAM_EXP == 3 ? <Subtitle>a lot</Subtitle> : null}
+            {props.user.userPROGRAM_EXP == 3 ? <Subtitle>experienced</Subtitle> : null}
 
             <ModalTitle>Classes:</ModalTitle>
             <Subtitle>{props.user.userCLASSES}</Subtitle>
