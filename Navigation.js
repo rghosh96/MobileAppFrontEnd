@@ -10,6 +10,9 @@ import Chat from './components/Chat/Chat';
 import ChatList from './components/Chat/ChatList';
 import Connections from './components/Connections';
 import Settings from './components/Settings/Settings';
+import ProfileSettings from './components/Settings/ProfileSettings';
+import InterestSettings from './components/Settings/InterestSettings';
+import ThemeSettings from './components/Settings/ThemeSettings';
 import { createStackNavigator } from '@react-navigation/stack';
 import SignUp from './components/SigningUp/SignUp'
 import FirstLaunch from './components/FirstLaunch'
@@ -30,6 +33,10 @@ export const FirstNav = () => (
             <DashboardStack.Screen name="SignUp" component = {SignUp} /> 
             <DashboardStack.Screen name="GetUserInterests" component = {GetUserInterests} />
             <DashboardStack.Screen name="GetUserInfo" component = {GetUserInfo} />
+            <DashboardStack.Screen name="Chat" component = {Chat} /> 
+            <DashboardStack.Screen name="ProfileSettings" component = {ProfileSettings} /> 
+            <DashboardStack.Screen name="InterestSettings" component = {InterestSettings} /> 
+            <DashboardStack.Screen name="ThemeSettings" component = {ThemeSettings} /> 
         </DashboardStack.Navigator>
     </NavigationContainer>
 )
@@ -41,6 +48,9 @@ export const Navigation = () => (
             <DashboardStack.Screen name="Dashboard" component = {TabNavigation} />
             <DashboardStack.Screen name="SignUp" component = {SignUp} /> 
             <DashboardStack.Screen name="Chat" component = {Chat} /> 
+            <DashboardStack.Screen name="ProfileSettings" component = {ProfileSettings} /> 
+            <DashboardStack.Screen name="InterestSettings" component = {InterestSettings} /> 
+            <DashboardStack.Screen name="ThemeSettings" component = {ThemeSettings} /> 
         </DashboardStack.Navigator>
     </NavigationContainer>
 )
@@ -52,6 +62,9 @@ export const ReturningUser = () => (
             <DashboardStack.Screen name="SignUp" component = {SignUp} /> 
             <DashboardStack.Screen name="Dashboard" component = {TabNavigation} />
             <DashboardStack.Screen name="Chat" component = {Chat} /> 
+            <DashboardStack.Screen name="ProfileSettings" component = {ProfileSettings} /> 
+            <DashboardStack.Screen name="InterestSettings" component = {InterestSettings} /> 
+            <DashboardStack.Screen name="ThemeSettings" component = {ThemeSettings} /> 
         </DashboardStack.Navigator>
     </NavigationContainer>
 )

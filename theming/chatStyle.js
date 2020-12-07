@@ -72,3 +72,4 @@ export const ChatText = styled.Text`
   fontSize: 15px;
   textAlign: left;
 `;
+

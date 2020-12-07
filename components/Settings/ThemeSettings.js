@@ -19,61 +19,78 @@ import { InterestModal } from './InterestModals';
 
 
 
-class Settings extends Component {
+class ThemeSettings extends Component {
+  constructor(props) {
+    super(props);
+    this.closeModal = this.closeModal.bind(this)
+  }
+  
+    state = {
+        modalVisible: false,
+        modalContent: '',
+      };
 
-
-    async resetToken() {
-      try {
-        await AsyncStorage.setItem("user", null);
-     } catch (error) {
-       console.log("Something went wrong", error);
-     }
-     this.props.navigation.navigate("SignUp")
+    setModalVisible = (visible, modalDisplay) => {
+      this.setState({ 
+        modalVisible: visible,
+        modalContent: modalDisplay });
     }
 
-    signOut = () => {
-      this.resetToken();
+    closeModal() {
+      console.log("closing modal")
+      this.setState({ 
+        modalVisible: !this.state.modalVisible,
+        imageSet: false });
     }
 
 
     render() {
-    
+        const { modalVisible } = this.state;
+        // switch statement to determine modal contents
+        let modalDisplay;
+        switch(this.state.modalContent) {
+          case "lightThemes":
+            modalDisplay = <LightThemeModal closeModal={this.closeModal} />
+            break;
+
+          case "darkThemes":
+            modalDisplay = <DarkThemeModal closeModal={this.closeModal} />
+            break;
+
+          default: 
+            break;
+        }
 
     const noComment = "--"
     return (
         <ThemeProvider theme={ this.props.theme }>
            {console.log(this.props.theme)}
             <SettingContainer>
-      
+           
                     <HeaderText>settings</HeaderText>
                     <Subtitle>here u view ur profile, update your info, change the app theme, etc!</Subtitle>
                     <Line />
-          
-       
-       
-                        <Title 
-                        onPress={() =>
-                          this.props.navigation.navigate('ProfileSettings')}> ⊳ general user info </Title>
-                        <Subtitle>view & edit ur profile info</Subtitle>
-
-        <Line /> 
      
-                <Title onPress={() =>
-                          this.props.navigation.navigate('InterestSettings')}> ⊳ user interests info </Title>
-                <Subtitle>view & edit your current interests</Subtitle>
-  
-        <Line />
+                <Button onPress={() => {
+                  this.setModalVisible(true, "lightThemes")}}>
+                <ButtonText  >light themes</ButtonText>
+                </Button>
+              
+                <Button onPress={() => {
+                  this.setModalVisible(true, "darkThemes")}}>
+                <ButtonText  >dark themes</ButtonText>
+                </Button>
+             
 
-         
-                <Title onPress={() =>
-                          this.props.navigation.navigate('ThemeSettings')}> ⊳ themes </Title>
-                <Subtitle>change the app theme!</Subtitle>
-      
+          <Modal isVisible={this.state.modalVisible}>
+            <ModalContainer>
+        
+            {modalDisplay}
+           
+          </ModalContainer>
+        </Modal>
 
-
-        <Button onPress={() => { this.signOut() }} >
-            <ButtonText>Sign Out</ButtonText>
-            </Button> 
+       
         </SettingContainer>
                   
         </ThemeProvider>
@@ -88,7 +105,7 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps, {pickTheme})(Settings);
+export default connect(mapStateToProps, {pickTheme})(ThemeSettings);
 
 
 
