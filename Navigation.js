@@ -6,7 +6,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import Dashboard from './components/Dashboard';
 import Explore from './components/Explore/Explore';
-import Chat from './components/Chat';
+import Chat from './components/Chat/Chat';
+import ChatList from './components/Chat/ChatList';
 import Connections from './components/Connections';
 import Settings from './components/Settings/Settings';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -39,6 +40,7 @@ export const Navigation = () => (
         <DashboardStack.Navigator screenOptions={{ headerShown: false }}>
             <DashboardStack.Screen name="Dashboard" component = {TabNavigation} />
             <DashboardStack.Screen name="SignUp" component = {SignUp} /> 
+            <DashboardStack.Screen name="Chat" component = {Chat} /> 
         </DashboardStack.Navigator>
     </NavigationContainer>
 )
@@ -49,6 +51,7 @@ export const ReturningUser = () => (
         <DashboardStack.Navigator screenOptions={{ headerShown: false }}>
             <DashboardStack.Screen name="SignUp" component = {SignUp} /> 
             <DashboardStack.Screen name="Dashboard" component = {TabNavigation} />
+            <DashboardStack.Screen name="Chat" component = {Chat} /> 
         </DashboardStack.Navigator>
     </NavigationContainer>
 )
@@ -105,8 +108,8 @@ const TabNavigation = () => {
             }}
         />
         <Tab.Screen 
-            name="Chat"
-            component={Chat}
+            name="ChatList"
+            component={ChatList}
             options={{
             tabBarIcon: ({ color }) => (
                 <MaterialCommunityIcons name="chat" color={color} size={26}/>

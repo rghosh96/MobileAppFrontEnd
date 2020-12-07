@@ -27,7 +27,8 @@ class Explore extends Component {
         modalVisible: false,
         modalUser: null,
         userInterests: null,
-        matches: []
+        matches: [],
+        halfHeartGang: []
     }
 
     getAllUsers() {
@@ -57,24 +58,44 @@ class Explore extends Component {
     }
 
     getAllMatches(user) {
-        console.log("in get user interests")
-        var data;
-        let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/interaction/getMatches?USER_id=" + user;
-        console.log(apiEndpoint)
-        // call api endpoint, sending in user to add to db
-        fetch(apiEndpoint)
-            .then((response) => response.text())
-            .then((json) => {
-              // parse the response & extract data
-              data = JSON.parse(json)
-              console.log(data)
-              this.setState({ matches: data.result })
-            })
-            .catch((error) => console.error(error))
-            .finally(() => {
-              console.log("finally block") 
-            })
-      }
+      console.log("in get user interests")
+      var data;
+      let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/interaction/getMatches?USER_id=" + user;
+      console.log(apiEndpoint)
+      // call api endpoint, sending in user to add to db
+      fetch(apiEndpoint)
+          .then((response) => response.text())
+          .then((json) => {
+            // parse the response & extract data
+            data = JSON.parse(json)
+            console.log(data)
+            this.setState({ matches: data.result })
+          })
+          .catch((error) => console.error(error))
+          .finally(() => {
+            console.log("finally block") 
+          })
+    }
+
+    getHalfHeartGang(user) {
+      var data;
+      let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/interaction/getHalfHearts?USER_id=" + user;
+      console.log(apiEndpoint)
+      // call api endpoint, sending in user to add to db
+      fetch(apiEndpoint)
+          .then((response) => response.text())
+          .then((json) => {
+            // parse the response & extract data
+            data = JSON.parse(json)
+            console.log("HALF HEART GANG:")
+            console.log(data)
+            this.setState({ halfHeartGang: data.result })
+          })
+          .catch((error) => console.error(error))
+          .finally(() => {
+            console.log("finally block") 
+          })
+    }
 
     getUserInterests(user) {
         console.log("in get user interests")
@@ -108,9 +129,9 @@ class Explore extends Component {
 
       likeUser(likedUser, likeAction) {
         console.log("in interactions")
-        console.log(this.state.user)
-        console.log(likedUser)
-        console.log(likeAction)
+        // console.log(this.state.user)
+        // console.log(likedUser)
+        // console.log(likeAction)
         // create user body to send to api
         const like={
             method: 'POST',
@@ -144,6 +165,7 @@ class Explore extends Component {
           this.setState({user: userId})
           this.getAllUsers(this.state.user)
           this.getAllMatches(this.state.user)
+          this.getHalfHeartGang(this.state.user)
         } catch (error) {
           console.log("Something went wrong", error);
         }
@@ -168,6 +190,10 @@ class Explore extends Component {
         this._unsubscribe = this.props.navigation.addListener('focus', () => {
             this.getToken()
           });
+      }
+
+      componentWillUnmount() {
+        this._unsubscribe();
       }
 
   render() {
@@ -199,27 +225,23 @@ class Explore extends Component {
                 </HeaderContainer>
                 
                 <AllUsersList>
-                    {/* {console.log("ALL USERS LIST")}
-                    {console.log(this.state.allUsers)} */}
-                    {console.log(this.state.matches)}
-                   {this.state.allUsers.map((user, index) => {
-                       console.log("INSIDE MAP " + user.userID)
-                       
-                       let isLiked = this.state.matches.includes(user.userID)
-                       let icon;
-                       console.log("is liked? " + isLiked)
-                       isLiked ? icon = "heart" : icon = "heart-outline"
-                       console.log(icon)
-                       return user.userID != this.state.user ? (
-                        <ProfileCard 
-                            setModalVisible={this.setModalVisible}
-                            user={user}
-                            key={index}
-                            likeUser={this.likeUser}
-                            icon={icon}
-                            isLiked={isLiked}/> 
-                       )  :  null 
-                    })}
+                {this.state.allUsers.map((user, index) => {
+                  let isMatched = this.state.matches.includes(user.userID)
+                  let halfHeart = this.state.halfHeartGang.includes(user.userID)
+                  let icon;
+                  isMatched ? icon = "heart" : icon = "heart-outline"
+                  halfHeart ? icon="heart-half-full" : null
+                  return user.userID != this.state.user ? (
+                      <ProfileCard 
+                          setModalVisible={this.setModalVisible}
+                          user={user}
+                          key={index}
+                          likeUser={this.likeUser}
+                          icon={icon}
+                          isMatched={isMatched}
+                          isLiked={halfHeart}/> 
+                      )  :  null 
+                  })}
                 </AllUsersList>
                 
                 <Modal isVisible={this.state.modalVisible}>
