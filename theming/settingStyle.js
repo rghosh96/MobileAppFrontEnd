@@ -100,7 +100,7 @@ export const InfoArea = styled.View`
   width: 100%;
   flexDirection: column; 
   alignItems: center;
-  marginTop: 30px;
+  marginBottom: 50px;
 `
 
 export const SelectedTheme = styled.Text`
@@ -143,4 +143,8 @@ export const RatingContainer = styled.View`
     justifyContent: center;
     flexDirection: column;
     padding: 15px;
+`;
+
+export const SubSettingHeader = styled.View`
+    flexDirection: row;
 `;

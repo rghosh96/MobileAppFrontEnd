@@ -69,9 +69,9 @@ class Settings extends Component {
                           this.props.navigation.navigate('ThemeSettings')}> ⊳ themes </Title>
                 <Subtitle>change the app theme!</Subtitle>
       
+                <Line />
 
-
-        <Button onPress={() => { this.signOut() }} >
+        <Button style={{justifySelf: 'flex-end'}}onPress={() => { this.signOut() }} >
             <ButtonText>Sign Out</ButtonText>
             </Button> 
         </SettingContainer>

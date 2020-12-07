@@ -1,21 +1,12 @@
 import React, { Component } from 'react';
 import { LightThemeModal, DarkThemeModal } from './ThemeModal'
-import { UserInputModal, UserBioInputModal, ProfileImageModal,
-  UserDropDownModal } from './InputModals'
-import CustomRatings from '../CustomRatings'
 import { pickTheme } from '../../redux/actions'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
-import AsyncStorage from '@react-native-community/async-storage'
-import {Collapse,CollapseHeader, CollapseBody, AccordionList} from 'accordion-collapse-react-native';
-import { Keyboard, TouchableWithoutFeedback, View } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Modal from 'react-native-modal';
-import { HeaderText, Subtitle, Text, Button, ButtonText } from '../../theming/masterStyle'
-import {CLOUD_NAME, CLOUD_PRESET, CLOUD_BASE_API} from "@env"
-import { SettingContainer, ProfileImage, ModalContainer, Line, Title, EditItem, UserAttribute, InfoArea, 
-  RatingContainer, ListContainer } from '../../theming/settingStyle'
-import { InterestModal } from './InterestModals';
+import { Subtitle, Button, ButtonText } from '../../theming/masterStyle'
+import { SubSettingHeader, Title, SettingContainer, ModalContainer, Line } from '../../theming/settingStyle'
+ import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 
 
@@ -67,8 +58,11 @@ class ThemeSettings extends Component {
            {console.log(this.props.theme)}
             <SettingContainer>
            
-                    <HeaderText>settings</HeaderText>
-                    <Subtitle>here u view ur profile, update your info, change the app theme, etc!</Subtitle>
+            <SubSettingHeader>
+                    <MaterialCommunityIcons  name="keyboard-backspace" onPress={() => this.props.navigation.navigate('Settings')} size={31} color={this.props.theme.PRIMARY_COLOR} />
+                    <Title>theme settings</Title>
+                </SubSettingHeader>
+                    <Subtitle>here u can change the app theme!</Subtitle>
                     <Line />
      
                 <Button onPress={() => {
