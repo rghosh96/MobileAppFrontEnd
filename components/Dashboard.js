@@ -24,12 +24,8 @@ class Dashboard extends Component {
   }
 
   getUserData(user, request) {
-    console.log("in get user data")
-    console.log(user)
-    console.log(request)
     var data;
     let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/users/getUser?USER_id=" + user;
-    console.log(apiEndpoint)
     // call api endpoint, sending in user to add to db
     fetch(apiEndpoint,)
         .then((response) => response.text())
@@ -40,24 +36,19 @@ class Dashboard extends Component {
         .catch((error) => console.error(error))
         .finally(() => {
           if (this.state.userLoaded === true) {
-            console.log("we got set the data!")
             if (request === 0) {
               this.setState({ userData: data.result[0] })
             }
             else if (request === 1) {
-              console.log("REQUEST IS 1")
-              console.log(data.result[0])
               this.setState({ randomMatches: [...this.state.randomMatches, data.result[0]] })
             }
           }
-            // if successful addition to db, navigate to create profile
-            console.log("finally block") 
             
         })
   }
 
   getRandomMatches(user) {
-    console.log("in get user data")
+    console.log("in get random matches")
     var data;
     let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/matches/get3RandomMatches?USER_id=" + user;
     console.log(apiEndpoint)
@@ -67,13 +58,11 @@ class Dashboard extends Component {
         .then((json) => {
             // parse the response & extract data
             data = JSON.parse(json)
-            console.log(data)
             data = data.result
         })
         .catch((error) => console.error(error))
         .finally(() => {
-            console.log(data)
-            console.log("finally block") 
+            console.log("finally block of RANDOM MATCHES") 
             this.setState({randomMatches: []})
             for (let i = 0; i < 3; i++) {
               this.getUserData(data[i], 1)
@@ -83,24 +72,19 @@ class Dashboard extends Component {
   }
 
   getAllMatches(user) {
-    console.log("in get all matches")
     var data;
     let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/interaction/getMatches?USER_id=" + user;
-    console.log(apiEndpoint)
     // call api endpoint, sending in user to add to db
     fetch(apiEndpoint)
         .then((response) => response.text())
         .then((json) => {
           // parse the response & extract data
           data = JSON.parse(json)
-          console.log(data)
           this.setState({ numMatches: data.result.length })
         })
         .catch((error) => console.error(error))
         .finally(() => {
-        //   this.setState({interestsLoaded: true})
-          // if successful addition to db, navigate to create profile
-          console.log("finally block")  
+
         })
   }
 
@@ -127,29 +111,29 @@ class Dashboard extends Component {
     });
   }
 
-  render() {
-    {console.log("INSIDE DASHBOARD")}
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
 
-      var r0, r1, r2
-      let cuteBird = "https://cache.desktopnexus.com/thumbseg/1268/1268204-bigthumbnail.jpg"
-    if (this.state.randomMatches.length === 3 ) {
-     r0 = this.state.randomMatches[0].userPROFILEPIC ? this.state.randomMatches[0].userPROFILEPIC : cuteBird
-     r1 = this.state.randomMatches[1].userPROFILEPIC ? this.state.randomMatches[1].userPROFILEPIC : cuteBird
-     r2 = this.state.randomMatches[2].userPROFILEPIC ? this.state.randomMatches[2].userPROFILEPIC : cuteBird
+  render() {
+    var r0, r1, r2
+    let cuteBird = "https://cache.desktopnexus.com/thumbseg/1268/1268204-bigthumbnail.jpg"
+
+    if (this.state.randomMatches.length >= 3 ) {
+      r0 = this.state.randomMatches[0].userPROFILEPIC ? this.state.randomMatches[0].userPROFILEPIC : cuteBird
+      r1 = this.state.randomMatches[1].userPROFILEPIC ? this.state.randomMatches[1].userPROFILEPIC : cuteBird
+      r2 = this.state.randomMatches[2].userPROFILEPIC ? this.state.randomMatches[2].userPROFILEPIC : cuteBird
     }
     if (!this.state.userLoaded && !this.state.loaded) {
       return <LottieView style={{height: 200}}source={require('../assets/loading.json')} autoPlay loop />
     } 
-      console.log(this.props.theme)
     return (
         <ThemeProvider theme={ this.props.theme }>
-            {console.log("INSIDE VIEW")}
             <Container>
                 <HeaderContainer>
                   <HeaderText>dashboard</HeaderText>
                 </HeaderContainer>
                 <ProfileContainer>
-                  {console.log(this.state.userData.userPROFILEPIC)}
                     <ProfileImage source={{uri: this.state.userData.userPROFILEPIC}} />
                     <ProfileText>
                         {this.state.userData.userFNAME} {this.state.userData.userLNAME} {"\n"}

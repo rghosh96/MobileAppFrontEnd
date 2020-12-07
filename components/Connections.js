@@ -150,8 +150,8 @@ class Connections extends Component {
             console.log("before getting item");
           let userId = await AsyncStorage.getItem("user");
           console.log(userId)
-          this.setState({user: userId, likedUsers: []})
-          this.getAllMatches(this.state.user, false)
+          this.setState({user: userId })
+          this.getAllMatches(this.state.user)
         } catch (error) {
           console.log("Something went wrong", error);
         }
