@@ -11,6 +11,7 @@ import {CLOUD_NAME, CLOUD_PRESET, CLOUD_BASE_API} from "@env"
 import { SettingContainer, ProfileImage, ModalContainer, Line, Title, EditItem, UserAttribute, InfoArea, 
    ListContainer, SubSettingHeader } from '../../theming/settingStyle'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { AppLoading } from 'expo';
 
 
 
@@ -44,8 +45,6 @@ class ProfileSettings extends Component {
         uploadingImage: false,
         imageSet: false,
       };
-
-      
 
       updateState = (attribute, data) => {
         console.log("trynna update state")
@@ -171,8 +170,6 @@ class ProfileSettings extends Component {
           .then((json) => {
               // parse the response & extract data
               let data = JSON.parse(json)
-              console.log("RETURNED DATA")
-              console.log(data)
               if (data.isError === false) {
                   this.setState({success: true})
               } else {
@@ -182,8 +179,6 @@ class ProfileSettings extends Component {
           })
           .catch((error) => console.error(error))
           .finally(() => {
-              console.log("successfully updated")
-              console.log(this.state)
               this.getUserData(this.state.user)
               this.setState({modalVisible: !this.state.modalVisible,
                 imageSet: false
@@ -293,7 +288,9 @@ class ProfileSettings extends Component {
 
     const noComment = "--"
     return (
+        
         <ThemeProvider theme={ this.props.theme }>
+             {console.log("IMAGE LOAD: " + this.state.didLoad)}
            {console.log(this.props.theme)}
             <SettingContainer>
                 <SubSettingHeader>
@@ -378,7 +375,7 @@ class ProfileSettings extends Component {
         </Modal>
 
         </SettingContainer>
-                  
+    
         </ThemeProvider>
     );
   }

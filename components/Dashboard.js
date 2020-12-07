@@ -170,7 +170,8 @@ class Dashboard extends Component {
                 </MatchesContainer>
 
                 <ConnectionsContainer>
-                  <Connections>{this.state.numMatches}</Connections>
+                  <Connections onPress={() =>
+                          this.props.navigation.navigate('Connections')}>{this.state.numMatches}</Connections>
                   <Text>total connections</Text>
                 </ConnectionsContainer>
                 
