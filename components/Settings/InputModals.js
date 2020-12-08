@@ -102,7 +102,9 @@ export const UserBioInputModal = (props) => {
 }
 
 export const CheckBoxModal = (props) => {
-    const [isChecked, setIsChecked] = React.useState(false)
+    let check;
+    props.sendMessages === "true" ? check = true : check = false
+    const [isChecked, setIsChecked] = React.useState(check)
     console.log(isChecked)
     function toggleCheckBox() {
         setIsChecked(!isChecked);
