@@ -35,6 +35,7 @@ class ProfileSettings extends Component {
         fName: '',
         lName: '',
         gender: '',
+        experience: '',
         classification: '',
         grad: '',
         hometown: '',
@@ -110,6 +111,7 @@ class ProfileSettings extends Component {
                   fName: userInfo.userFNAME,
                   lName: userInfo.userLNAME,
                   gender: userInfo.userGENDER,
+                  experience: userInfo.userPROGRAM_EXP,
                   classification: userInfo.userGRADE_LEVEL,
                   grad: userInfo.userGRAD_DATE,
                   hometown: userInfo.userHOMETOWN,
@@ -158,7 +160,8 @@ class ProfileSettings extends Component {
                   userGRADE_LEVEL: this.state.classification,
                   userABOUT: this.state.bio,
                   userGENDER: this.state.gender,
-                  userPROFILEPIC: this.state.profilePic
+                  userPROFILEPIC: this.state.profilePic,
+                  userPROGRAM_EXP: this.state.experience
               }
           })
       }
@@ -215,8 +218,19 @@ class ProfileSettings extends Component {
             break;
 
           case "updateGender":
-            modalDisplay = <UserInputModal 
+            modalDisplay = <UserDropDownModal 
               infoType="gender"
+              items={[
+                {label: 'cis woman', value: 'cis woman'},
+                {label: 'cis man', value: 'cis man'},
+                {label: 'trans woman', value: 'trans woman'},
+                {label: 'trans man', value: 'trans man'},
+                {label: 'non-binary', value: 'non-binary'},
+                {label: 'gender fluid', value: 'gender fluid'},
+                {label: 'gender neutral', value: 'gender neutral'},
+                {label: 'prefer not to say', value: 'prefer not to say'},
+                {label: 'other', value: 'other'},
+              ]}
               updateState={this.updateState}
               updateUserDB={this.updateUserDB}
               closeModal={this.closeModal} />
@@ -236,6 +250,19 @@ class ProfileSettings extends Component {
             updateState={this.updateState}
             updateUserDB={this.updateUserDB}
             closeModal={this.closeModal} />
+            break;
+
+          case "updateExperience":
+            modalDisplay = <UserDropDownModal 
+              infoType="experience"
+              items={[
+                {label: 'little', value: '1'},
+                {label: 'moderate', value: '2'},
+                {label: 'a lot', value: '3'},
+              ]}
+              updateState={this.updateState}
+              updateUserDB={this.updateUserDB}
+              closeModal={this.closeModal} />
             break;
 
           case "updateClassification":
@@ -316,6 +343,12 @@ class ProfileSettings extends Component {
                     <EditItem onPress={() => {
                       this.setModalVisible(true, "updateGender")}}>✎ gender</EditItem>
                     <UserAttribute>{this.state.userData.userGENDER}</UserAttribute>
+                    </InfoArea>
+
+                    <InfoArea>
+                    <EditItem onPress={() => {
+                      this.setModalVisible(true, "updateExperience")}}>✎ programming experience</EditItem>
+                    <UserAttribute>{this.state.userData.userPROGRAM_EXP}</UserAttribute>
                     </InfoArea>
                     
                     <InfoArea>
