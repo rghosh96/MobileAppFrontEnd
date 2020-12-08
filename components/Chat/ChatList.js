@@ -41,6 +41,13 @@ class ChatList extends Component {
   async componentDidMount () {
       console.log("IN CHATLIST")
       this.getToken();
+      this._unsubscribe = this.props.navigation.addListener('focus', () => {
+        this.getToken()
+      });
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
   }
 
   getUserData(user, request) {
@@ -119,12 +126,38 @@ class ChatList extends Component {
         if (data.isError === false) {
           console.log('we got the data!');
         }
-        this.setState({likedUsers: []})
-        for (var i = 0; i < this.state.matches.length; i++) {
-            this.getUserData(this.state.matches[i], 1)
-        }   
+        this.getMatchObjects() 
       });
   }
+
+  getMatchObjects() {
+    console.log("in get user data")
+    var data;
+    let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/users/getAllUsers";
+    console.log(apiEndpoint)
+    // call api endpoint, sending in user to add to db
+    fetch(apiEndpoint,)
+        .then((response) => response.text())
+        .then((json) => {
+            // parse the response & extract data
+            data = JSON.parse(json)
+            console.log("IN GET MATCH OBJECTS")
+            console.log(data)
+            let matches = this.state.matches
+            let matchesArray = data.result.filter(function (item) {
+              console.log("IN FILTER")
+              console.log(matches)
+              if(matches.includes(item.userID)) {
+                return item
+              }
+            });
+            console.log(matchesArray)
+            this.setState({likedUsers: matchesArray})
+    })
+    .catch((error) => console.error(error))
+    .finally(() => {
+    })
+}
 
   render() {
     
@@ -135,7 +168,10 @@ class ChatList extends Component {
     let Data = this.state.auth_data;
     let User = matches.map((match, index) => {
       return (
+        
         <View key={index}>
+          {console.log("IN MATCH" )}
+          {console.log( match)}
           <TouchableOpacity 
             onPress={() =>
               this.props.navigation.navigate('IndivChat', {
@@ -157,9 +193,6 @@ class ChatList extends Component {
         </View>
       );
     });
-
-    // console.log(User);
-    console.log(this.props)
 
     return (
         <ThemeProvider theme={ this.props.theme }>

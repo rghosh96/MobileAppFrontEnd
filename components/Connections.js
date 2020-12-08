@@ -95,14 +95,37 @@ class Connections extends Component {
             })
             .catch((error) => console.error(error))
             .finally(() => {
-
-            //   this.setState({interestsLoaded: true})
-              // if successful addition to db, navigate to create profile
-                   this.setState({likedUsers: []})
-                    for (var i = 0; i < this.state.matches.length; i++) {
-                        this.getUserData(this.state.matches[i])
-                }   
+                  this.getMatchObjects()  
             })
+      }
+
+      getMatchObjects() {
+          console.log("in get user data")
+          var data;
+          let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/users/getAllUsers";
+          console.log(apiEndpoint)
+          // call api endpoint, sending in user to add to db
+          fetch(apiEndpoint,)
+              .then((response) => response.text())
+              .then((json) => {
+                  // parse the response & extract data
+                  data = JSON.parse(json)
+                  console.log("IN GET MATCH OBJECTS")
+                  console.log(data)
+                  let matches = this.state.matches
+                  let matchesArray = data.result.filter(function (item) {
+                    console.log("IN FILTER")
+                    console.log(matches)
+                    if(matches.includes(item.userID)) {
+                      return item
+                    }
+                  });
+                  console.log(matchesArray)
+                  this.setState({likedUsers: matchesArray})
+          })
+          .catch((error) => console.error(error))
+          .finally(() => {
+          })
       }
 
       getUserData(user) {

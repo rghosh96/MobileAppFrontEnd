@@ -218,7 +218,8 @@ class Explore extends Component {
                     <HeaderText>explore</HeaderText>
                     <Subtitle>here you can explore and discover
                         fellow csce students! tap their name to view their profile. tap the
-                        heart to send a match request!
+                        heart to send a match request! full heart means you've matched, half heart means you've sent the request, and 
+                        empty heart means you haven't matched.
                     </Subtitle>
                 </HeaderContainer>
                 

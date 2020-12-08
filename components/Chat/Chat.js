@@ -51,18 +51,16 @@ class Chat extends Component {
         console.log(fail)
       })
       this.retrieveData()
+      
   }
 
 
 
   retrieveData = async() => {
-      name = this.props.route.params.name;
-      uname = this.props.route.params.uname;
       console.log(this.props.route.params)
-      console.log('this is user data==>  '+name+'   '+uname);
       this.setState({
-        f_name:name,
-        u_name:uname,
+        f_name:this.props.route.params.name,
+        u_name:this.props.route.params.uname,
         u_fname: this.props.route.params.uFname
       }) 
     }
@@ -103,7 +101,6 @@ class Chat extends Component {
 
     let Data=this.state.chatData 
     let chats=Data.map((c_data, index)=>{
-    console.log(this.props.theme)
           if(
             // if you are sender, name on message is f_name and reciever will be u_name
             (this.state.f_name==c_data.fname && this.state.u_name==c_data.user.uname )
