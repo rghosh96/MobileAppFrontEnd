@@ -82,7 +82,7 @@ class SignUp extends Component {
 
                      if (this.state.alreadyInDB === true) {
                         this.props.navigation.navigate(
-                            "Dashboard",
+                            "GetUserInterests",
                             {user: info.user.toLowerCase()});
                      } else {
                     this.props.navigation.navigate(

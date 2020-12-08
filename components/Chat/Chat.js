@@ -10,10 +10,8 @@ import {
   KeyboardAvoidingView,
   TextInput
 } from 'react-native';
-
 import firebaseSDK from '../../firebaseSDK'
 import { ChatContainer, ChatList, SendButton, ChatHeader, ChatHeaderContainer, ChatFooter, ChatInput, ChatText } from '../../theming/chatStyle';
-import { Subtitle } from '../../theming/masterStyle'
 import { Line } from '../../theming/settingStyle'
 
 class Chat extends Component {

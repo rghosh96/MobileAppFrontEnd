@@ -3,12 +3,12 @@ import { pickTheme } from '../../redux/actions'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
 import { Subtitle, Divider, HeaderText, Button, ButtonText } from '../../theming/masterStyle'
-import { Rating } from 'react-native-elements';
 import CustomRatings from '../CustomRatings'
 import { CommentInput, FormArea, CreateProfileContent, RatingContainer, HeaderContainer, H1 } from '../../theming/createStyle'
 import { Formik } from 'formik'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Alert } from "react-native";
+import { EditItem} from '../../theming/settingStyle'
 
 
 
@@ -174,6 +174,7 @@ class GetUserInterests extends Component {
                                         readOnly={false}
                                     />       
                                     </RatingContainer>
+                                    <EditItem onPress={()=>this.setState({fashionRating: 0})} style={{alignSelf: 'center'}}>couldn't care less? tap to rate 0</EditItem>
                                     <CommentInput 
                                         placeholder='maybe some trends, designers, if you like hair, nails, etc..' 
                                         onChangeText={props.handleChange('fashion')} 
@@ -191,6 +192,7 @@ class GetUserInterests extends Component {
                                         readOnly={false}
                                     />   
                                     </RatingContainer>
+                                    <EditItem onPress={()=>this.setState({foodRating: 0})} style={{alignSelf: 'center'}}>couldn't care less? tap to rate 0</EditItem>
                                     <CommentInput 
                                         placeholder='what are your favorite cuisines? restaurants?' 
                                         onChangeText={props.handleChange('food')} 
@@ -208,6 +210,7 @@ class GetUserInterests extends Component {
                                         readOnly={false}
                                     />    
                                     </RatingContainer>
+                                    <EditItem onPress={()=>this.setState({gameRating: 0})} style={{alignSelf: 'center'}}>couldn't care less? tap to rate 0</EditItem>
                                     <CommentInput 
                                         placeholder='what kind of games u playin (your fav console, etc)' 
                                         onChangeText={props.handleChange('gaming')} 
@@ -225,6 +228,7 @@ class GetUserInterests extends Component {
                                         readOnly={false}
                                     />     
                                     </RatingContainer>
+                                    <EditItem onPress={()=>this.setState({outRating: 0})} style={{alignSelf: 'center'}}>couldn't care less? tap to rate 0</EditItem>
                                     <CommentInput 
                                         placeholder='hiking? biking? running? camping? fav trails?' 
                                         onChangeText={props.handleChange('outdoor')} 
@@ -242,6 +246,7 @@ class GetUserInterests extends Component {
                                         readOnly={false}
                                     />     
                                     </RatingContainer>
+                                    <EditItem onPress={()=>this.setState({musicRating: 0})} style={{alignSelf: 'center'}}>couldn't care less? tap to rate 0</EditItem>
                                     <CommentInput 
                                         placeholder='fav artists? genres?' 
                                         onChangeText={props.handleChange('music')} 
@@ -259,6 +264,7 @@ class GetUserInterests extends Component {
                                         readOnly={false}
                                     />      
                                     </RatingContainer>   
+                                    <EditItem onPress={()=>this.setState({readRating: 0})} style={{alignSelf: 'center'}}>couldn't care less? tap to rate 0</EditItem>
                                     <CommentInput 
                                         placeholder='whether it be productivity, fiction, or your algorithms textbook, give us ur fav titles!' 
                                         onChangeText={props.handleChange('reading')} 

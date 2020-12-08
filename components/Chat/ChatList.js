@@ -6,16 +6,13 @@ import { CardContainer, ProfileImage, AllUsersList,
      Title  } from '../../theming/exploreStyle'
 import {
   StyleSheet,
-  Text,
   View,
-  Image,
   TouchableOpacity,
-  ScrollView,
   Dimensions,
-  TextInput,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
 import { HeaderText, Subtitle, Container, HeaderContainer } from '../../theming/masterStyle'
+import AsyncImage from '../AsyncImage'
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 
@@ -150,7 +147,7 @@ class ChatList extends Component {
             }>
             <CardContainer>
                     <TouchableOpacity>
-                    <ProfileImage source={{uri: match.userPROFILEPIC}} />
+                    <AsyncImage source={{uri: match.userPROFILEPIC}} />
                 </TouchableOpacity>
                 <View style={styles.forwidth_right}>
                 <Title> {match.userFNAME} {match.userLNAME} </Title>

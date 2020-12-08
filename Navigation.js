@@ -51,6 +51,8 @@ export const Navigation = () => (
             <DashboardStack.Screen name="ProfileSettings" component = {ProfileSettings} /> 
             <DashboardStack.Screen name="InterestSettings" component = {InterestSettings} /> 
             <DashboardStack.Screen name="ThemeSettings" component = {ThemeSettings} /> 
+            <DashboardStack.Screen name="GetUserInterests" component = {GetUserInterests} />
+            <DashboardStack.Screen name="GetUserInfo" component = {GetUserInfo} />
         </DashboardStack.Navigator>
     </NavigationContainer>
 )
@@ -65,6 +67,8 @@ export const ReturningUser = () => (
             <DashboardStack.Screen name="ProfileSettings" component = {ProfileSettings} /> 
             <DashboardStack.Screen name="InterestSettings" component = {InterestSettings} /> 
             <DashboardStack.Screen name="ThemeSettings" component = {ThemeSettings} /> 
+            <DashboardStack.Screen name="GetUserInterests" component = {GetUserInterests} />
+            <DashboardStack.Screen name="GetUserInfo" component = {GetUserInfo} />
         </DashboardStack.Navigator>
     </NavigationContainer>
 )

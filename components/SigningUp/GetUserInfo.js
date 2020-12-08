@@ -42,7 +42,8 @@ class GetUserInfo extends Component {
         hometown: '',
         exp: '',
         imageURI: '',
-        cloudinaryURL: null
+        cloudinaryURL: null,
+        interestCheck: null
       }
 
       setImageURI = (uri) => {
@@ -267,13 +268,21 @@ class GetUserInfo extends Component {
                                     <H2>what is your gender identity?</H2>
                                     <ErrorText>{props.touched.gender && props.errors.gender }</ErrorText>
                                     </SectionArea>
-                                    <SingleLineInput 
-                                        placeholder='please tell us your gender!' 
-                                        onChangeText={props.handleChange('gender')} 
-                                        placeholderTextColor={this.props.theme.LIGHT_GREY}
-                                        color={this.props.theme.PRIMARY_COLOR}
-                                        maxLength={50}
-                                        value = {props.values.gender}
+                                    <RNPickerSelect
+                                        placeholder={{ label: 'i identify as ... ▽', value: null}}
+                                        onValueChange={(value) => props.setFieldValue('gender', value)}
+                                        items={[
+                                            {label: 'cis woman', value: 'cis woman'},
+                                            {label: 'cis man', value: 'cis man'},
+                                            {label: 'trans woman', value: 'trans woman'},
+                                            {label: 'trans man', value: 'trans man'},
+                                            {label: 'non-binary', value: 'non-binary'},
+                                            {label: 'gender fluid', value: 'gender fluid'},
+                                            {label: 'gender neutral', value: 'gender neutral'},
+                                            {label: 'prefer not to say', value: 'prefer not to say'},
+                                            {label: 'other', value: 'other'},
+                                        ]}
+                                        style={dropdown(this.props)}
                                     />
                                     
                                     <SectionArea>

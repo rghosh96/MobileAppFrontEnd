@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { CardContainer, ProfileImage, InfoSection,
     Subtitle, Title  } from '../theming/exploreStyle'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import AsyncImage from './AsyncImage'
 
 
 
@@ -19,7 +20,7 @@ const ProfileCard = (props) => {
     const imageURI = props.user.userPROFILEPIC != null ? props.user.userPROFILEPIC : ""
     return (
         <CardContainer>
-            <ProfileImage  
+            <AsyncImage  
             source={imageURI.length!=0?{uri: imageURI}: null} />
 
             <InfoSection>
