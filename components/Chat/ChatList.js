@@ -17,6 +17,7 @@ import AsyncImage from '../AsyncImage'
 const screenWidth = Math.round(Dimensions.get('window').width);
 
 import firebaseSDK from '../../firebaseSDK';
+import { AppLoading } from 'expo';
 
 class ChatList extends Component {
   constructor() {
@@ -61,7 +62,7 @@ class ChatList extends Component {
         .then((json) => {
             // parse the response & extract data
             data = JSON.parse(json)
-            // this.setState({userData: data.result[0]})
+            this.setState({userData: data.result[0]})
         })
         .catch((error) => console.error(error))
         .finally(() => {
@@ -163,9 +164,6 @@ class ChatList extends Component {
     
     var matches = this.state.likedUsers;
     console.log("IN RENDER");
-    console.log(this.state.matches);
-    console.log(this.state.likedUsers);
-    let Data = this.state.auth_data;
     let User = matches.map((match, index) => {
       return (
         
@@ -194,23 +192,27 @@ class ChatList extends Component {
       );
     });
 
+    if (this.state.userData && this.state.userData.hasOwnProperty('userFNAME')) {
     return (
         <ThemeProvider theme={ this.props.theme }>
+          {console.log("IN CHAT")}
+          {console.log(this.state.userData)}
         <Container>
         <HeaderContainer>
             <HeaderText>chat</HeaderText>
             <Subtitle>here you can chat with all your current matches. tap a user to chat!
             </Subtitle>
         </HeaderContainer>
-   
         <AllUsersList>
           {/* // SCROLLVIEW HERE */}
-          {User}
+          {this.state.userData.userMSG_TEACHER != "false" ? 
+          User : <Subtitle>you hve chat disabled</Subtitle>}
         </AllUsersList>
+
      
       </Container>
       </ThemeProvider>
-    );
+      ); } else {return(<AppLoading/>)}
   }
 }
 
