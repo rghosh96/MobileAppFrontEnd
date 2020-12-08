@@ -30,7 +30,6 @@ class Dashboard extends Component {
     userLoaded: false,
     userData: '',
     isFirstLaunch: true,
-    numMatches: null,
     randomMatches: [],
     loaded: false,
     user: '',
@@ -358,7 +357,7 @@ class Dashboard extends Component {
 
                 <ConnectionsContainer>
                   <Connections onPress={() =>
-                          this.props.navigation.navigate('Connections')}>{this.state.numMatches}</Connections>
+                          this.props.navigation.navigate('Connections')}>{this.state.matches.length}</Connections>
                   <Text>total connections</Text>
                 </ConnectionsContainer>
                 
