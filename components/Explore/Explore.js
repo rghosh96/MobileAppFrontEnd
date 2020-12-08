@@ -118,18 +118,11 @@ class Explore extends Component {
                   modalContent: "ProfileModal",
                   modalUser: user, })
               }
-            //   this.setState({interestsLoaded: true})
-              // if successful addition to db, navigate to create profile
               console.log("finally block") 
             })
       }
 
       likeUser(likedUser, likeAction) {
-        console.log("in interactions")
-        // console.log(this.state.user)
-        // console.log(likedUser)
-        // console.log(likeAction)
-        // create user body to send to api
         const like={
             method: 'POST',
             headers:{'Content-Type': 'application/json'},

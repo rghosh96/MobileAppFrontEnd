@@ -11,9 +11,19 @@ import { Connections, HeaderText, ProfileText, ProfileImage, ProfileContainer, C
   PeopleImage, MatchesContainer, MatchesText, MatchesDash } from '../theming/dashStyle'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import AsyncImage from './AsyncImage'
+import DashProfileModal from './DashProfileModal'
+import { ModalContainer } from '../theming/settingStyle'
+import Modal from 'react-native-modal';
+
 
 
 class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+    this.closeModal = this.closeModal.bind(this)
+    this.setModalVisible = this.setModalVisible.bind(this)
+  }
+
   state = {
     user: '',
     userLoaded: false,
@@ -22,9 +32,13 @@ class Dashboard extends Component {
     numMatches: null,
     randomMatches: [],
     loaded: false,
-    r1Loaded: true,
-    r2Loaded: true,
-    r3Loaded: true,
+    user: '',
+    modalContent: '',
+    modalVisible: false,
+    modalUser: null,
+    userInterests: null,
+    matches: [],
+    halfHeartGang: []
   }
 
   getUserData(user, request) {
@@ -67,13 +81,40 @@ class Dashboard extends Component {
         .catch((error) => console.error(error))
         .finally(() => {
             console.log("finally block of RANDOM MATCHES") 
-            this.setState({randomMatches: []})
-            for (let i = 0; i < 3; i++) {
-              this.getUserData(data[i], 1)
-            }
+            console.log(data)
+            this.getMatchObjects("randomMatches", data)
             
         })
   }
+
+  getMatchObjects(matchType, usersArray) {
+    var data;
+    let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/users/getAllUsers";
+    console.log(apiEndpoint)
+    // call api endpoint, sending in user to add to db
+    fetch(apiEndpoint,)
+        .then((response) => response.text())
+        .then((json) => {
+            // parse the response & extract data
+            data = JSON.parse(json)
+            // console.log("IN GET MATCH OBJECTS")
+            // console.log(data)
+            let matches = usersArray
+            let matchesArray = data.result.filter(function (item) {
+              console.log("IN FILTER")
+              console.log(matches)
+              if(matches.includes(item.userID)) {
+                return item
+              }
+            });
+            console.log("IN GET MATCH OBJECTS")
+            console.log(matchesArray)
+            this.setState({[matchType]: matchesArray})
+    })
+    .catch((error) => console.error(error))
+    .finally(() => {
+    })
+}
 
   getAllMatches(user) {
     var data;
@@ -115,13 +156,125 @@ class Dashboard extends Component {
     });
   }
 
+  likeUser(likedUser, likeAction) {
+    const like={
+        method: 'POST',
+        headers:{'Content-Type': 'application/json'},
+        body: JSON.stringify(
+            {user1: this.state.user, 
+            user2:likedUser, 
+            action: likeAction})
+    }
+    console.log(like)
+    // call api endpoint, sending in user to add to db
+    fetch(`http://mobile-app.ddns.uark.edu/CRUDapis/interaction/addInteraction`, like)
+        .then((response) => response.text())
+        .then((json) => {
+            // parse the response & extract data
+            let data = JSON.parse(json)
+            console.log(data)
+        })
+        .catch((error) => console.error(error))
+        .finally(() => {
+            // if successful addition to db, navigate to create profile
+            console.log("finally block for interactions")
+            this.getAllMatches(this.state.user)
+            this.getHalfHeartGang(this.state.user)
+        })
+  }
+
+  getAllMatches(user) {
+    console.log("in get user interests")
+    var data;
+    let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/interaction/getMatches?USER_id=" + user;
+    console.log(apiEndpoint)
+    // call api endpoint, sending in user to add to db
+    fetch(apiEndpoint)
+        .then((response) => response.text())
+        .then((json) => {
+          // parse the response & extract data
+          data = JSON.parse(json)
+          console.log(data)
+          this.setState({ matches: data.result })
+        })
+        .catch((error) => console.error(error))
+        .finally(() => {
+          console.log("finally block") 
+        })
+  }
+
+  getHalfHeartGang(user) {
+    var data;
+    let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/interaction/getHalfHearts?USER_id=" + user;
+    console.log(apiEndpoint)
+    // call api endpoint, sending in user to add to db
+    fetch(apiEndpoint)
+        .then((response) => response.text())
+        .then((json) => {
+          // parse the response & extract data
+          data = JSON.parse(json)
+          console.log("HALF HEART GANG:")
+          console.log(data)
+          this.setState({ halfHeartGang: data.result })
+        })
+        .catch((error) => console.error(error))
+        .finally(() => {
+          console.log("finally block") 
+        })
+  }
+
+  getUserInterests(user) {
+    var data;
+    let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/interest/getInterests?USER_id=" + user.userID;
+    // call api endpoint, sending in user to add to db
+    fetch(apiEndpoint,)
+        .then((response) => response.text())
+        .then((json) => {
+          // parse the response & extract data
+          data = JSON.parse(json)
+        })
+        .catch((error) => console.error(error))
+        .finally(() => {
+          if (data.isError === false) {
+            let interestsInfo = data.result[0]
+            this.setState({ 
+              userInterests: interestsInfo,
+              modalVisible: true,
+              modalContent: "ProfileModal",
+              modalUser: user, })
+          }
+        })
+  }
+
   componentWillUnmount() {
     this._unsubscribe();
+  }
+
+  setModalVisible(user) {
+    this.getUserInterests(user)
+  }
+
+  closeModal(user) {
+    this.setState({ 
+      modalVisible: !this.state.modalVisible, });
   }
 
   render() {
     var r0, r1, r2
     let cuteBird = "https://cache.desktopnexus.com/thumbseg/1268/1268204-bigthumbnail.jpg"
+
+    let modalDisplay;
+        switch(this.state.modalContent) {
+          case "ProfileModal":
+            modalDisplay = <DashProfileModal 
+            user={this.state.modalUser}
+            userInterests={this.state.userInterests}
+            closeModal={this.closeModal} />
+            break;
+            
+        default:
+            break;
+        }
 
     if (this.state.randomMatches.length >= 3 ) {
       r0 = this.state.randomMatches[0].userPROFILEPIC ? this.state.randomMatches[0].userPROFILEPIC : cuteBird
@@ -156,15 +309,15 @@ class Dashboard extends Component {
                 </MatchesContainer>
 
                 <MatchesContainer>
-                  <TouchableWithoutFeedback onPress={() => alert('r0 tapped!')}>
+                  <TouchableWithoutFeedback onPress={() => this.setModalVisible(this.state.randomMatches[0])}>
                     <AsyncImage source={{ uri: r0}} />
                   </TouchableWithoutFeedback>
                   
-                  <TouchableWithoutFeedback onPress={() => alert('r1 tapped!')}>
+                  <TouchableWithoutFeedback onPress={() => this.setModalVisible(this.state.randomMatches[1])}>
                     <AsyncImage source={{ uri: r1}} />
                   </TouchableWithoutFeedback>
 
-                  <TouchableWithoutFeedback onPress={() => alert('r2 tapped!')}>
+                  <TouchableWithoutFeedback onPress={() => this.setModalVisible(this.state.randomMatches[2])}>
                     <AsyncImage source={{ uri: r2}} />
                   </TouchableWithoutFeedback>
                   <MatchesDash>
@@ -178,7 +331,12 @@ class Dashboard extends Component {
                   <Text>total connections</Text>
                 </ConnectionsContainer>
                 
-                
+                <Modal isVisible={this.state.modalVisible}>
+                    <ModalContainer>
+                        {modalDisplay}
+                    </ModalContainer>
+                </Modal>
+
             </Container>
         </ThemeProvider>
     );
