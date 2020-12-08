@@ -98,17 +98,14 @@ class Explore extends Component {
     }
 
     getUserInterests(user) {
-        console.log("in get user interests")
         var data;
         let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/interest/getInterests?USER_id=" + user.userID;
-        console.log(apiEndpoint)
         // call api endpoint, sending in user to add to db
         fetch(apiEndpoint,)
             .then((response) => response.text())
             .then((json) => {
               // parse the response & extract data
               data = JSON.parse(json)
-              console.log(data)
             })
             .catch((error) => console.error(error))
             .finally(() => {
@@ -155,6 +152,7 @@ class Explore extends Component {
                 // if successful addition to db, navigate to create profile
                 console.log("finally block for interactions")
                 this.getAllMatches(this.state.user)
+                this.getHalfHeartGang(this.state.user)
             })
       }
 
@@ -224,10 +222,15 @@ class Explore extends Component {
                     </Subtitle>
                 </HeaderContainer>
                 
+                {console.log("ENTERING ALL USERS")}
+                {console.log(this.state.matches)}
+                {console.log(this.state.halfHeartGang)}
                 <AllUsersList>
                 {this.state.allUsers.map((user, index) => {
+                  console.log("USER IS " + user.userID)
                   let isMatched = this.state.matches.includes(user.userID)
-                  let halfHeart = this.state.halfHeartGang.includes(user.userID)
+                  let halfHeart = this.state.halfHeartGang.some((heart => heart['user'] === user.userID && heart['likeStatus'] === "yes" ))
+                  console.log(user.userID + " "+ halfHeart)
                   let icon;
                   isMatched ? icon = "heart" : icon = "heart-outline"
                   halfHeart ? icon="heart-half-full" : null

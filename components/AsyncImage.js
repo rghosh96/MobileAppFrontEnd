@@ -18,8 +18,8 @@ export default class AsyncImage extends Component {
           <PeopleImage
             source={source}
             onLoad={this._onLoad} />
-          {!this.state.loaded &&
-            <LottieView style={{height: 105, position:'absolute'}}source={require('../assets/loading.json')} autoPlay loop /> }
+          {!this.state.loaded ?
+            <LottieView style={{height: 105, position:'absolute'}}source={require('../assets/loading.json')} autoPlay loop /> : null }
         </View>
       )
     }
