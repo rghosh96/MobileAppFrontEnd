@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { UserInputModal, UserBioInputModal, ProfileImageModal,
-  UserDropDownModal } from './InputModals'
+  UserDropDownModal, CheckBoxModal } from './InputModals'
 import { pickTheme } from '../../redux/actions'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
@@ -43,6 +43,8 @@ class ProfileSettings extends Component {
         bio: '',
         profilePic: '',
         imageURI: '',
+        research: '',
+        sendMessages: '',
         uploadingImage: false,
         imageSet: false,
       };
@@ -118,6 +120,8 @@ class ProfileSettings extends Component {
                   major: userInfo.userMAJOR,
                   bio: userInfo.userABOUT,
                   profilePic: userInfo.userPROFILEPIC,
+                  research: userInfo.userRESEARCH,
+                  sendMessages: userInfo.userMSG_TEACHER,
                   userData: data.result[0] })
               }
               this.setState({userLoaded: true})
@@ -161,7 +165,9 @@ class ProfileSettings extends Component {
                   userABOUT: this.state.bio,
                   userGENDER: this.state.gender,
                   userPROFILEPIC: this.state.profilePic,
-                  userPROGRAM_EXP: this.state.experience
+                  userPROGRAM_EXP: this.state.experience,
+                  userRESEARCH: this.state.research,
+                  userMSG_TEACHER: this.state.sendMessages
               }
           })
       }
@@ -252,6 +258,23 @@ class ProfileSettings extends Component {
             closeModal={this.closeModal} />
             break;
 
+          case "updateResearch":
+            modalDisplay = <UserBioInputModal 
+            infoType="research"
+            updateState={this.updateState}
+            updateUserDB={this.updateUserDB}
+            closeModal={this.closeModal} />
+            break;
+
+          case "updateSendMessages":
+            modalDisplay = <CheckBoxModal 
+            infoType="sendMessages"
+            sendMessages={this.state.sendMessages}
+            updateState={this.updateState}
+            updateUserDB={this.updateUserDB}
+            closeModal={this.closeModal} />
+            break;
+
           case "updateExperience":
             modalDisplay = <UserDropDownModal 
               infoType="experience"
@@ -314,6 +337,7 @@ class ProfileSettings extends Component {
         }
 
     const noComment = "--"
+    if (this.state.userData.userSTATUS === "student") {
     return (
         
         <ThemeProvider theme={ this.props.theme }>
@@ -410,7 +434,93 @@ class ProfileSettings extends Component {
         </SettingContainer>
     
         </ThemeProvider>
-    );
+    ); }
+    else {
+      return (
+      <ThemeProvider theme={ this.props.theme }>
+      {console.log(this.state)}
+     <SettingContainer>
+         <SubSettingHeader>
+             <MaterialCommunityIcons  name="keyboard-backspace" onPress={() => this.props.navigation.navigate('Settings')} size={31} color={this.props.theme.PRIMARY_COLOR} />
+             <Title>profile settings</Title>
+         </SubSettingHeader>
+             <Subtitle>here u can update your basic profile! fields with the pencil are editable.</Subtitle>
+             <Line />
+             <ListContainer >
+           
+             <InfoArea>  
+             <ProfileImage source={{uri: this.state.userData.userPROFILEPIC}} />
+             <UserAttribute onPress={() => {
+               this.setModalVisible(true, "updateProfilePic")}}>✎</UserAttribute>
+             </InfoArea>
+
+             <InfoArea>
+             <EditItem>name</EditItem>
+             <UserAttribute>{this.state.userData.userFNAME} {this.state.userData.userLNAME}</UserAttribute>
+             </InfoArea>
+
+             <InfoArea>
+             <EditItem onPress={() => {
+               this.setModalVisible(true, "updateGender")}}>✎ gender</EditItem>
+             <UserAttribute>{this.state.userData.userGENDER}</UserAttribute>
+             </InfoArea>
+
+             
+             <InfoArea>
+             <EditItem onPress={() => {
+               this.setModalVisible(true, "updateHometown")}}>✎ hometown</EditItem>
+             <UserAttribute>{this.state.userData.userHOMETOWN}</UserAttribute>
+             </InfoArea>
+
+             <InfoArea>
+             <EditItem onPress={() => {
+               this.setModalVisible(true, "updateResearch")}}>✎ research</EditItem>
+             <UserAttribute>{this.state.userData.userRESEARCH}</UserAttribute>
+             </InfoArea>
+
+             <InfoArea>
+             <EditItem onPress={() => {
+               this.setModalVisible(true, "updateSendMessages")}}>✎ allow student messaging</EditItem>
+             <UserAttribute>{this.state.userData.userMSG_TEACHER}</UserAttribute>
+             </InfoArea>
+
+             <InfoArea>
+             <EditItem onPress={() => {
+               this.setModalVisible(true, "updateBio")}}>✎ bio</EditItem>
+             <UserAttribute>{this.state.userData.userABOUT}</UserAttribute>
+             </InfoArea>
+
+             <InfoArea>
+             <EditItem>UARK id</EditItem>
+             <UserAttribute>{this.state.userData.userID}</UserAttribute>
+             </InfoArea>
+
+             <InfoArea>
+             <EditItem>UARK email</EditItem>
+             <UserAttribute>{this.state.userData.userEMAIL}</UserAttribute>
+             </InfoArea>
+             
+             <InfoArea>
+             <EditItem>currently teaching:</EditItem>
+             <UserAttribute>{this.state.userData.userTEACHING_CLASSES}</UserAttribute>
+             </InfoArea>
+            
+             </ListContainer>
+       
+
+   <Modal isVisible={this.state.modalVisible}>
+     <ModalContainer>
+ 
+     {modalDisplay}
+    
+   </ModalContainer>
+ </Modal>
+
+ </SettingContainer>
+
+ </ThemeProvider>
+)
+    }
   }
 }
 

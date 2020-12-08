@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { pickTheme } from '../../redux/actions'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
-import { Subtitle, HeaderText, Button, ButtonText, Line } from '../../theming/masterStyle'
+import { Subtitle, HeaderText, Button, ButtonText, Line, RowView } from '../../theming/masterStyle'
 import { BioInput, SectionArea, SingleLineInput, FormArea, CreateProfileContent, ErrorText, H1, H2,
     HeaderContainer, ExpText } from '../../theming/createStyle'
 import { Formik } from 'formik'
@@ -12,7 +12,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { Alert, StyleSheet } from "react-native";
 import {CLOUD_NAME, CLOUD_PRESET, CLOUD_BASE_API} from "@env"
 import ImagePickerExample from '../ImagePicker';
-import CheckBox from '@react-native-community/checkbox';
+import CheckBox from 'react-native-checkbox-lite';
 
 
 console.log(CLOUD_NAME)
@@ -238,12 +238,16 @@ class GetUserInfo extends Component {
                                         value = {props.values.bio}
                                     />
 
-                                    <H2>would u like students to be able to message you?</H2>
-                                    <CheckBox
-                                    disabled={false}
-                                    value={props.values.sendMessages}
-                                    onValueChange={props.handleChange('sendMessages')}
-                                    />
+                                    <RowView style={{marginBottom: 10}}>
+                                    <H2>allow students to message u?</H2>
+                                    <CheckBox 
+                                        style={{marginTop: 15}}
+                                        text={false}
+                                        isChecked={props.values.sendMessages} 
+                                        onPress={() => props.setFieldValue('sendMessages', !props.values.sendMessages)} 
+                                        checkBoxColor={this.props.theme.PRIMARY_COLOR} />
+                                    </RowView>
+                                    <Line />
 
                                     <Button title="Submit" onPress={() => props.handleSubmit()}>
                                         <ButtonText>i'm done!</ButtonText>

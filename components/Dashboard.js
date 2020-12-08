@@ -5,14 +5,13 @@ import AsyncStorage from '@react-native-community/async-storage'
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import { ThemeProvider } from 'styled-components/native';
-import { Container, HeaderContainer, Text } from '../theming/masterStyle'
-import LottieView from 'lottie-react-native';
+import { Container, HeaderContainer, Text, H1, FacultyView } from '../theming/masterStyle'
 import { Connections, HeaderText, ProfileText, ProfileImage, ProfileContainer, ConnectionsContainer, 
   PeopleImage, MatchesContainer, MatchesText, MatchesDash } from '../theming/dashStyle'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import AsyncImage from './AsyncImage'
 import DashProfileModal from './DashProfileModal'
-import { ModalContainer } from '../theming/settingStyle'
+import { ModalContainer, Line } from '../theming/settingStyle'
 import Modal from 'react-native-modal';
 
 
@@ -289,14 +288,7 @@ class Dashboard extends Component {
             break;
         }
 
-    if (this.state.randomMatches.length >= 3 ) {
-      r0 = this.state.randomMatches[0].userPROFILEPIC ? this.state.randomMatches[0].userPROFILEPIC : cuteBird
-      r1 = this.state.randomMatches[1].userPROFILEPIC ? this.state.randomMatches[1].userPROFILEPIC : cuteBird
-      r2 = this.state.randomMatches[2].userPROFILEPIC ? this.state.randomMatches[2].userPROFILEPIC : cuteBird
-    }
-    if (!this.state.userLoaded && !this.state.loaded) {
-      return <LottieView style={{height: 200}}source={require('../assets/loading.json')} autoPlay loop />
-    } 
+    if (this.state.userData.userSTATUS === "student") {
     return (
         <ThemeProvider theme={ this.props.theme }>
             <Container>
@@ -370,6 +362,31 @@ class Dashboard extends Component {
             </Container>
         </ThemeProvider>
     );
+    } else {
+      return (
+        <ThemeProvider theme={ this.props.theme }>
+            <Container>
+                <HeaderContainer>
+                  <HeaderText>home</HeaderText>
+                </HeaderContainer>
+                <ProfileContainer>
+                    <ProfileImage source={{uri: this.state.userData.userPROFILEPIC}} />
+                    <ProfileText>
+                        {this.state.userData.userFNAME} {this.state.userData.userLNAME} {"\n"}
+                        {this.state.userData.userSTATUS} 
+                    </ProfileText>
+                </ProfileContainer>
+                <FacultyView>
+                <Line />
+                <H1>your bio:</H1>
+                  <Text>{this.state.userData.userABOUT}</Text>
+                <H1>your research:</H1>
+                <Text>{this.state.userData.userRESEARCH}</Text>
+                </FacultyView>
+                </Container>
+                </ThemeProvider>
+      )
+    }
   } 
 }
 

@@ -47,6 +47,20 @@ export const HeaderContainer = styled.View`
     paddingRight: 20px;
 `;
 
+export const FacultyView = styled.View`
+    backgroundColor: ${props => props.theme.BG_COLOR};
+    width: 100%;
+    marginTop: 30px;
+    justifyContent: center;
+    alignItems: center;
+`;
+
+export const RowView = styled.View`
+  flexDirection: row;
+  justifyContent: center;
+  alignItems: center;
+`;
+
 export const Text = styled.Text`
   color: ${props => props.theme.GREY};
   fontFamily: "text";
@@ -69,6 +83,13 @@ export const Button = styled.TouchableOpacity`
   borderRadius: 2px;
   backgroundColor:${props => props.theme.PRIMARY_COLOR};
   margin: 7px;
+`;
+
+export const H1 = styled.Text`
+  color: ${props => props.theme.PRIMARY_COLOR};
+  fontFamily: "header";
+  fontSize: 23px;
+  textAlign: left;
 `;
 
 export const ButtonText = styled.Text`

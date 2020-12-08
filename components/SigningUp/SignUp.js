@@ -14,7 +14,6 @@ import { Alert } from "react-native";
 import InfoModal from '../InfoModal'
 import Modal from 'react-native-modal';
 import { ModalContainer } from '../../theming/settingStyle'
-import { DataTable } from 'react-native-paper';
 
 //info modal
 const infoData = {

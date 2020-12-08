@@ -24,7 +24,7 @@ export default function App() {
       setFontsLoaded(true)
     })
     AsyncStorage.getItem('alreadyLaunched').then(value => {
-      if (value == null) {
+      if (value === null) {
         AsyncStorage.setItem('alreadyLaunched', 'true');
         setIsFirstLaunch(true);
       } else {
@@ -43,7 +43,8 @@ export default function App() {
   }, []);
 
 
- console.log(user)
+ console.log("user is: " + user)
+ console.log("isFirstLaunch is: " + isFirstLaunch)
 
   if (isFirstLaunch === null) {
     return null;

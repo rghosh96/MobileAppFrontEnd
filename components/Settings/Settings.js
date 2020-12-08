@@ -1,21 +1,10 @@
 import React, { Component } from 'react';
-import { LightThemeModal, DarkThemeModal } from './ThemeModal'
-import { UserInputModal, UserBioInputModal, ProfileImageModal,
-  UserDropDownModal } from './InputModals'
-import CustomRatings from '../CustomRatings'
 import { pickTheme } from '../../redux/actions'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
 import AsyncStorage from '@react-native-community/async-storage'
-import {Collapse,CollapseHeader, CollapseBody, AccordionList} from 'accordion-collapse-react-native';
-import { Keyboard, TouchableWithoutFeedback, View } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import Modal from 'react-native-modal';
 import { HeaderText, Subtitle, Text, Button, ButtonText } from '../../theming/masterStyle'
-import {CLOUD_NAME, CLOUD_PRESET, CLOUD_BASE_API} from "@env"
-import { SettingContainer, ProfileImage, ModalContainer, Line, Title, EditItem, UserAttribute, InfoArea, 
-  RatingContainer, ListContainer } from '../../theming/settingStyle'
-import { InterestModal } from './InterestModals';
+import { SettingContainer, Line, Title  } from '../../theming/settingStyle'
 
 
 
