@@ -6,12 +6,14 @@ import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
 import AsyncStorage from '@react-native-community/async-storage'
 import Modal from 'react-native-modal';
-import { HeaderText, Subtitle, Text, Button, ButtonText } from '../../theming/masterStyle'
+import { HeaderText, Subtitle, Text, Button } from '../../theming/masterStyle'
+import { ProfileImage } from '../../theming/dashStyle'
 import {CLOUD_NAME, CLOUD_PRESET, CLOUD_BASE_API} from "@env"
-import { SettingContainer, ProfileImage, ModalContainer, Line, Title, EditItem, UserAttribute, InfoArea, 
+import { SettingContainer, ModalContainer, Line, Title, EditItem, UserAttribute, InfoArea, 
    ListContainer, SubSettingHeader } from '../../theming/settingStyle'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { AppLoading } from 'expo';
+import AsyncImage from '../AsyncImage'
 
 
 
@@ -350,10 +352,10 @@ class ProfileSettings extends Component {
                 </SubSettingHeader>
                     <Subtitle>here u can update your basic profile! fields with the pencil are editable.</Subtitle>
                     <Line />
-                    <ListContainer >
+                    <ListContainer showsVerticalScrollIndicator={false} >
                   
                     <InfoArea>  
-                    <ProfileImage source={{uri: this.state.userData.userPROFILEPIC}} />
+                    <AsyncImage source={{uri: this.state.userData.userPROFILEPIC}} type="profile" />
                     <UserAttribute onPress={() => {
                       this.setModalVisible(true, "updateProfilePic")}}>✎</UserAttribute>
                     </InfoArea>

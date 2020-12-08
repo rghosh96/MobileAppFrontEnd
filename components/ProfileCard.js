@@ -21,7 +21,7 @@ const ProfileCard = (props) => {
     return (
         <CardContainer>
             <AsyncImage  
-            source={imageURI.length!=0?{uri: imageURI}: null} />
+            source={imageURI.length!=0?{uri: imageURI}: null} type="people" />
 
             <InfoSection>
                 <Title onPress={() => { props.setModalVisible(props.user); }}>

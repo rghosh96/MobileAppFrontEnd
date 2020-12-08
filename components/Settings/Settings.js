@@ -17,7 +17,7 @@ class Settings extends Component {
      } catch (error) {
        console.log("Something went wrong", error);
      }
-     this.props.navigation.navigate("SignUp")
+     this.props.navigation.push("SignUp")
     }
 
     signOut = () => {

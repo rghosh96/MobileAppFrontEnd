@@ -181,7 +181,7 @@ class ChatList extends Component {
             }>
             <CardContainer>
                     <TouchableOpacity>
-                    <AsyncImage source={{uri: match.userPROFILEPIC}} />
+                    <AsyncImage source={{uri: match.userPROFILEPIC}} type="people" />
                 </TouchableOpacity>
                 <View style={styles.forwidth_right}>
                 <Title> {match.userFNAME} {match.userLNAME} </Title>

@@ -293,7 +293,7 @@ class Dashboard extends Component {
                   <HeaderText>home</HeaderText>
                 </HeaderContainer>
                 <ProfileContainer>
-                    <ProfileImage source={{uri: this.state.userData.userPROFILEPIC}} />
+                    <AsyncImage source={{uri: this.state.userData.userPROFILEPIC}} type="profile"/>
                     <ProfileText>
                         {this.state.userData.userFNAME} {this.state.userData.userLNAME} {"\n"}
                         {this.state.userData.userMAJOR} {"\n"}
@@ -320,7 +320,7 @@ class Dashboard extends Component {
                   halfHeart ? icon="heart-half-full" : icon
                   return (
                     <TouchableWithoutFeedback key={index} onPress={() => this.setModalVisible(user, icon)}>
-                      <AsyncImage source={{ uri: profilePic}} />
+                      <AsyncImage source={{ uri: profilePic}} type="people"/>
                     </TouchableWithoutFeedback>
                   ) 
                   })}
