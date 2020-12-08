@@ -25,6 +25,7 @@ class Chat extends Component {
     this.state = {
       f_name:'',
       u_name:'',
+      u_fname:'',
       text:'',
       chatData:[],
       data: [
@@ -59,10 +60,12 @@ class Chat extends Component {
   retrieveData = async() => {
       name = this.props.route.params.name;
       uname = this.props.route.params.uname;
+      console.log(this.props.route.params)
       console.log('this is user data==>  '+name+'   '+uname);
       this.setState({
         f_name:name,
         u_name:uname,
+        u_fname: this.props.route.params.uFname
       }) 
     }
 
@@ -102,9 +105,6 @@ class Chat extends Component {
 
     let Data=this.state.chatData 
     let chats=Data.map((c_data, index)=>{
-      console.log("IN CHAT")
-      console.log("c_data.fname: " + c_data.fname)
-      console.log("this.state.fname: " + this.state.f_name)
     console.log(this.props.theme)
           if(
             // if you are sender, name on message is f_name and reciever will be u_name
@@ -177,7 +177,7 @@ class Chat extends Component {
             <ChatContainer>
             <ChatHeaderContainer>
               <MaterialCommunityIcons  name="keyboard-backspace" onPress={() => this.props.navigation.navigate('Chat')} size={35} color={this.props.theme.PRIMARY_COLOR} />
-              <ChatHeader>{this.state.u_name}</ChatHeader>
+              <ChatHeader>{this.state.u_fname}</ChatHeader>
             </ChatHeaderContainer>
             <Line />
                   <ChatList>       

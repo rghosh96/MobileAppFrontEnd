@@ -145,6 +145,7 @@ class ChatList extends Component {
                 name: this.state.user,
                 avatar: match.userPROFILE_PIC,
                 uname: match.userID,
+                uFname: match.userFNAME
             })
             }>
             <CardContainer>
