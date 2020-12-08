@@ -28,6 +28,7 @@ class Dashboard extends Component {
     user: '',
     userLoaded: false,
     userData: '',
+    status: '',
     isFirstLaunch: true,
     randomMatches: [],
     loaded: false,
@@ -54,22 +55,16 @@ class Dashboard extends Component {
         .catch((error) => console.error(error))
         .finally(() => {
           if (this.state.userLoaded === true) {
-            if (request === 0) {
-              this.setState({ userData: data.result[0] })
-            }
-            else if (request === 1) {
-              this.setState({ randomMatches: [...this.state.randomMatches, data.result[0]] })
-            }
+              console.log(data.result[0])
+              this.setState({ userData: data.result[0], loaded: true, status: data.result[0].userSTATUS })
           }
             
         })
   }
 
   getRandomMatches(user) {
-    console.log("in get random matches")
     var data;
     let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/matches/get3RandomMatches?USER_id=" + user;
-    console.log(apiEndpoint)
     // call api endpoint, sending in user to add to db
     fetch(apiEndpoint,)
         .then((response) => response.text())
@@ -80,8 +75,6 @@ class Dashboard extends Component {
         })
         .catch((error) => console.error(error))
         .finally(() => {
-            console.log("finally block of RANDOM MATCHES") 
-            console.log(data)
             this.getMatchObjects("randomMatches", data)
             
         })
@@ -90,7 +83,6 @@ class Dashboard extends Component {
   getMatchObjects(matchType, usersArray) {
     var data;
     let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/users/getAllUsers";
-    console.log(apiEndpoint)
     // call api endpoint, sending in user to add to db
     fetch(apiEndpoint,)
         .then((response) => response.text())
@@ -101,15 +93,11 @@ class Dashboard extends Component {
             // console.log(data)
             let matches = usersArray
             let matchesArray = data.result.filter(function (item) {
-              console.log("IN FILTER")
-              console.log(matches)
               if(matches.includes(item.userID)) {
                 return item
               }
             });
-            console.log("IN GET MATCH OBJECTS")
             let threeArray = matchesArray.slice(0,3)
-            console.log(threeArray)
             this.setState({[matchType]: threeArray})
     })
     .catch((error) => console.error(error))
@@ -146,11 +134,19 @@ class Dashboard extends Component {
       console.log("Something went wrong", error);
     }
     this.setState({userLoaded: true})
-    this.setState({loaded: true})
+    
   }  
 
   // load fonts
   async componentDidMount() {
+    try {
+      await Font.loadAsync({
+        header: require('../assets/fonts/ArchivoBlack-Regular.ttf'),
+        text: require('../assets/fonts/Spartan-Medium.ttf')
+    })
+    } catch(e){
+      console.log("error loading fonts")
+    }
     this.getToken()
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
       this.getToken()
@@ -287,8 +283,9 @@ class Dashboard extends Component {
         default:
             break;
         }
-
-    if (this.state.userData.userSTATUS === "student") {
+        console.log("STATUS IS: " + this.state.status)
+        console.log("LOADED IS: " + this.state.loaded)
+    if (this.state.loaded === true && this.state.status === "student") {
     return (
         <ThemeProvider theme={ this.props.theme }>
             <Container>
@@ -313,18 +310,14 @@ class Dashboard extends Component {
                   <PeopleImage source={require('../mockData/pic6.jpg')} />
                 </MatchesContainer>
 
-                {console.log("MATCHES ARRAY")}
-                {console.log(this.state.matches)}
                 <MatchesContainer>
                 {this.state.randomMatches.map((user, index) => {
-                  console.log("USER IS " + user.userID)
                   let profilePic = user.userPROFILEPIC
                   let isMatched = this.state.matches.includes(user.userID)
                   let halfHeart = this.state.halfHeartGang.some((heart => heart['user'] === user.userID && heart['likeStatus'] === "yes" ))
                   let icon;
                   isMatched ? icon = "heart" : icon = "heart-outline"
                   halfHeart ? icon="heart-half-full" : icon
-                  console.log("ICON " + icon)
                   return (
                     <TouchableWithoutFeedback key={index} onPress={() => this.setModalVisible(user, icon)}>
                       <AsyncImage source={{ uri: profilePic}} />
@@ -361,30 +354,29 @@ class Dashboard extends Component {
 
             </Container>
         </ThemeProvider>
-    );
-    } else {
+    ); } else {
       return (
         <ThemeProvider theme={ this.props.theme }>
-            <Container>
-                <HeaderContainer>
-                  <HeaderText>home</HeaderText>
-                </HeaderContainer>
-                <ProfileContainer>
-                    <ProfileImage source={{uri: this.state.userData.userPROFILEPIC}} />
-                    <ProfileText>
-                        {this.state.userData.userFNAME} {this.state.userData.userLNAME} {"\n"}
-                        {this.state.userData.userSTATUS} 
-                    </ProfileText>
-                </ProfileContainer>
-                <FacultyView>
-                <Line />
-                <H1>your bio:</H1>
-                  <Text>{this.state.userData.userABOUT}</Text>
-                <H1>your research:</H1>
-                <Text>{this.state.userData.userRESEARCH}</Text>
-                </FacultyView>
-                </Container>
-                </ThemeProvider>
+        <Container>
+            <HeaderContainer>
+              <HeaderText>home</HeaderText>
+            </HeaderContainer>
+            <ProfileContainer>
+                <ProfileImage source={{uri: this.state.userData.userPROFILEPIC}} />
+                <ProfileText>
+                    {this.state.userData.userFNAME} {this.state.userData.userLNAME} {"\n"}
+                    {this.state.userData.userSTATUS} 
+                </ProfileText>
+            </ProfileContainer>
+            <FacultyView>
+            <Line />
+            <H1>your bio:</H1>
+              <Text>{this.state.userData.userABOUT}</Text>
+            <H1>your research:</H1>
+            <Text>{this.state.userData.userRESEARCH}</Text>
+            </FacultyView>
+            </Container>
+            </ThemeProvider>
       )
     }
   } 

@@ -63,6 +63,7 @@ class SignUp extends Component {
         }
       }  
 
+
       async storeToken(user) {
         try {
            await AsyncStorage.setItem("user", user);
@@ -109,10 +110,10 @@ class SignUp extends Component {
                      this.getToken();
 
                      if (this.state.alreadyInDB === true) {
-                        this.props.navigation.navigate(
-                            "GetUserInterests",
-                            {user: info.user.toLowerCase(),
-                            userStatus: this.state.userStatus});
+
+                            this.props.navigation.push(
+                                "Dashboard");
+                        
                      } else {
                     this.props.navigation.navigate(
                         "GetUserInterests",
