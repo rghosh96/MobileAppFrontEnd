@@ -22,6 +22,7 @@ class Dashboard extends Component {
     super(props);
     this.closeModal = this.closeModal.bind(this)
     this.setModalVisible = this.setModalVisible.bind(this)
+    this.likeUser = this.likeUser.bind(this)
   }
 
   state = {
@@ -38,7 +39,8 @@ class Dashboard extends Component {
     modalUser: null,
     userInterests: null,
     matches: [],
-    halfHeartGang: []
+    halfHeartGang: [],
+    icon: ''
   }
 
   getUserData(user, request) {
@@ -108,8 +110,9 @@ class Dashboard extends Component {
               }
             });
             console.log("IN GET MATCH OBJECTS")
-            console.log(matchesArray)
-            this.setState({[matchType]: matchesArray})
+            let threeArray = matchesArray.slice(0,3)
+            console.log(threeArray)
+            this.setState({[matchType]: threeArray})
     })
     .catch((error) => console.error(error))
     .finally(() => {
@@ -181,6 +184,7 @@ class Dashboard extends Component {
             this.getAllMatches(this.state.user)
             this.getHalfHeartGang(this.state.user)
         })
+        this.closeModal()
   }
 
   getAllMatches(user) {
@@ -220,10 +224,11 @@ class Dashboard extends Component {
         .catch((error) => console.error(error))
         .finally(() => {
           console.log("finally block") 
+          
         })
   }
 
-  getUserInterests(user) {
+  getUserInterests(user, icon) {
     var data;
     let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/interest/getInterests?USER_id=" + user.userID;
     // call api endpoint, sending in user to add to db
@@ -237,12 +242,15 @@ class Dashboard extends Component {
         .finally(() => {
           if (data.isError === false) {
             let interestsInfo = data.result[0]
+            console.log("IN GET USER INTERESTS: " + icon)
             this.setState({ 
               userInterests: interestsInfo,
               modalVisible: true,
               modalContent: "ProfileModal",
-              modalUser: user, })
+              modalUser: user,
+              icon: icon })
           }
+          console.log("STATE ICON " + this.state.icon)
         })
   }
 
@@ -250,13 +258,16 @@ class Dashboard extends Component {
     this._unsubscribe();
   }
 
-  setModalVisible(user) {
-    this.getUserInterests(user)
+  setModalVisible(user, icon) {
+    console.log("IN MODAL VISIBLE: " + icon)
+    this.getUserInterests(user, icon)
   }
 
   closeModal(user) {
+    
     this.setState({ 
       modalVisible: !this.state.modalVisible, });
+      this.getRandomMatches()
   }
 
   render() {
@@ -264,12 +275,15 @@ class Dashboard extends Component {
     let cuteBird = "https://cache.desktopnexus.com/thumbseg/1268/1268204-bigthumbnail.jpg"
 
     let modalDisplay;
+    console.log("IN RENDER " + this.state.icon)
         switch(this.state.modalContent) {
           case "ProfileModal":
             modalDisplay = <DashProfileModal 
             user={this.state.modalUser}
             userInterests={this.state.userInterests}
-            closeModal={this.closeModal} />
+            icon={this.state.icon}
+            closeModal={this.closeModal}
+            likeUser={this.likeUser} />
             break;
             
         default:
@@ -308,8 +322,25 @@ class Dashboard extends Component {
                   <PeopleImage source={require('../mockData/pic6.jpg')} />
                 </MatchesContainer>
 
+                {console.log("MATCHES ARRAY")}
+                {console.log(this.state.matches)}
                 <MatchesContainer>
-                  <TouchableWithoutFeedback onPress={() => this.setModalVisible(this.state.randomMatches[0])}>
+                {this.state.randomMatches.map((user, index) => {
+                  console.log("USER IS " + user.userID)
+                  let profilePic = user.userPROFILEPIC
+                  let isMatched = this.state.matches.includes(user.userID)
+                  let halfHeart = this.state.halfHeartGang.some((heart => heart['user'] === user.userID && heart['likeStatus'] === "yes" ))
+                  let icon;
+                  isMatched ? icon = "heart" : icon = "heart-outline"
+                  halfHeart ? icon="heart-half-full" : icon
+                  console.log("ICON " + icon)
+                  return (
+                    <TouchableWithoutFeedback key={index} onPress={() => this.setModalVisible(user, icon)}>
+                      <AsyncImage source={{ uri: profilePic}} />
+                    </TouchableWithoutFeedback>
+                  ) 
+                  })}
+                  {/* <TouchableWithoutFeedback onPress={() => this.setModalVisible(this.state.randomMatches[0])}>
                     <AsyncImage source={{ uri: r0}} />
                   </TouchableWithoutFeedback>
                   
@@ -319,7 +350,7 @@ class Dashboard extends Component {
 
                   <TouchableWithoutFeedback onPress={() => this.setModalVisible(this.state.randomMatches[2])}>
                     <AsyncImage source={{ uri: r2}} />
-                  </TouchableWithoutFeedback>
+                  </TouchableWithoutFeedback> */}
                   <MatchesDash>
                     <MatchesText>random matches</MatchesText>
                   </MatchesDash>

@@ -10,10 +10,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 
   const DashProfileModal = (props) => {
-      console.log("IN PROFILE MODAL")
-    console.log(props)
+      console.log("IN DASH PROFILE MODAL")
+      console.log(props.icon)
+    var likeAction;
+    if (!props.isMatched && props.isLiked) { likeAction = "no" }
+    if (!props.isMatched && !props.isLiked) { likeAction = "yes" }
+    if (props.isMatched) { likeAction = "no" }
+    console.log(likeAction)
     const userInterests = props.userInterests != null ? props.userInterests : null
-    console.log(useSelector)
     const primary = useSelector(state => state.themeReducer.theme.PRIMARY_COLOR);
     return (
         <ModalView>
@@ -115,6 +119,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
             <ModalSubtitle>{props.userInterests.interestREADING_COMMENT ?
             props.userInterests.interestREADING_COMMENT : "--"}</ModalSubtitle>
             </InterestsView>
+            <Line />
+            {console.log(props.icon)}
+            <ModalSubtitle>think {props.user.userFNAME}'s cool?</ModalSubtitle>
+            <MaterialCommunityIcons 
+                name={props.icon}
+                color={ primary}
+                size={41}
+                onPress={props.isMatched ? () => props.likeUser(props.user.userID, likeAction) : () => props.likeUser(props.user.userID, likeAction)} />
             <Line />
             <Button onPress={() => { props.closeModal(); }} >
                 <ButtonText>Done</ButtonText>
