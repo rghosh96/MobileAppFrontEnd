@@ -12,16 +12,16 @@ import RNPickerSelect from 'react-native-picker-select';
 import { Alert, StyleSheet } from "react-native";
 import {CLOUD_NAME, CLOUD_PRESET, CLOUD_BASE_API} from "@env"
 import ImagePickerExample from '../ImagePicker';
+import CheckBox from '@react-native-community/checkbox';
 
 
 console.log(CLOUD_NAME)
 // form validation
 const UserInfoSchema = yup.object({
     gender: yup.string().required('required!!!'), 
-    classification: yup.string().required('required!!!'),
-    major: yup.string().required('required!!!'),
-    graddate: yup.string().required('required!!!'),
+    research: yup.string().required('required!!!'),
     hometown: yup.string().required('required!!!'),
+    sendMessages: yup.bool().required('required!!!')
 })
 
 class GetUserInfo extends Component {
@@ -35,13 +35,11 @@ class GetUserInfo extends Component {
         success: false,
         bio: '', 
         gender: '', 
-        classification: '',
-        major: '',
-        graddate: '',
         hometown: '',
-        exp: '',
         imageURI: '',
         cloudinaryURL: null,
+        sendMessages: false,
+        research: ''    // for faculty only
       }
 
       setImageURI = (uri) => {
@@ -76,11 +74,9 @@ class GetUserInfo extends Component {
         this.setState({
             bio: info.bio, 
             gender: info.gender, 
-            classification: info.classification,
-            major: info.major,
-            graddate: info.graddate,
             hometown: info.hometown,
-            exp: info.exp
+            research: info.research,
+            sendMessages: info.sendMessages
         })
         console.log(this.state)
         this.updateUserDB()
@@ -94,13 +90,11 @@ class GetUserInfo extends Component {
                 userID: this.state.user, 
                 values: {
                     userHOMETOWN: this.state.hometown,
-                    userMAJOR: this.state.major,
-                    userGRAD_DATE: this.state.graddate,
-                    userGRADE_LEVEL: this.state.classification,
                     userABOUT: this.state.bio,
                     userGENDER: this.state.gender,
-                    userPROGRAM_EXP: this.state.exp,
                     userPROFILEPIC: this.state.cloudinaryURL,
+                    userRESEARCH: this.state.research,
+                    userMSG_TEACHER: this.state.sendMessages
                 }
             })
         }
@@ -154,14 +148,13 @@ class GetUserInfo extends Component {
                             initialValues={{ 
                                 bio: '', 
                                 gender: '', 
-                                classification: '',
-                                major: '',
-                                graddate: '',
                                 hometown: '',
-                                exp: '',
+                                research: '',
+                                sendMessages: false
                             }}
                             // validationSchema={SignUpSchema}
                             onSubmit={(values) => {
+                                console.log(values)
                                 this.setInfo(values)
                             }}
                         >
@@ -177,75 +170,8 @@ class GetUserInfo extends Component {
                                     <H1>first, some general info.</H1>
                                     <H2>Set a profile image!</H2>
                                         <ImagePickerExample setImageURI={this.setImageURI}/>
-                                    <SectionArea>
+                              
                                         
-                                    <H2>what is your classification?</H2>
-                                    <ErrorText>{props.touched.classification && props.errors.classification }</ErrorText>
-                                    </SectionArea>
-                                    <RNPickerSelect
-                                        placeholder={{ label: 'i am a ... ▽', value: null}}
-                                        onValueChange={(value) => props.setFieldValue('classification', value)}
-                                        items={[
-                                            {label: 'freshman', value: 'freshman'},
-                                            {label: 'sophomore', value: 'sophomore'},
-                                            {label: 'junior', value: 'junior'},
-                                            {label: 'senior', value: 'senior'},
-                                            {label: 'super senior', value: 'super senior'},
-                                            {label: 'grad student', value: 'grad student'},
-                                        ]}
-                                        style={dropdown(this.props)}
-                                    />
-                                    
-                                    <SectionArea>
-                                    <H2>what is your primary major?</H2>
-                                    <ErrorText>{props.touched.major && props.errors.major }</ErrorText>
-                                    </SectionArea>
-                                    <RNPickerSelect
-                                        placeholder={{ label: 'my major is ... ▽', value: null}}
-                                        onValueChange={(value) => props.setFieldValue('major', value)}
-                                        items={[
-                                            {label: 'computer science', value: 'computer science'},
-                                            {label: 'computer engineering', value: 'computer engineering'},
-                                            {label: 'mathematics', value: 'mathematics'},
-                                        ]}
-                                        style={dropdown(this.props)}
-                                    />
-
-                                    <SectionArea>      
-                                    <H2>what is ur level of programming experience?</H2>
-                                    
-                                    <ErrorText>{props.touched.exp && props.errors.exp }</ErrorText>
-                                    </SectionArea> 
-                                    <ExpText>little - i've never coded in my life!!</ExpText>
-                                    <ExpText>moderate - introduced in hs, have coded before, or have taken a couple programming courses</ExpText>
-                                    <ExpText>a lot - i'm an upperclassman, have had a coding job, or have been coding since i was like 5</ExpText>
-                                    <RNPickerSelect
-                                        placeholder={{ label: 'i would say say... ▽', value: null}}
-                                        onValueChange={(value) => props.setFieldValue('exp', value)}
-                                        items={[
-                                            {label: 'little', value: '1'},
-                                            {label: 'moderate', value: '2'},
-                                            {label: 'a lot', value: '3'},
-                                        ]}
-                                        style={dropdown(this.props)}
-                                    />
-                                    
-                                    <SectionArea>      
-                                    <H2>when do u graduate?</H2>
-                                    <ErrorText>{props.touched.graddate && props.errors.graddate }</ErrorText>
-                                    </SectionArea> 
-                                    <RNPickerSelect
-                                        placeholder={{ label: 'i graduate ... ▽', value: null}}
-                                        onValueChange={(value) => props.setFieldValue('graddate', value)}
-                                        items={[
-                                            {label: 'dec 2020', value: 'dec 2020'},
-                                            {label: 'may 2021', value: 'may 2021'},
-                                            {label: 'dec 2021', value: 'dec 2021'},
-                                            {label: 'may 2022', value: 'may 2022'},
-                                            {label: 'dec 2022', value: 'dec 2022'},
-                                        ]}
-                                        style={dropdown(this.props)}
-                                    />
                                     <Line/>
                                     <H1>now tell us more about you!</H1>
                                     <SectionArea>
@@ -282,7 +208,21 @@ class GetUserInfo extends Component {
                                             {label: 'other', value: 'other'},
                                         ]}
                                         style={dropdown(this.props)}
-                                    />                         
+                                    />
+
+                                    <SectionArea>
+                                    <H2>tell us about ur research interests!</H2>
+                                    <ErrorText>{props.touched.research && props.errors.research }</ErrorText>
+                                    </SectionArea>
+                                    <BioInput 
+                                        placeholder='please describe your research! (250 words max)' 
+                                        onChangeText={props.handleChange('research')} 
+                                        color={this.props.theme.PRIMARY_COLOR}
+                                        maxLength={150}
+                                        multiline
+                                        numberOfLines={7}
+                                        value = {props.values.research}
+                                    />                          
                                     
                                     <SectionArea>
                                     <H2>finally, a short bio</H2>
@@ -296,6 +236,13 @@ class GetUserInfo extends Component {
                                         multiline
                                         numberOfLines={7}
                                         value = {props.values.bio}
+                                    />
+
+                                    <H2>would u like students to be able to message you?</H2>
+                                    <CheckBox
+                                    disabled={false}
+                                    value={props.values.sendMessages}
+                                    onValueChange={props.handleChange('sendMessages')}
                                     />
 
                                     <Button title="Submit" onPress={() => props.handleSubmit()}>

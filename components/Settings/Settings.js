@@ -24,7 +24,7 @@ class Settings extends Component {
 
     async resetToken() {
       try {
-        await AsyncStorage.setItem("user", null);
+        await AsyncStorage.removeItem("user");
      } catch (error) {
        console.log("Something went wrong", error);
      }

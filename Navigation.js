@@ -17,6 +17,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SignUp from './components/SigningUp/SignUp'
 import FirstLaunch from './components/FirstLaunch'
 import GetUserInterests from './components/SigningUp/GetUserInterests'
+import GetFacultyInfo from './components/SigningUp/GetFacultyInfo'
 import GetUserInfo from './components/SigningUp/GetUserInfo'
 import AsyncStorage from '@react-native-community/async-storage'
 
@@ -33,6 +34,7 @@ export const FirstNav = () => (
             <DashboardStack.Screen name="SignUp" component = {SignUp} /> 
             <DashboardStack.Screen name="GetUserInterests" component = {GetUserInterests} />
             <DashboardStack.Screen name="GetUserInfo" component = {GetUserInfo} />
+            <DashboardStack.Screen name="GetFacultyInfo" component = {GetFacultyInfo} />
             <DashboardStack.Screen name="Chat" component = {Chat} /> 
             <DashboardStack.Screen name="ProfileSettings" component = {ProfileSettings} /> 
             <DashboardStack.Screen name="InterestSettings" component = {InterestSettings} /> 
@@ -53,6 +55,7 @@ export const Navigation = () => (
             <DashboardStack.Screen name="ThemeSettings" component = {ThemeSettings} /> 
             <DashboardStack.Screen name="GetUserInterests" component = {GetUserInterests} />
             <DashboardStack.Screen name="GetUserInfo" component = {GetUserInfo} />
+            <DashboardStack.Screen name="GetFacultyInfo" component = {GetFacultyInfo} />
         </DashboardStack.Navigator>
     </NavigationContainer>
 )
@@ -69,6 +72,7 @@ export const ReturningUser = () => (
             <DashboardStack.Screen name="ThemeSettings" component = {ThemeSettings} /> 
             <DashboardStack.Screen name="GetUserInterests" component = {GetUserInterests} />
             <DashboardStack.Screen name="GetUserInfo" component = {GetUserInfo} />
+            <DashboardStack.Screen name="GetFacultyInfo" component = {GetFacultyInfo} />
         </DashboardStack.Navigator>
     </NavigationContainer>
 )

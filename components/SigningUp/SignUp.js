@@ -11,6 +11,16 @@ import * as yup from 'yup';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import LottieView from 'lottie-react-native';
 import { Alert } from "react-native";
+import InfoModal from '../InfoModal'
+import Modal from 'react-native-modal';
+import { ModalContainer } from '../../theming/settingStyle'
+import { DataTable } from 'react-native-paper';
+
+//info modal
+const infoData = {
+    title: "our privacy statement",
+    body: "by signing into this app, you are allowing us to pull your data from the uark database, including your name, email, and classes. your data will only be used in app, and viewable by other users, but we will NOT share it with any third parties!",
+}
 
 // form validation
 const SignUpSchema = yup.object({
@@ -19,11 +29,29 @@ const SignUpSchema = yup.object({
 })
 
 class SignUp extends Component {
+    constructor(props) {
+        super(props);
+        this.closeModal = this.closeModal.bind(this)
+      }
+
     state = {
         loaded: false,
         success: false,
         error: '',
-        alreadyInDB: false
+        alreadyInDB: false,
+        modalVisible: false,
+        userStatus: ''
+      }
+
+      setModalVisible = (visible) => {
+        this.setState({ 
+          modalVisible: visible});
+      }
+  
+      closeModal() {
+        console.log("closing modal")
+        this.setState({ 
+          modalVisible: !this.state.modalVisible  });
       }
 
       async getToken(user) {
@@ -59,13 +87,14 @@ class SignUp extends Component {
             .then((json) => {
                 // parse the response & extract data
                 let data = JSON.parse(json)
+                console.log("USER IS: ")
                 console.log(data)
                 this.setState({error: data.result})
                 // if there was no error, and user was successfully added, success!
                 if (data.isError === false && data.result.includes("was added")) {
-                    this.setState({success: true})
+                    this.setState({success: true, userStatus: data.userStatus})
                 } else if (data.result.includes("already in db")) {
-                    this.setState({success: true, alreadyInDB: true})
+                    this.setState({success: true, alreadyInDB: true, userStatus: data.userStatus})
                 } else {
                     if (data.result.includes("Incorrect authentication")) {
                         this.setState({success: false})
@@ -83,11 +112,13 @@ class SignUp extends Component {
                      if (this.state.alreadyInDB === true) {
                         this.props.navigation.navigate(
                             "GetUserInterests",
-                            {user: info.user.toLowerCase()});
+                            {user: info.user.toLowerCase(),
+                            userStatus: this.state.userStatus});
                      } else {
                     this.props.navigation.navigate(
                         "GetUserInterests",
-                        {user: info.user.toLowerCase()});
+                        {user: info.user.toLowerCase(),
+                        userStatus: this.state.userStatus});
                     }
                 } else {
                     Alert.alert(
@@ -144,6 +175,8 @@ class SignUp extends Component {
                                         secureTextEntry
                                     />
                                     <ErrorText>{props.touched.password && props.errors.password }</ErrorText>
+                                    <Subtitle onPress={() => {
+                                        this.setModalVisible(true)}}>view privacy statement</Subtitle>
                                     <Button title="Submit" onPress={() => props.handleSubmit()}>
                                         <ButtonText>get started!</ButtonText>
                                     </Button>
@@ -152,6 +185,11 @@ class SignUp extends Component {
                         </Formik>
                 </SignUpContent>
                 </KeyboardAwareScrollView>
+                <Modal isVisible={this.state.modalVisible}>
+                    <ModalContainer>
+                    <InfoModal closeModal={this.closeModal} title={infoData.title} body={infoData.body}/>              
+                </ModalContainer>
+        </Modal>
             </ThemeProvider>
         );
     }

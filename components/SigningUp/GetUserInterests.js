@@ -20,6 +20,7 @@ class GetUserInterests extends Component {
     }
     state = {
         user: this.props.route.params.user,
+        userStatus: this.props.route.params.userStatus,
         success: false,
         fashionRating: null,
         foodRating: null,
@@ -114,9 +115,13 @@ class GetUserInterests extends Component {
             .catch((error) => console.error(error))
             .finally(() => {
                 if (this.state.success === true) {
-                    this.props.navigation.navigate(
-                        "GetUserInfo",
-                        {user: this.state.user});
+                    this.state.userStatus === "student" ?
+                        this.props.navigation.navigate(
+                            "GetUserInfo",
+                            {user: this.state.user}) : 
+                        this.props.navigation.navigate(
+                            "GetFacultyInfo",
+                            {user: this.state.user})
                 } else {
                     Alert.alert(
                         "Hmmm...",
