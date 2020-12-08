@@ -270,7 +270,7 @@ class ProfileSettings extends Component {
             break;
 
           case "updateMajor":
-          modalDisplay = <UserSelectClassificationModal 
+          modalDisplay = <UserDropDownModal 
             infoType="major"
             items={[
               {label: 'computer science', value: 'computer science'},

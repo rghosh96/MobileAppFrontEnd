@@ -57,7 +57,6 @@ class Chat extends Component {
 
 
   retrieveData = async() => {
-
       name = this.props.route.params.name;
       uname = this.props.route.params.uname;
       console.log('this is user data==>  '+name+'   '+uname);
@@ -80,7 +79,6 @@ class Chat extends Component {
           '  text '+this.state.text+
           '  uname  '+this.state.u_name
         )
-
         firebaseSDK.refOn().then((solve)=>{
           this.setState({chatData:solve})
         }).then(()=>{
@@ -103,10 +101,11 @@ class Chat extends Component {
   render() {
 
     let Data=this.state.chatData 
-
     let chats=Data.map((c_data, index)=>{
+      console.log("IN CHAT")
+      console.log("c_data.fname: " + c_data.fname)
+      console.log("this.state.fname: " + this.state.f_name)
     console.log(this.props.theme)
-
           if(
             // if you are sender, name on message is f_name and reciever will be u_name
             (this.state.f_name==c_data.fname && this.state.u_name==c_data.user.uname )
@@ -115,11 +114,8 @@ class Chat extends Component {
             (this.state.f_name==c_data.user.uname && this.state.u_name==c_data.fname)){
               // if who youre chatting with is reciever on message
               if(this.state.u_name==c_data.user.uname){
-
                   return(
-
                     <View  key={index} style={{
-
                       backgroundColor:this.props.theme.PRIMARY_COLOR,
 
                       //padding:15,
@@ -163,23 +159,14 @@ class Chat extends Component {
                       width:'50%',
 
                       maxWidth: 500,
-
                       padding: 15,
-
                       borderRadius: 20,
-
                       }}>             
-
                           <ChatText> {c_data.text}</ChatText>
-
                     </View>
-
                   )
-
               }
-
           }
-
       }) 
 
 
@@ -187,11 +174,10 @@ class Chat extends Component {
     return (
 
       <ThemeProvider theme={ this.props.theme }>
-        
             <ChatContainer>
             <ChatHeaderContainer>
               <MaterialCommunityIcons  name="keyboard-backspace" onPress={() => this.props.navigation.navigate('Chat')} size={35} color={this.props.theme.PRIMARY_COLOR} />
-              <ChatHeader>{this.state.f_name}</ChatHeader>
+              <ChatHeader>{this.state.u_name}</ChatHeader>
             </ChatHeaderContainer>
             <Line />
                   <ChatList>       

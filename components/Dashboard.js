@@ -20,7 +20,8 @@ class Dashboard extends Component {
     isFirstLaunch: true,
     numMatches: null,
     randomMatches: [],
-    loaded: false
+    loaded: false,
+    imageLoaded: false,
   }
 
   getUserData(user, request) {
@@ -131,7 +132,7 @@ class Dashboard extends Component {
         <ThemeProvider theme={ this.props.theme }>
             <Container>
                 <HeaderContainer>
-                  <HeaderText>dashboard</HeaderText>
+                  <HeaderText>home</HeaderText>
                 </HeaderContainer>
                 <ProfileContainer>
                     <ProfileImage source={{uri: this.state.userData.userPROFILEPIC}} />
@@ -153,15 +154,24 @@ class Dashboard extends Component {
 
                 <MatchesContainer>
                   <TouchableWithoutFeedback onPress={() => alert('r0 tapped!')}>
-                    <PeopleImage source={{uri: r0 }} />
+                  {console.log("IMAGE LOADED ? " + this.state.imageLoaded)}
+                    {!this.state.imageLoaded ?  <LottieView style={{height: 105}}source={require('../assets/loading.json')} autoPlay loop /> : null }
+                    <PeopleImage source={{uri: r0 }} style={this.state.loaded ? {} : {display: 'none'}}
+                    onLoadStart={() => this.setState({imageLoaded: false})} onLoadEnd={() => this.setState({imageLoaded: true})} />
                   </TouchableWithoutFeedback>
                   
                   <TouchableWithoutFeedback onPress={() => alert('r1 tapped!')}>
-                    <PeopleImage source={{uri: r1 }} />
+                  {console.log("IMAGE LOADED ? " + this.state.imageLoaded)}
+                    {!this.state.imageLoaded ?  <LottieView style={{height: 105}}source={require('../assets/loading.json')} autoPlay loop /> : null }
+                    <PeopleImage source={{uri: r1 }} style={this.state.loaded ? {} : {display: 'none'}}
+                    onLoadStart={() => this.setState({imageLoaded: false})} onLoadEnd={() => this.setState({imageLoaded: true})} />
                   </TouchableWithoutFeedback>
 
                   <TouchableWithoutFeedback onPress={() => alert('r2 tapped!')}>
-                    <PeopleImage source={{uri: r2 }} />
+                    {console.log("IMAGE LOADED ? " + this.state.imageLoaded)}
+                    {!this.state.imageLoaded ?  <LottieView style={{height: 105}}source={require('../assets/loading.json')} autoPlay loop /> : null }
+                    <PeopleImage source={{uri: r2 }} style={this.state.loaded ? {} : {display: 'none'}}
+                    onLoadStart={() => this.setState({imageLoaded: false})} onLoadEnd={() => this.setState({imageLoaded: true})} />
                   </TouchableWithoutFeedback>
                   
                   <MatchesDash>
