@@ -12,7 +12,6 @@ import {CLOUD_NAME, CLOUD_PRESET, CLOUD_BASE_API} from "@env"
 import { SettingContainer, ModalContainer, Line, Title, EditItem, UserAttribute, InfoArea, 
    ListContainer, SubSettingHeader } from '../../theming/settingStyle'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { AppLoading } from 'expo';
 import AsyncImage from '../AsyncImage'
 
 

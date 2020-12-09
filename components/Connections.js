@@ -9,7 +9,6 @@ import ProfileCard from './ProfileCard'
 import { AllUsersList } from '../theming/exploreStyle'
 import Modal from 'react-native-modal';
 import { ModalContainer } from '../theming/settingStyle'
-import { AppLoading } from 'expo';
 
 class Connections extends Component {
     constructor(props) {

@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import { pickTheme } from '../redux/actions'
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
-import { Container, HeaderContainer, HeaderText, Text, Button, ButtonText } from '../theming/masterStyle'
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
+import Loader from '../Loader';
 import Onboarding from 'react-native-onboarding-swiper'
 import { Image, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
@@ -43,7 +41,7 @@ class FirstLaunch extends Component {
       render() {
         console.log(this.props.theme)
         if (!this.state.loaded) {
-          return <AppLoading />
+          return <Loader />
         }
         const primary = this.props.theme.PRIMARY_COLOR;
         const bg = this.props.theme.BG_COLOR;

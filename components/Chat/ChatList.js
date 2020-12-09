@@ -13,11 +13,12 @@ import {
 import AsyncStorage from '@react-native-community/async-storage'
 import { HeaderText, Subtitle, Container, HeaderContainer } from '../../theming/masterStyle'
 import AsyncImage from '../AsyncImage'
+import firebaseSDK from '../../firebaseSDK';
+import Loader from '../../Loader';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 
-import firebaseSDK from '../../firebaseSDK';
-import { AppLoading } from 'expo';
+
 
 class ChatList extends Component {
   constructor() {
@@ -212,7 +213,7 @@ class ChatList extends Component {
      
       </Container>
       </ThemeProvider>
-      ); } else {return(<AppLoading/>)}
+      ); } else {return(<Loader/>)}
   }
 }
 
