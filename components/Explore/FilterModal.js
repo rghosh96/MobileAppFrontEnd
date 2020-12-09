@@ -171,7 +171,8 @@ import Slider from '@react-native-community/slider';
                 onValueChange={(value) => props.updateState('statusFilter', value)}
                 items={[
                     {label: 'student', value: 'student'},
-                    {label: 'faculty', value: 'faculty'}
+                    {label: 'faculty', value: 'faculty'},
+                    {label: 'staff', value: 'staff'}
                 ]}
                 style={dropdown(primary, lightGrey)}
             />

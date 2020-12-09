@@ -82,6 +82,13 @@ export const Subtitle = styled.Text`
   textAlign: left;
 `;
 
+export const H2 = styled.Text`
+color: ${props => props.theme.GREY};
+fontFamily: "header";
+fontSize: 15px;
+textAlign: left;
+`;
+
 export const Button = styled.TouchableOpacity`
   padding: 10px;
   alignSelf: center;

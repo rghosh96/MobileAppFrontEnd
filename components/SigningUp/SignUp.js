@@ -3,7 +3,7 @@ import { pickTheme } from '../../redux/actions'
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage'
 import { ThemeProvider } from 'styled-components/native';
-import { HeaderText, Subtitle, Button, ButtonText, Center } from '../../theming/masterStyle'
+import { HeaderText, Subtitle, Button, ButtonText, Center, H2, RowView } from '../../theming/masterStyle'
 import { HeaderContainer } from '../../theming/createStyle'
 import { FormArea, SignUpContent, FormInput, ErrorText } from '../../theming/signupStyle'
 import { Formik } from 'formik'
@@ -14,6 +14,7 @@ import { Alert } from "react-native";
 import InfoModal from '../InfoModal'
 import Modal from 'react-native-modal';
 import { ModalContainer } from '../../theming/settingStyle'
+import CheckBox from 'react-native-checkbox-lite';
 
 //info modal
 const infoData = {
@@ -39,7 +40,8 @@ class SignUp extends Component {
         error: '',
         alreadyInDB: false,
         modalVisible: false,
-        userStatus: ''
+        userStatus: '',
+        privacyAgree: false
       }
 
       setModalVisible = (visible) => {
@@ -147,7 +149,18 @@ class SignUp extends Component {
                             initialValues={{ user: '', password: ''}}
                             validationSchema={SignUpSchema}
                             onSubmit={(values) => {
-                                this.authenticate(values)
+                                if (this.state.privacyAgree) {
+                                    this.authenticate(values)
+                                } else {
+                                    Alert.alert(
+                                        "Oops!",
+                                        "you need to agree to our privacy statement",
+                                        [
+                                          { text: "let me fix that!", onPress: () => console.log("okay pressed") }
+                                        ],
+                                        { cancelable: false }
+                                      );
+                                }
                             }}
                         >
                             {/* get access to props of Formik */}
@@ -161,7 +174,7 @@ class SignUp extends Component {
                                         </Subtitle>
                                     </HeaderContainer>
                                     <FormInput 
-                                        placeholder='UARK username (do NOT include @uark.edu)' 
+                                        placeholder='UARK id' 
                                         placeholderTextColor={this.props.theme.LIGHT_GREY}
                                         onChangeText={props.handleChange('user')} 
                                         value = {props.values.user}
@@ -175,8 +188,17 @@ class SignUp extends Component {
                                         secureTextEntry
                                     />
                                     <ErrorText>{props.touched.password && props.errors.password }</ErrorText>
-                                    <Subtitle onPress={() => {
-                                        this.setModalVisible(true)}}>view privacy statement</Subtitle>
+                                    <RowView style={{marginBottom: 10}}>
+                                    <CheckBox 
+                                        style={{marginRight: 5}}
+                                        text={false}
+                                        isChecked={this.state.privacyAgree} 
+                                        onPress={() => this.setState({privacyAgree: !this.state.privacyAgree})} 
+                                        checkBoxColor={this.props.theme.PRIMARY_COLOR} />
+                                    <H2 onPress={() => {
+                                        this.setModalVisible(true)}}>i agree with privacy terms & conditions</H2>
+                                    </RowView>
+
                                     <Button title="Submit" onPress={() => props.handleSubmit()}>
                                         <ButtonText>get started!</ButtonText>
                                     </Button>
