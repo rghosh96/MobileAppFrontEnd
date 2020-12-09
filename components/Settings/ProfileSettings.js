@@ -338,6 +338,10 @@ class ProfileSettings extends Component {
             break;
         }
 
+        let userPic
+        this.state.userData.userPROFILEPIC === null || this.state.userData.userPROFILEPIC === "null" ? 
+        userPic = cuteBird : userPic = this.state.userData.userPROFILEPIC
+
     const noComment = "--"
     if (this.state.userData.userSTATUS === "student") {
     return (
@@ -355,7 +359,7 @@ class ProfileSettings extends Component {
                     <ListContainer showsVerticalScrollIndicator={false} >
                   
                     <InfoArea>  
-                    <AsyncImage source={{uri: this.state.userData.userPROFILEPIC}} type="profile" />
+                    <AsyncImage source={{uri: userPic}} type="profile" />
                     <UserAttribute onPress={() => {
                       this.setModalVisible(true, "updateProfilePic")}}>✎</UserAttribute>
                     </InfoArea>
@@ -451,7 +455,7 @@ class ProfileSettings extends Component {
              <ListContainer >
            
              <InfoArea>  
-             <ProfileImage source={{uri: this.state.userData.userPROFILEPIC}} />
+             <AsyncImage source={{uri: userPic}} type="profile" />
              <UserAttribute onPress={() => {
                this.setModalVisible(true, "updateProfilePic")}}>✎</UserAttribute>
              </InfoArea>

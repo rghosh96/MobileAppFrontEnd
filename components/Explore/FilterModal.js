@@ -2,19 +2,9 @@ import React, { Component } from 'react';
 import { useSelector } from 'react-redux';
 import { Button, ButtonText } from '../../theming/masterStyle'
 import { ModalView, Title, FormInput, BioInput } from '../../theming/settingStyle'
-import LottieView from 'lottie-react-native';
-import { pickTheme } from '../../redux/actions'
-import { connect } from 'react-redux';
-import { ThemeProvider } from 'styled-components/native';
-import AsyncStorage from '@react-native-community/async-storage'
-import Modal from 'react-native-modal';
-import ProfileModal from '../ProfileModal'
-import ProfileCard from '../ProfileCard'
-import { ModalContainer } from '../../theming/settingStyle'
-import { AllUsersList, FilterContainer, ModalSubtitle, ModalTitle } from '../../theming/exploreStyle'
 import { HeaderText, Subtitle, Container, Text, HeaderContainer } from '../../theming/masterStyle'
 import RNPickerSelect from 'react-native-picker-select';
-import { Alert, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import Slider from '@react-native-community/slider';
 
   export const FilterModal = (props) => {
@@ -30,6 +20,7 @@ import Slider from '@react-native-community/slider';
     const primary = useSelector(state => state.themeReducer.theme.PRIMARY_COLOR);
     return (
         <ModalView>
+            <ScrollView showsVerticalScrollIndicator={false}>
             <Title style={{textAlign: 'center'}}>filter</Title>
             <Subtitle>fashion {fashionFilter}/5</Subtitle>
             <Slider
@@ -103,12 +94,95 @@ import Slider from '@react-native-community/slider';
                 maximumTrackTintColor={lightGrey}
             />      
 
+            <Subtitle>classification</Subtitle>
+            <RNPickerSelect
+                placeholder={{ label: 'select... ▽', value: null}}
+                onValueChange={(value) => props.updateState("classificationFilter", value)}
+                items={[
+                    {label: 'freshman', value: 'freshman'},
+                    {label: 'sophomore', value: 'sophomore'},
+                    {label: 'junior', value: 'junior'},
+                    {label: 'senior', value: 'senior'},
+                    {label: 'super senior', value: 'super senior'},
+                    {label: 'grad student', value: 'grad student'},
+                ]}
+                style={dropdown(primary, lightGrey)}
+            />
+
+            <Subtitle>gender</Subtitle>
+            <RNPickerSelect
+                placeholder={{ label: 'select...▽', value: null}}
+                onValueChange={(value) => props.updateState('genderFilter', value)}
+                items={[
+                    {label: 'cis woman', value: 'cis woman'},
+                    {label: 'cis man', value: 'cis man'},
+                    {label: 'trans woman', value: 'trans woman'},
+                    {label: 'trans man', value: 'trans man'},
+                    {label: 'non-binary', value: 'non-binary'},
+                    {label: 'gender fluid', value: 'gender fluid'},
+                    {label: 'gender neutral', value: 'gender neutral'},
+                    {label: 'prefer not to say', value: 'prefer not to say'},
+                    {label: 'other', value: 'other'},
+                ]}
+                style={dropdown(primary, lightGrey)}
+            />
+            
+            <Subtitle>grad date</Subtitle>
+            <RNPickerSelect
+                placeholder={{ label: 'select...▽', value: null}}
+                onValueChange={(value) => props.updateState('gradDateFilter', value)}
+                items={[
+                    {label: 'dec 2020', value: 'dec 2020'},
+                    {label: 'may 2021', value: 'may 2021'},
+                    {label: 'dec 2021', value: 'dec 2021'},
+                    {label: 'may 2022', value: 'may 2022'},
+                    {label: 'dec 2022', value: 'dec 2022'},
+                ]}
+                style={dropdown(primary, lightGrey)}
+            />
+
+            <Subtitle>primary major</Subtitle>
+            <RNPickerSelect
+                placeholder={{ label: 'select...▽', value: null}}
+                onValueChange={(value) => props.updateState('majorFilter', value)}
+                items={[
+                    {label: 'computer science', value: 'computer science'},
+                    {label: 'computer engineering', value: 'computer engineering'},
+                    {label: 'mathematics', value: 'mathematics'},
+                ]}
+                style={dropdown(primary, lightGrey)}
+            />
+
+            <Subtitle>programming experience</Subtitle>
+            <RNPickerSelect
+                placeholder={{ label: 'select...▽', value: null}}
+                onValueChange={(value) => props.updateState('expFilter', value)}
+                items={[
+                    {label: 'little', value: '1'},
+                    {label: 'moderate', value: '2'},
+                    {label: 'a lot', value: '3'},
+                ]}
+                style={dropdown(primary, lightGrey)}
+            />
+
+            <Subtitle>faculty vs student</Subtitle>
+            <RNPickerSelect
+                placeholder={{ label: 'select...▽', value: null}}
+                onValueChange={(value) => props.updateState('statusFilter', value)}
+                items={[
+                    {label: 'student', value: 'student'},
+                    {label: 'faculty', value: 'faculty'}
+                ]}
+                style={dropdown(primary, lightGrey)}
+            />
+
             <Button onPress={() => { props.filterUsers() }} >
                 <ButtonText>Filter!</ButtonText>
             </Button>
             <Button onPress={() => { props.closeModal() }} >
                 <ButtonText>Cancel</ButtonText>
             </Button>
+            </ScrollView>
         </ModalView>
     )
 }
@@ -117,6 +191,26 @@ export default FilterModal
 
 
 
+const dropdown = (props) => StyleSheet.create({
+    inputIOS: {
+        padding: 10,
+        fontWeight: 'bold',
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: props.lightGrey,
+        color: props.primary,
+        margin: 10
+      },
+      inputAndroid: {
+        padding: 10,
+        fontWeight: 'bold',
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: props.lightGrey,
+        color: props.primary,
+        margin: 10
+      }
+  });
 
 
 

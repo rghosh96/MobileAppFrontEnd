@@ -17,11 +17,13 @@ const ProfileCard = (props) => {
     if (props.isMatched) { likeAction = "no" }
     // console.log(likeAction)
     const bg = useSelector(state => state.themeReducer.theme.BG_COLOR);
-    const imageURI = props.user.userPROFILEPIC != null ? props.user.userPROFILEPIC : ""
+    let profilePic
+    let cuteBird = "https://cache.desktopnexus.com/thumbseg/1268/1268204-bigthumbnail.jpg"
+    props.user.userPROFILEPIC === null || props.user.userPROFILEPIC === "null" ? profilePic = cuteBird : profilePic = props.user.userPROFILEPIC
     return (
         <CardContainer>
             <AsyncImage  
-            source={imageURI.length!=0?{uri: imageURI}: null} type="people" />
+            source={{uri: profilePic }} type="people" />
 
             <InfoSection>
                 <Title onPress={() => { props.setModalVisible(props.user); }}>

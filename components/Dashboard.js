@@ -267,7 +267,9 @@ class Dashboard extends Component {
   render() {
     var r0, r1, r2
     let cuteBird = "https://cache.desktopnexus.com/thumbseg/1268/1268204-bigthumbnail.jpg"
-
+    let userPic
+    this.state.userData.userPROFILEPIC === null || this.state.userData.userPROFILEPIC === "null" ? 
+      userPic = cuteBird : userPic = this.state.userData.userPROFILEPIC
     let modalDisplay;
     console.log("IN RENDER " + this.state.icon)
         switch(this.state.modalContent) {
@@ -293,7 +295,7 @@ class Dashboard extends Component {
                   <HeaderText>home</HeaderText>
                 </HeaderContainer>
                 <ProfileContainer>
-                    <AsyncImage source={{uri: this.state.userData.userPROFILEPIC}} type="profile"/>
+                    <AsyncImage source={{uri: userPic}} type="profile"/>
                     <ProfileText>
                         {this.state.userData.userFNAME} {this.state.userData.userLNAME} {"\n"}
                         {this.state.userData.userMAJOR} {"\n"}

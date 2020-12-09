@@ -8,8 +8,8 @@ import ProfileModal from '../ProfileModal'
 import ProfileCard from '../ProfileCard'
 import { ModalContainer } from '../../theming/settingStyle'
 import { AllUsersList, FilterContainer, ModalSubtitle, ModalTitle } from '../../theming/exploreStyle'
-import { HeaderText, Subtitle, Container, Text, HeaderContainer } from '../../theming/masterStyle'
-import RNPickerSelect from 'react-native-picker-select';
+import { HeaderText, Subtitle, Container, Line, HeaderContainer } from '../../theming/masterStyle'
+import { Button, ButtonText } from '../../theming/masterStyle'
 import { Alert, StyleSheet } from "react-native";
 import Slider from '@react-native-community/slider';
 import FilterModal from './FilterModal'
@@ -25,6 +25,7 @@ class Explore extends Component {
       }
 
     state = {
+        listResults: true,
         user: '',
         allUsers: [],
         modalContent: '',
@@ -70,7 +71,7 @@ class Explore extends Component {
                 data = JSON.parse(json)
                 if (data.isError === false) {
                     console.log(data)
-                    this.setState({ allUsers: data.result })
+                    this.setState({ allUsers: data.result, loaded: true })
                 }
         })
         .catch((error) => console.error(error))
@@ -149,6 +150,7 @@ class Explore extends Component {
       }
 
       filterUsers() {
+        this.setState({loaded: false})
         const filterList = {
           userHOMETOWN: this.state.hometownFilter,
           userMAJOR: this.state.majorFilter,
@@ -190,11 +192,27 @@ class Explore extends Component {
               // parse the response & extract data
               data = JSON.parse(json)
               console.log(data)
+              
             })
             .catch((error) => console.error(error))
             .finally(() => {
               console.log("finally block") 
-              this.setState({allUsers: data.result, modalVisible: false})
+              let results
+              data.result === "no matches, empty array" ? results = false : results = data.result
+              this.setState({allUsers: results, modalVisible: false,
+                hometownFilter: null,
+                majorFilter: null,
+                gradDateFilter: null,
+                classificationFilter: null,
+                genderFilter: null,
+                expFilter: null,
+                statusFilter: null,
+                fashionFilter: null,
+                foodFilter: null,
+                gameFilter: null,
+                outFilter: null,
+                musicFilter: null,
+                readFilter: null})
             })
       }
 
@@ -304,11 +322,17 @@ class Explore extends Component {
                 </HeaderContainer>
                 
                 <FilterContainer>
-                <ModalTitle onPress={() => this.setModalVisible(null,"FilterModal")}>by specified interest rating:</ModalTitle>
-                <ModalSubtitle>fashion:</ModalSubtitle>
-                
+                  <Button onPress={() => this.setModalVisible(null,"FilterModal")}>
+                  <ButtonText>Filter ...</ButtonText>
+                  </Button>
+                  <Button onPress={() => this.getAllUsers()}>
+                  <ButtonText>Clear Filter ...</ButtonText>
+                  </Button>
                 </FilterContainer>
-                {console.log(this.state.fashionFilter)}
+                
+                <Line />
+
+                {this.state.allUsers !==false  ? 
                 <AllUsersList>
                 {this.state.allUsers.map((user, index) => {
                   let isMatched = this.state.matches.includes(user.userID)
@@ -326,9 +350,11 @@ class Explore extends Component {
                           isMatched={isMatched}
                           isLiked={halfHeart}/> 
                       )  :  null 
-                  })}
-                </AllUsersList>
+                  }) }
+                </AllUsersList> : <AllUsersList><Subtitle>no results :/</Subtitle></AllUsersList>}
                 
+                {console.log("IN VIEW")}
+                {console.log(this.state.allUsers)}
                 <Modal isVisible={this.state.modalVisible}>
                     <ModalContainer>
                         {modalDisplay}

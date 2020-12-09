@@ -6,6 +6,7 @@ import { ModalView, Header, ModalTitle, ModalSubtitle, ProfileImage, InterestsVi
 import CustomRatings from './CustomRatings'
 import { ScrollView } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import AsyncImage from './AsyncImage';
 
 
 
@@ -15,12 +16,15 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
     const userInterests = props.userInterests != null ? props.userInterests : null
     console.log(useSelector)
     const primary = useSelector(state => state.themeReducer.theme.PRIMARY_COLOR);
+    let profilePic
+    let cuteBird = "https://cache.desktopnexus.com/thumbseg/1268/1268204-bigthumbnail.jpg"
+    props.user.userPROFILEPIC === null || props.user.userPROFILEPIC === "null" ? profilePic = cuteBird : profilePic = props.user.userPROFILEPIC
     return (
         <ModalView>
-            <ScrollView style={{padding: 5}}>
+            <ScrollView style={{padding: 5}} showsVerticalScrollIndicator={false}>
                 <Header>
-            <ProfileImage  
-            source={{ uri: props.user.userPROFILEPIC }} />
+            <AsyncImage  
+            source={{ uri: profilePic }} type="profile" />
             <Title style={{textAlign: 'center'}}>{props.user.userFNAME} {props.user.userLNAME}</Title>
             <Subtitle>{props.user.userABOUT}</Subtitle>
             <Line/>

@@ -24,9 +24,11 @@ export const InfoSection = styled.View`
 `;
 
 export const FilterContainer = styled.View`
-    flexDirection: column;
-    paddingLeft: 20px;
-    paddingRight: 20px;
+    marginBottom: 10px;
+    flexDirection: row;
+    justifyContent: center;
+    alignItems: center;
+    width: 100%;
 `;
 
 
