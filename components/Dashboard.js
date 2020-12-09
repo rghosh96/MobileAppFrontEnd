@@ -3,7 +3,6 @@ import { pickTheme } from '../redux/actions'
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage'
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import { ThemeProvider } from 'styled-components/native';
 import { Container, HeaderContainer, Text, H1, FacultyView } from '../theming/masterStyle'
 import { Connections, HeaderText, ProfileText, ProfileImage, ProfileContainer, ConnectionsContainer, 

@@ -40,6 +40,7 @@ import AsyncImage from './AsyncImage';
 
             <ModalTitle>Classes:</ModalTitle>
             <Subtitle>{props.user.userCLASSES}</Subtitle>
+            <Line />
             <ModalTitle>Interests:</ModalTitle>
             
             <InterestsView>

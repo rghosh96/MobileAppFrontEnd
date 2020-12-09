@@ -18,7 +18,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 //info modal
 const infoData = {
   title: "how to explore:",
-  body: "here you can explore and discover fellow csce students! tap their name to view their profile. tap theheart to send a match request! full heart means you've matched, half heart means you've sent the request, and empty heart means you haven't matched.",
+  body: "tap a user's name to view their profile. tap the heart to send a match request! full heart means you've matched, half heart means you've sent the request, and empty heart means you haven't matched.",
 }
 
 class Explore extends Component {
@@ -265,14 +265,14 @@ class Explore extends Component {
       }  
 
     setModalVisible(user, modalView) {
-      if (modalView === "FilterModal") {
+      if (modalView === "InfoModal") {
         this.setState({ 
           modalVisible: true,
-          modalContent: "FilterModal" })
-      } else if (modalView === "ProfileModal") {
-        this.getUserInterests(user)
+          modalContent: "InfoModal" })
+      } else if (modalView === "FilterModal") {
+        this.setState({ modalVisible: true, modalContent: "FilterModal"})
       } else {
-        this.setState({ modalVisible: true, modalContent: "InfoModal"})
+        this.getUserInterests(user)
       }
       }
 
