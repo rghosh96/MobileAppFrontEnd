@@ -34,6 +34,7 @@ class Explore extends Component {
     state = {
         listResults: true,
         user: '',
+        userData: '',
         allUsers: [],
         modalContent: '',
         modalVisible: false,
@@ -250,11 +251,32 @@ class Explore extends Component {
             })
       }
 
+    getUserData(user) {
+      var data;
+      let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/users/getUser?USER_id=" + user;
+      // call api endpoint, sending in user to add to db
+      fetch(apiEndpoint,)
+          .then((response) => response.text())
+          .then((json) => {
+              // parse the response & extract data
+              data = JSON.parse(json)
+          })
+          .catch((error) => console.error(error))
+          .finally(() => {
+            if (this.state.userLoaded === true) {
+                console.log(data.result[0])
+                this.setState({ userData: data.result[0]})
+            }
+              
+          })
+      }
+
       async getToken() {
         try {
             console.log("before getting item");
           let userId = await AsyncStorage.getItem("user");
           this.setState({user: userId})
+          this.getUserData(this.state.user)
           this.getAllUsers(this.state.user)
           this.getAllMatches(this.state.user)
           this.getHalfHeartGang(this.state.user)
@@ -351,10 +373,18 @@ class Explore extends Component {
                 </FilterContainer>
                 
                 
-
+                {console.log("IN EXPLORE")}
+                {console.log(this.state.userData.userSTATUS)}
                 {this.state.allUsers !==false  ? 
                 <AllUsersList>
                 {this.state.allUsers.map((user, index) => {
+                  let likeDisabled, isStudent
+                  this.state.userData.userSTATUS === "student" ? isStudent = true : isStudent = false
+                  if(isStudent === true) {
+                    user.userSTATUS === "student" ? likeDisabled = false : likeDisabled = true
+                  } else {
+                    likeDisabled = true
+                  }
                   let isMatched = this.state.matches.includes(user.userID)
                   let halfHeart = this.state.halfHeartGang.some((heart => heart['user'] === user.userID && heart['likeStatus'] === "yes" ))
                   let icon;
@@ -365,6 +395,7 @@ class Explore extends Component {
                           setModalVisible={this.setModalVisible}
                           user={user}
                           key={index}
+                          disabled={likeDisabled}
                           likeUser={this.likeUser}
                           icon={icon}
                           isMatched={isMatched}

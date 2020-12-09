@@ -11,7 +11,7 @@ export const CardContainer = styled.View`
     marginBottom: 30px;
     flexDirection: row;
     alignItems: center;
-    justifyContent: space-between;
+    justifyContent: space-around;
     shadowColor: ${props => props.theme.GREY};
     shadowOpacity: 0.8;
     elevation: 15;
