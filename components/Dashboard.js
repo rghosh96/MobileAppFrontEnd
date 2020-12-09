@@ -312,7 +312,10 @@ class Dashboard extends Component {
 
                 <MatchesContainer>
                 {this.state.randomMatches.map((user, index) => {
-                  let profilePic = user.userPROFILEPIC
+                  let profilePic
+                  console.log(user.userPROFILEPIC)
+                  console.log(typeof(user.userPROFILEPIC))
+                  user.userPROFILEPIC === null || user.userPROFILEPIC === "null" ? profilePic = cuteBird : profilePic = user.userPROFILEPIC
                   let isMatched = this.state.matches.includes(user.userID)
                   let halfHeart = this.state.halfHeartGang.some((heart => heart['user'] === user.userID && heart['likeStatus'] === "yes" ))
                   let icon;
