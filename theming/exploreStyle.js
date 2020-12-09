@@ -23,6 +23,13 @@ export const InfoSection = styled.View`
     flexDirection: column;
 `;
 
+export const FilterContainer = styled.View`
+    flexDirection: column;
+    paddingLeft: 20px;
+    paddingRight: 20px;
+`;
+
+
 export const AllUsersList = styled.ScrollView`
     width: 100%;
     paddingLeft: 20px;

@@ -7,10 +7,12 @@ import Modal from 'react-native-modal';
 import ProfileModal from '../ProfileModal'
 import ProfileCard from '../ProfileCard'
 import { ModalContainer } from '../../theming/settingStyle'
-import { AllUsersList } from '../../theming/exploreStyle'
+import { AllUsersList, FilterContainer, ModalSubtitle, ModalTitle } from '../../theming/exploreStyle'
 import { HeaderText, Subtitle, Container, Text, HeaderContainer } from '../../theming/masterStyle'
-
-
+import RNPickerSelect from 'react-native-picker-select';
+import { Alert, StyleSheet } from "react-native";
+import Slider from '@react-native-community/slider';
+import FilterModal from './FilterModal'
 
 class Explore extends Component {
     constructor(props) {
@@ -18,6 +20,8 @@ class Explore extends Component {
         this.closeModal = this.closeModal.bind(this)
         this.setModalVisible = this.setModalVisible.bind(this)
         this.likeUser = this.likeUser.bind(this)
+        this.updateState = this.updateState.bind(this)
+        this.filterUsers = this.filterUsers.bind(this)
       }
 
     state = {
@@ -28,7 +32,28 @@ class Explore extends Component {
         modalUser: null,
         userInterests: null,
         matches: [],
-        halfHeartGang: []
+        halfHeartGang: [],
+        hometownFilter: null,
+        majorFilter: null,
+        gradDateFilter: null,
+        classificationFilter: null,
+        genderFilter: null,
+        expFilter: null,
+        fashionFilter: null,
+        foodFilter: null,
+        gameFilter: null,
+        outFilter: null,
+        musicFilter: null,
+        readFilter: null
+    }
+
+    updateState = (attribute, data) => {
+      console.log("trynna update state")
+      console.log(attribute)
+      console.log(data)
+      this.setState({
+        [attribute]: data
+      })
     }
 
     getAllUsers() {
@@ -122,6 +147,55 @@ class Explore extends Component {
             })
       }
 
+      filterUsers() {
+        const filterList = {
+          userHOMETOWN: this.state.hometownFilter,
+          userMAJOR: this.state.majorFilter,
+          userGRAD_DATE: this.state.gradDateFilter,
+          userGRADE_LEVEL: this.state.classificationFilter,
+          userGENDER: this.state.genderFilter,
+          userPROGRAM_EXP: this.state.expFilter,
+          interestFASHION: this.state.fashionFilter,
+          interestFOOD: this.state.foodFilter,
+          interestGAMING: this.state.gameFilter,
+          interestOUTDOORS: this.state.outFilter,
+          interestMUSIC: this.state.musicFilter,
+          interestREADING: this.state.readFilter
+        }
+        const filterBody = {}
+        console.log("INSIDE FILTER")
+        for (let [key, value] of Object.entries(filterList)) {
+          if(value != null) {
+            console.log(key + ": " + value);
+            filterBody[key] = value
+          }
+          
+        }
+        console.log("BODY FOR JSON:")
+        console.log(filterBody)
+      
+      // console.log(filterList)
+        const filterOptions={
+          method: 'POST',
+          headers:{'Content-Type': 'application/json'},
+          body: JSON.stringify(filterBody)
+      }
+        var data;
+        // call api endpoint, sending in user to add to db
+        fetch(`http://mobile-app.ddns.uark.edu/CRUDapis/matches/filter`, filterOptions)
+            .then((response) => response.text())
+            .then((json) => {
+              // parse the response & extract data
+              data = JSON.parse(json)
+              console.log(data)
+            })
+            .catch((error) => console.error(error))
+            .finally(() => {
+              console.log("finally block") 
+              this.setState({allUsers: data.result, modalVisible: false})
+            })
+      }
+
       likeUser(likedUser, likeAction) {
         const like={
             method: 'POST',
@@ -163,9 +237,14 @@ class Explore extends Component {
         this.setState({userLoaded: true})
       }  
 
-    setModalVisible(user) {
-        console.log("set modal visible")
+    setModalVisible(user, modalView) {
+      if (modalView === "FilterModal") {
+        this.setState({ 
+          modalVisible: true,
+          modalContent: "FilterModal" })
+      } else {
         this.getUserInterests(user)
+      }
       }
 
       closeModal(user) {
@@ -198,6 +277,12 @@ class Explore extends Component {
             userInterests={this.state.userInterests}
             closeModal={this.closeModal} />
             break;
+
+          case "FilterModal":
+            modalDisplay = <FilterModal 
+            closeModal={this.closeModal}
+            updateState={this.updateState}
+            filterUsers={this.filterUsers}/>
             
         default:
             break;
@@ -216,15 +301,16 @@ class Explore extends Component {
                     </Subtitle>
                 </HeaderContainer>
                 
-                {console.log("ENTERING ALL USERS")}
-                {console.log(this.state.matches)}
-                {console.log(this.state.halfHeartGang)}
+                <FilterContainer>
+                <ModalTitle onPress={() => this.setModalVisible(null,"FilterModal")}>by specified interest rating:</ModalTitle>
+                <ModalSubtitle>fashion:</ModalSubtitle>
+                
+                </FilterContainer>
+                {console.log(this.state.fashionFilter)}
                 <AllUsersList>
                 {this.state.allUsers.map((user, index) => {
-                  console.log("USER IS " + user.userID)
                   let isMatched = this.state.matches.includes(user.userID)
                   let halfHeart = this.state.halfHeartGang.some((heart => heart['user'] === user.userID && heart['likeStatus'] === "yes" ))
-                  console.log(user.userID + " "+ halfHeart)
                   let icon;
                   isMatched ? icon = "heart" : icon = "heart-outline"
                   halfHeart ? icon="heart-half-full" : null
@@ -246,6 +332,7 @@ class Explore extends Component {
                         {modalDisplay}
                     </ModalContainer>
                 </Modal>
+
             </Container>
         </ThemeProvider>
     );
@@ -263,3 +350,23 @@ export default connect(mapStateToProps, {pickTheme})(Explore);
 
 
 
+const dropdown = (props) => StyleSheet.create({
+  inputIOS: {
+      padding: 10,
+      fontWeight: 'bold',
+      borderWidth: 1,
+      borderRadius: 5,
+      borderColor: props.theme.LIGHT_GREY,
+      color: props.theme.PRIMARY_COLOR,
+      margin: 10
+    },
+    inputAndroid: {
+      padding: 10,
+      fontWeight: 'bold',
+      borderWidth: 1,
+      borderRadius: 5,
+      borderColor: props.theme.LIGHT_GREY,
+      color: props.theme.PRIMARY_COLOR,
+      margin: 10
+    }
+});
