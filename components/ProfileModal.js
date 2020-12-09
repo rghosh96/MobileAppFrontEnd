@@ -7,15 +7,23 @@ import CustomRatings from './CustomRatings'
 import { ScrollView } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import AsyncImage from './AsyncImage';
+import { View } from 'react-native-animatable';
 
 
 
   const ProfileModal = (props) => {
       console.log("IN PROFILE MODAL")
-    console.log(props)
+    let isStudent
+    props.user.userSTATUS === "student" ? isStudent = true : isStudent = false
     const userInterests = props.userInterests != null ? props.userInterests : null
-    console.log(useSelector)
-    const primary = useSelector(state => state.themeReducer.theme.PRIMARY_COLOR);
+    let classArray 
+    isStudent ? classArray = props.user.userCLASSES.split(",") : classArray = props.user.userTEACHING_CLASSES.split(",")
+    console.log(classArray)
+    for (let i = 0; i < classArray.length; i++){
+        classArray[i] = classArray[i].substring(0,9)
+    }
+    console.log("NEW ARRAY")
+    console.log(classArray)
     let profilePic
     let cuteBird = "https://cache.desktopnexus.com/thumbseg/1268/1268204-bigthumbnail.jpg"
     props.user.userPROFILEPIC === null || props.user.userPROFILEPIC === "null" ? profilePic = cuteBird : profilePic = props.user.userPROFILEPIC
@@ -25,24 +33,36 @@ import AsyncImage from './AsyncImage';
                 <Header>
             <AsyncImage  
             source={{ uri: profilePic }} type="profile" />
-            <Title style={{textAlign: 'center'}}>{props.user.userFNAME} {props.user.userLNAME}</Title>
-            <Subtitle>{props.user.userABOUT}</Subtitle>
+            <Title style={{textAlign: 'center', marginTop: 15}}>{props.user.userFNAME} {props.user.userLNAME}</Title>
+            {!isStudent? <ModalTitle>{props.user.userSTATUS}</ModalTitle> : null}
+            <Subtitle style={{textAlign: 'center'}}>{props.user.userABOUT}</Subtitle>
             <Line/>
             
             
             <ModalTitle>Hometown:</ModalTitle>
             <Subtitle>{props.user.userHOMETOWN}</Subtitle>
 
-            <ModalTitle>Programming Experience: </ModalTitle>
+            {isStudent ? 
+            <View style={{margin:0, alignItems: 'center'}}>
+            <ModalTitle >Programming Experience: </ModalTitle>
             {props.user.userPROGRAM_EXP == 1 ? <Subtitle>little</Subtitle> : null}
             {props.user.userPROGRAM_EXP == 2 ? <Subtitle>moderate</Subtitle> : null}
             {props.user.userPROGRAM_EXP == 3 ? <Subtitle>experienced</Subtitle> : null}
+            </View>
+            : null }
 
-            <ModalTitle>Classes:</ModalTitle>
-            <Subtitle>{props.user.userCLASSES}</Subtitle>
+            {isStudent ? 
+            <View style={{margin:0, alignItems: 'center'}}>
+            <ModalTitle >Classes:</ModalTitle>
+            {classArray.map((course, index) => {return(<Subtitle key={index}>{course}</Subtitle>)} )}
+            </View> :
+            <View style={{margin:0, alignItems: 'center'}}>
+            <ModalTitle>Currently Teaching:</ModalTitle>
+            {classArray.map((course, index) => {return(<Subtitle key={index}>{course}</Subtitle>)} )}
+            </View> }
+
             <Line />
             <ModalTitle>Interests:</ModalTitle>
-            
             <InterestsView>
             <InterestHeader>fashion ({props.userInterests.interestFASHION}/5)</InterestHeader>
             {userInterests != null ? 
