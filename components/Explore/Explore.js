@@ -8,11 +8,18 @@ import ProfileModal from '../ProfileModal'
 import ProfileCard from '../ProfileCard'
 import { ModalContainer } from '../../theming/settingStyle'
 import { AllUsersList, FilterContainer, ModalSubtitle, ModalTitle } from '../../theming/exploreStyle'
-import { HeaderText, Subtitle, Container, Line, HeaderContainer } from '../../theming/masterStyle'
+import { HeaderText, Subtitle, Container, Line, HeaderContainer, DescriptionArea } from '../../theming/masterStyle'
 import { Button, ButtonText } from '../../theming/masterStyle'
 import { Alert, StyleSheet } from "react-native";
-import Slider from '@react-native-community/slider';
 import FilterModal from './FilterModal'
+import InfoModal from '../InfoModal';
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+
+//info modal
+const infoData = {
+  title: "how to explore:",
+  body: "here you can explore and discover fellow csce students! tap their name to view their profile. tap theheart to send a match request! full heart means you've matched, half heart means you've sent the request, and empty heart means you haven't matched.",
+}
 
 class Explore extends Component {
     constructor(props) {
@@ -262,8 +269,10 @@ class Explore extends Component {
         this.setState({ 
           modalVisible: true,
           modalContent: "FilterModal" })
-      } else {
+      } else if (modalView === "ProfileModal") {
         this.getUserInterests(user)
+      } else {
+        this.setState({ modalVisible: true, modalContent: "InfoModal"})
       }
       }
 
@@ -303,8 +312,15 @@ class Explore extends Component {
             closeModal={this.closeModal}
             updateState={this.updateState}
             filterUsers={this.filterUsers}/>
-            
-        default:
+            break;
+          
+          case "InfoModal":
+            modalDisplay= <InfoModal
+            closeModal={this.closeModal} 
+            title={infoData.title} 
+            body={infoData.body}/> 
+        
+          default:
             break;
         }
 
@@ -314,13 +330,17 @@ class Explore extends Component {
             <Container>
                 <HeaderContainer>
                     <HeaderText>explore</HeaderText>
-                    <Subtitle>here you can explore and discover
-                        fellow csce students! tap their name to view their profile. tap the
-                        heart to send a match request! full heart means you've matched, half heart means you've sent the request, and 
-                        empty heart means you haven't matched.
+                    <DescriptionArea>
+                    <Subtitle>the world of csce is yours to discover!
                     </Subtitle>
+                    <MaterialCommunityIcons 
+                      name="comment-question-outline"
+                      color={this.props.theme.PRIMARY_COLOR}
+                      size={33}
+                      onPress={() => this.setModalVisible(null,"InfoModal")} />
+                      </DescriptionArea>
                 </HeaderContainer>
-                
+                <Line />
                 <FilterContainer>
                   <Button onPress={() => this.setModalVisible(null,"FilterModal")}>
                   <ButtonText>Filter ...</ButtonText>
@@ -330,7 +350,7 @@ class Explore extends Component {
                   </Button>
                 </FilterContainer>
                 
-                <Line />
+                
 
                 {this.state.allUsers !==false  ? 
                 <AllUsersList>

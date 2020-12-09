@@ -55,6 +55,11 @@ export const FacultyView = styled.View`
     alignItems: center;
 `;
 
+export const DescriptionArea = styled.View`
+    flexDirection: row;
+    alignItems: baseline;
+`;
+
 export const RowView = styled.View`
   flexDirection: row;
   justifyContent: center;
