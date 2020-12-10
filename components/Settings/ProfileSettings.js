@@ -377,7 +377,9 @@ class ProfileSettings extends Component {
                     <InfoArea>
                     <EditItem onPress={() => {
                       this.setModalVisible(true, "updateExperience")}}>✎ programming experience</EditItem>
-                    <UserAttribute>{this.state.userData.userPROGRAM_EXP}</UserAttribute>
+                    {this.state.userData.userPROGRAM_EXP == 1 ? <UserAttribute>little</UserAttribute> : null}
+                    {this.state.userData.userPROGRAM_EXP == 2 ? <UserAttribute>moderate</UserAttribute> : null}
+                    {this.state.userData.userPROGRAM_EXP == 3 ? <UserAttribute>experienced</UserAttribute> : null}
                     </InfoArea>
                     
                     <InfoArea>

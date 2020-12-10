@@ -18,10 +18,12 @@ const ProfileCard = (props) => {
     let cuteBird = "https://cache.desktopnexus.com/thumbseg/1268/1268204-bigthumbnail.jpg"
     props.user.userPROFILEPIC === null || props.user.userPROFILEPIC === "null" ? profilePic = cuteBird : profilePic = props.user.userPROFILEPIC
     return (
-        <TouchableOpacity onPress={() => { props.setModalVisible(props.user); }}>
+        
         <CardContainer>
+            <TouchableOpacity onPress={() => { props.setModalVisible(props.user); }}>
             <AsyncImage  
             source={{uri: profilePic }} type="people" />
+            </TouchableOpacity>
 
             {props.user.userSTATUS === "student" ?
             <InfoSection>
@@ -41,8 +43,6 @@ const ProfileCard = (props) => {
                 onPress={props.isMatched ? () => props.likeUser(props.user.userID, likeAction) : () => props.likeUser(props.user.userID, likeAction)} />
         : null }
         </CardContainer>
-        </TouchableOpacity>
-        
     )
 }
 

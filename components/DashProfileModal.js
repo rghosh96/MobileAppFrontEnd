@@ -20,6 +20,10 @@ import AsyncImage from './AsyncImage';
     console.log(likeAction)
     const userInterests = props.userInterests != null ? props.userInterests : null
     const primary = useSelector(state => state.themeReducer.theme.PRIMARY_COLOR);
+    let classArray = props.user.userCLASSES.split(",")
+    for (let i = 0; i < classArray.length; i++){
+        classArray[i] = classArray[i].substring(0,9)
+    }
     let profilePic
     let cuteBird = "https://cache.desktopnexus.com/thumbseg/1268/1268204-bigthumbnail.jpg"
     props.user.userPROFILEPIC === null || props.user.userPROFILEPIC === "null" ? profilePic = cuteBird : profilePic = props.user.userPROFILEPIC
@@ -29,7 +33,7 @@ import AsyncImage from './AsyncImage';
                 <Header>
             <AsyncImage  
             source={{ uri: profilePic }} />
-            <Title style={{textAlign: 'center'}}>{props.user.userFNAME} {props.user.userLNAME}</Title>
+            <Title style={{textAlign: 'center', marginTop:15}}>{props.user.userFNAME} {props.user.userLNAME}</Title>
             <Subtitle>{props.user.userABOUT}</Subtitle>
             <Line/>
             
@@ -42,8 +46,8 @@ import AsyncImage from './AsyncImage';
             {props.user.userPROGRAM_EXP == 2 ? <Subtitle>moderate</Subtitle> : null}
             {props.user.userPROGRAM_EXP == 3 ? <Subtitle>experienced</Subtitle> : null}
 
-            <ModalTitle>Classes:</ModalTitle>
-            <Subtitle>{props.user.userCLASSES}</Subtitle>
+            <ModalTitle>Enrolled Courses:</ModalTitle>
+            {classArray.map((course, index) => {return(<Subtitle key={index}>{course}</Subtitle>)} )}
             <ModalTitle>Interests:</ModalTitle>
             
             <InterestsView>

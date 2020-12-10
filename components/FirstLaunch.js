@@ -57,7 +57,7 @@ class FirstLaunch extends Component {
                         {
                             backgroundColor: bg,
                             image: <LottieView style={{height: 200}}source={require('../assets/splash.json')} autoPlay loop />,
-                            title: 'welcome',
+                            title: 'welcome to social[debug]',
                             titleStyles: {color: primary, fontFamily: "header"},
                             subTitleStyles: {color: grey, fontFamily: "text"},
                             subtitle: 'a computer science social networking app to help cultivate diversity & bring together everyone',
@@ -68,7 +68,7 @@ class FirstLaunch extends Component {
                             title: 'expand your horizons',
                             titleStyles: {color: bg, fontFamily: "header"},
                             subTitleStyles: {color: bg, fontFamily: "text"},
-                            subtitle: 'get ready to meet and get to know your fellow major mates! all you need is a uark login!',
+                            subtitle: 'get ready to meet and get to know your fellow course mates! all you need is a uark login!',
                         },
                     ]}
                 />

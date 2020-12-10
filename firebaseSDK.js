@@ -45,20 +45,17 @@ class FirebaseSDK {
               console.log(
                 'Updated displayName successfully. Name: ' + user.name
               );
-              alert(
+              console.log(
                 'User ' + user.name + ' was created successfully. Please login.'
               );
             },
             function (error) {
-              console.warn('Error updating displayName.');
+              console.log('Error updating displayName.');
             }
           );
         },
         function (error) {
-          console.error(
-            'Got error: ' + typeof error + ' string: ' + error.message
-          );
-          alert('Create account failed. Error: ' + error.message);
+          console.log('Create account failed. Error: ' + error.message);
         }
       );
   };

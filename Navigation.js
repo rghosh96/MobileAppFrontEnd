@@ -10,6 +10,7 @@ import Chat from './components/Chat/Chat';
 import ChatList from './components/Chat/ChatList';
 import Connections from './components/Connections';
 import Settings from './components/Settings/Settings';
+import EasterEgg from './components/Settings/EasterEgg';
 import ProfileSettings from './components/Settings/ProfileSettings';
 import InterestSettings from './components/Settings/InterestSettings';
 import ThemeSettings from './components/Settings/ThemeSettings';
@@ -19,6 +20,7 @@ import FirstLaunch from './components/FirstLaunch'
 import GetUserInterests from './components/SigningUp/GetUserInterests'
 import GetFacultyInfo from './components/SigningUp/GetFacultyInfo'
 import GetUserInfo from './components/SigningUp/GetUserInfo'
+import ProfCourseList from './components/ProfCourseList'
 import AsyncStorage from '@react-native-community/async-storage'
 
 const Tab = createMaterialBottomTabNavigator();
@@ -35,10 +37,12 @@ export const FirstNav = () => (
             <DashboardStack.Screen name="GetUserInterests" component = {GetUserInterests} />
             <DashboardStack.Screen name="GetUserInfo" component = {GetUserInfo} />
             <DashboardStack.Screen name="GetFacultyInfo" component = {GetFacultyInfo} />
-            <DashboardStack.Screen name="Chat" component = {Chat} /> 
+            <DashboardStack.Screen name="IndivChat" component = {Chat} /> 
             <DashboardStack.Screen name="ProfileSettings" component = {ProfileSettings} /> 
             <DashboardStack.Screen name="InterestSettings" component = {InterestSettings} /> 
             <DashboardStack.Screen name="ThemeSettings" component = {ThemeSettings} /> 
+            <DashboardStack.Screen name="ProfCourseList" component = {ProfCourseList} /> 
+            <DashboardStack.Screen name="EasterEgg" component = {EasterEgg} /> 
         </DashboardStack.Navigator>
     </NavigationContainer>
 )
@@ -56,6 +60,8 @@ export const Navigation = () => (
             <DashboardStack.Screen name="GetUserInterests" component = {GetUserInterests} />
             <DashboardStack.Screen name="GetUserInfo" component = {GetUserInfo} />
             <DashboardStack.Screen name="GetFacultyInfo" component = {GetFacultyInfo} />
+            <DashboardStack.Screen name="ProfCourseList" component = {ProfCourseList} /> 
+            <DashboardStack.Screen name="EasterEgg" component = {EasterEgg} /> 
         </DashboardStack.Navigator>
     </NavigationContainer>
 )
@@ -73,6 +79,8 @@ export const ReturningUser = () => (
             <DashboardStack.Screen name="GetUserInterests" component = {GetUserInterests} />
             <DashboardStack.Screen name="GetUserInfo" component = {GetUserInfo} />
             <DashboardStack.Screen name="GetFacultyInfo" component = {GetFacultyInfo} />
+            <DashboardStack.Screen name="ProfCourseList" component = {ProfCourseList} /> 
+            <DashboardStack.Screen name="EasterEgg" component = {EasterEgg} /> 
         </DashboardStack.Navigator>
     </NavigationContainer>
 )

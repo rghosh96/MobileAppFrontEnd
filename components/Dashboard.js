@@ -4,15 +4,17 @@ import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage'
 import * as Font from 'expo-font';
 import { ThemeProvider } from 'styled-components/native';
-import { Container, HeaderContainer, Text, H1, FacultyView } from '../theming/masterStyle'
+import { Container, HeaderContainer, Text, H1, FacultyView, ListStyle, ListText, Subtitle } from '../theming/masterStyle'
 import { Connections, HeaderText, ProfileText, ProfileImage, ProfileContainer, ConnectionsContainer, 
   PeopleImage, MatchesContainer, MatchesText, MatchesDash } from '../theming/dashStyle'
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import AsyncImage from './AsyncImage'
 import DashProfileModal from './DashProfileModal'
 import { ModalContainer, Line } from '../theming/settingStyle'
 import Modal from 'react-native-modal';
-
+import RNPickerSelect from 'react-native-picker-select';
+import { DataTable } from 'react-native-paper';
+import Loader from '../Loader';
 
 
 class Dashboard extends Component {
@@ -24,12 +26,14 @@ class Dashboard extends Component {
   }
 
   state = {
+    fontsLoaded: false,
     user: '',
     userLoaded: false,
     userData: '',
     status: '',
     isFirstLaunch: true,
     randomMatches: [],
+    topThree: [],
     loaded: false,
     user: '',
     modalContent: '',
@@ -54,7 +58,6 @@ class Dashboard extends Component {
         .catch((error) => console.error(error))
         .finally(() => {
           if (this.state.userLoaded === true) {
-              console.log(data.result[0])
               this.setState({ userData: data.result[0], loaded: true, status: data.result[0].userSTATUS })
           }
             
@@ -70,12 +73,55 @@ class Dashboard extends Component {
         .then((json) => {
             // parse the response & extract data
             data = JSON.parse(json)
+            console.log("RANDOM")
             data = data.result
+            console.log(data)
         })
         .catch((error) => console.error(error))
         .finally(() => {
             this.getMatchObjects("randomMatches", data)
             
+        })
+  }
+
+  getTopThree(user) {
+    var data;
+    var correctedArray = []
+    let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/matches/getTop3Matches?USER_id=" + user;
+    // call api endpoint, sending in user to add to db
+    fetch(apiEndpoint,)
+        .then((response) => response.text())
+        .then((json) => {
+            // parse the response & extract data
+            data = JSON.parse(json)
+            console.log("TOP THREE")
+            // data = data.res
+            console.log(data.result)
+            correctedArray = data.result.slice(0,3)
+        })
+        .catch((error) => console.error(error))
+        .finally(() => {
+            this.setState({topThree: correctedArray})
+        })
+  }
+
+  getProfCourseList(course) {
+    var data;
+    let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/matches/getUsersFromClass?class=" + course;
+    console.log(apiEndpoint)
+    // call api endpoint, sending in user to add to db
+    fetch(apiEndpoint,)
+        .then((response) => response.text())
+        .then((json) => {
+            // parse the response & extract data
+            data = JSON.parse(json)
+            console.log("IN GET PROF COURSE LIST")
+            console.log(data)
+        })
+        .catch((error) => console.error(error))
+        .finally(() => {
+          this.props.navigation.navigate('ProfCourseList', {students: data.result, courseName: course})
+
         })
   }
 
@@ -88,15 +134,23 @@ class Dashboard extends Component {
         .then((json) => {
             // parse the response & extract data
             data = JSON.parse(json)
-            // console.log("IN GET MATCH OBJECTS")
+            console.log("IN GET MATCH OBJECTS")
+            console.log(matchType)
+            // console.log(usersArray)
             // console.log(data)
             let matches = usersArray
+            console.log("******************ALL USERS")
+          console.log(matches)
             let matchesArray = data.result.filter(function (item) {
+              console.log(item.userID)
               if(matches.includes(item.userID)) {
                 return item
               }
             });
+            console.log(matchesArray)
+            console.log("MATCHES ARRAY")
             let threeArray = matchesArray.slice(0,3)
+            // console.log(threeArray)
             this.setState({[matchType]: threeArray})
     })
     .catch((error) => console.error(error))
@@ -123,11 +177,11 @@ class Dashboard extends Component {
 
   async getToken() {
     try {
-        console.log("before getting item");
       let userId = await AsyncStorage.getItem("user");
       this.setState({user: userId})
       this.getUserData(this.state.user, 0)
       this.getRandomMatches(this.state.user)
+      this.getTopThree(this.state.user)
       this.getAllMatches(this.state.user)
     } catch (error) {
       console.log("Something went wrong", error);
@@ -138,16 +192,19 @@ class Dashboard extends Component {
 
   // load fonts
   async componentDidMount() {
+    console.log("*********************NEW RENDER**********************")
     try {
       await Font.loadAsync({
         header: require('../assets/fonts/ArchivoBlack-Regular.ttf'),
         text: require('../assets/fonts/Spartan-Medium.ttf')
     })
+    this.setState({fontsLoaded: true})
     } catch(e){
       console.log("error loading fonts")
     }
     this.getToken()
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      console.log("*********************NEW RENDER**********************")
       this.getToken()
     });
   }
@@ -161,14 +218,12 @@ class Dashboard extends Component {
             user2:likedUser, 
             action: likeAction})
     }
-    console.log(like)
     // call api endpoint, sending in user to add to db
     fetch(`http://mobile-app.ddns.uark.edu/CRUDapis/interaction/addInteraction`, like)
         .then((response) => response.text())
         .then((json) => {
             // parse the response & extract data
             let data = JSON.parse(json)
-            console.log(data)
         })
         .catch((error) => console.error(error))
         .finally(() => {
@@ -176,12 +231,13 @@ class Dashboard extends Component {
             console.log("finally block for interactions")
             this.getAllMatches(this.state.user)
             this.getHalfHeartGang(this.state.user)
+            this.getRandomMatches(this.state.user)
+            this.getTopThree(this.state.user)
         })
         this.closeModal()
   }
 
   getAllMatches(user) {
-    console.log("in get user interests")
     var data;
     let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/interaction/getMatches?USER_id=" + user;
     console.log(apiEndpoint)
@@ -191,7 +247,6 @@ class Dashboard extends Component {
         .then((json) => {
           // parse the response & extract data
           data = JSON.parse(json)
-          console.log(data)
           this.setState({ matches: data.result })
         })
         .catch((error) => console.error(error))
@@ -203,15 +258,12 @@ class Dashboard extends Component {
   getHalfHeartGang(user) {
     var data;
     let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/interaction/getHalfHearts?USER_id=" + user;
-    console.log(apiEndpoint)
     // call api endpoint, sending in user to add to db
     fetch(apiEndpoint)
         .then((response) => response.text())
         .then((json) => {
           // parse the response & extract data
           data = JSON.parse(json)
-          console.log("HALF HEART GANG:")
-          console.log(data)
           this.setState({ halfHeartGang: data.result })
         })
         .catch((error) => console.error(error))
@@ -235,7 +287,6 @@ class Dashboard extends Component {
         .finally(() => {
           if (data.isError === false) {
             let interestsInfo = data.result[0]
-            console.log("IN GET USER INTERESTS: " + icon)
             this.setState({ 
               userInterests: interestsInfo,
               modalVisible: true,
@@ -243,7 +294,6 @@ class Dashboard extends Component {
               modalUser: user,
               icon: icon })
           }
-          console.log("STATE ICON " + this.state.icon)
         })
   }
 
@@ -252,25 +302,26 @@ class Dashboard extends Component {
   }
 
   setModalVisible(user, icon) {
-    console.log("IN MODAL VISIBLE: " + icon)
     this.getUserInterests(user, icon)
   }
 
   closeModal(user) {
-    
     this.setState({ 
       modalVisible: !this.state.modalVisible, });
-      this.getRandomMatches()
   }
 
   render() {
-    var r0, r1, r2
+    let classArray
+    if (this.state.loaded) {
+      this.state.status !== "student" ? classArray = this.state.userData.userTEACHING_CLASSES.split(",") : null
+      console.log(classArray)
+    }
+    
     let cuteBird = "https://cache.desktopnexus.com/thumbseg/1268/1268204-bigthumbnail.jpg"
     let userPic
     this.state.userData.userPROFILEPIC === null || this.state.userData.userPROFILEPIC === "null" ? 
       userPic = cuteBird : userPic = this.state.userData.userPROFILEPIC
     let modalDisplay;
-    console.log("IN RENDER " + this.state.icon)
         switch(this.state.modalContent) {
           case "ProfileModal":
             modalDisplay = <DashProfileModal 
@@ -284,9 +335,7 @@ class Dashboard extends Component {
         default:
             break;
         }
-        console.log("STATUS IS: " + this.state.status)
-        console.log("LOADED IS: " + this.state.loaded)
-    if (this.state.loaded === true && this.state.status === "student") {
+    if (this.state.loaded === true && this.state.status === "student" && this.state.fontsLoaded === true) {
     return (
         <ThemeProvider theme={ this.props.theme }>
             <Container>
@@ -306,16 +355,8 @@ class Dashboard extends Component {
                   <MatchesDash>
                     <MatchesText>top 3 matches</MatchesText>
                   </MatchesDash>
-                  <PeopleImage source={require('../mockData/pic2.jpg')} />
-                  <PeopleImage source={require('../mockData/pic5.jpg')} />
-                  <PeopleImage source={require('../mockData/pic6.jpg')} />
-                </MatchesContainer>
-
-                <MatchesContainer>
-                {this.state.randomMatches.map((user, index) => {
+                  {this.state.topThree.map((user, index) => {
                   let profilePic
-                  console.log(user.userPROFILEPIC)
-                  console.log(typeof(user.userPROFILEPIC))
                   user.userPROFILEPIC === null || user.userPROFILEPIC === "null" ? profilePic = cuteBird : profilePic = user.userPROFILEPIC
                   let isMatched = this.state.matches.includes(user.userID)
                   let halfHeart = this.state.halfHeartGang.some((heart => heart['user'] === user.userID && heart['likeStatus'] === "yes" ))
@@ -328,17 +369,23 @@ class Dashboard extends Component {
                     </TouchableWithoutFeedback>
                   ) 
                   })}
-                  {/* <TouchableWithoutFeedback onPress={() => this.setModalVisible(this.state.randomMatches[0])}>
-                    <AsyncImage source={{ uri: r0}} />
-                  </TouchableWithoutFeedback>
-                  
-                  <TouchableWithoutFeedback onPress={() => this.setModalVisible(this.state.randomMatches[1])}>
-                    <AsyncImage source={{ uri: r1}} />
-                  </TouchableWithoutFeedback>
+                </MatchesContainer>
 
-                  <TouchableWithoutFeedback onPress={() => this.setModalVisible(this.state.randomMatches[2])}>
-                    <AsyncImage source={{ uri: r2}} />
-                  </TouchableWithoutFeedback> */}
+                <MatchesContainer>
+                {this.state.randomMatches.map((user, index) => {
+                  let profilePic
+                  user.userPROFILEPIC === null || user.userPROFILEPIC === "null" ? profilePic = cuteBird : profilePic = user.userPROFILEPIC
+                  let isMatched = this.state.matches.includes(user.userID)
+                  let halfHeart = this.state.halfHeartGang.some((heart => heart['user'] === user.userID && heart['likeStatus'] === "yes" ))
+                  let icon;
+                  isMatched ? icon = "heart" : icon = "heart-outline"
+                  halfHeart ? icon="heart-half-full" : icon
+                  return (
+                    <TouchableWithoutFeedback key={index} onPress={() => this.setModalVisible(user, icon)}>
+                      <AsyncImage source={{ uri: profilePic}} type="people"/>
+                    </TouchableWithoutFeedback>
+                  ) 
+                  })}
                   <MatchesDash>
                     <MatchesText>random matches</MatchesText>
                   </MatchesDash>
@@ -358,31 +405,42 @@ class Dashboard extends Component {
 
             </Container>
         </ThemeProvider>
-    ); } else {
+    ); } else if (this.state.fontsLoaded === true) {
       return (
         <ThemeProvider theme={ this.props.theme }>
         <Container>
             <HeaderContainer>
               <HeaderText>home</HeaderText>
             </HeaderContainer>
-            <ProfileContainer>
+            <ScrollView showsVerticalScrollIndicator={false}>
+            <ProfileContainer style={{marginTop:75, marginBottom: 35}}>
                 <ProfileImage source={{uri: this.state.userData.userPROFILEPIC}} />
-                <ProfileText>
+                <Subtitle style={{marginLeft: 10, height: 50}}  >
                     {this.state.userData.userFNAME} {this.state.userData.userLNAME} {"\n"}
                     {this.state.userData.userSTATUS} 
-                </ProfileText>
+                </Subtitle>
             </ProfileContainer>
-            <FacultyView>
+            <FacultyView >
             <Line />
-            <H1>your bio:</H1>
-              <Text>{this.state.userData.userABOUT}</Text>
+            <H1 >your bio:</H1>
+              <Subtitle style={{textAlign:'center'}}>{this.state.userData.userABOUT}</Subtitle>
             <H1>your research:</H1>
-            <Text>{this.state.userData.userRESEARCH}</Text>
+            <Subtitle  >{this.state.userData.userRESEARCH}</Subtitle>
+            <H1>courses you teach:</H1>
+            <Subtitle>tap one of your courses to see what students you have!</Subtitle>
+            
+            {classArray ? classArray.map((course, index) => {return(
+              <ListStyle key={index}>
+              <ListText key={index} onPress={() =>this.getProfCourseList(course)}>{course.substring(0, 14)}</ListText>
+              </ListStyle>
+            )} ) : null}
+            
             </FacultyView>
+            </ScrollView>
             </Container>
             </ThemeProvider>
       )
-    }
+    } else { return(<Loader />) }
   } 
 }
 

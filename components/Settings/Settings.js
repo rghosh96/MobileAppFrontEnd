@@ -32,9 +32,10 @@ class Settings extends Component {
     return (
         <ThemeProvider theme={ this.props.theme }>
            {console.log(this.props.theme)}
-            <SettingContainer>
-      
-                    <HeaderText>settings</HeaderText>
+            <SettingContainer >
+          
+                    <HeaderText onPress={() =>
+                          this.props.navigation.navigate('EasterEgg')}>settings</HeaderText>
                     <Subtitle>here u view ur profile, update your info, change the app theme, etc!</Subtitle>
                     <Line />
           

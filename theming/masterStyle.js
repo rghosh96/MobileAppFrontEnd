@@ -53,6 +53,8 @@ export const FacultyView = styled.View`
     marginTop: 30px;
     justifyContent: center;
     alignItems: center;
+    paddingLeft: 10px;
+    paddingRight:10px;
 `;
 
 export const DescriptionArea = styled.View`
@@ -87,6 +89,29 @@ color: ${props => props.theme.GREY};
 fontFamily: "header";
 fontSize: 15px;
 textAlign: left;
+`;
+
+export const ListText = styled.Text`
+color: ${props => props.theme.GREY};
+fontFamily: "header";
+fontSize: 15px;
+textAlign: center;
+`;
+
+export const CenterSpecial = styled.View`
+width: 100%;
+flexDirection: column;
+alignItems: center;
+padding: 10px;
+
+`;
+
+export const ListStyle = styled.View`
+borderWidth: 1px;
+borderColor: ${props => props.theme.PRIMARY_COLOR};
+padding: 10px;
+margin: 10px;
+borderRadius: 50px;
 `;
 
 export const Button = styled.TouchableOpacity`

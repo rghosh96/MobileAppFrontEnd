@@ -25,6 +25,7 @@ class Connections extends Component {
         isFirstLaunch: true,
         matches: [],
         likedUsers: [],
+        profFaculty: [],
         modalContent: '',
         modalVisible: false,
         modalUser: null,
@@ -127,7 +128,7 @@ class Connections extends Component {
           })
       }
 
-      getUserData(user) {
+      getUserData(user, request) {
         var data;
         let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/users/getUser?USER_id=" + user;
         // call api endpoint, sending in user to add to db
@@ -136,10 +137,10 @@ class Connections extends Component {
             .then((json) => {
                 // parse the response & extract data
                 data = JSON.parse(json)
-                if (data.isError === false) {
+                if (request !== 0) {
                     this.setState({ likedUsers: [...this.state.likedUsers, data.result[0]] })
                   
-                } else {console.log("ERROR")
+                } else {this.setState({userData: data.result[0]})
               }
             })
             .catch((error) => console.error(error))
@@ -147,6 +148,33 @@ class Connections extends Component {
                 
             })
       }
+
+      getAllUsers() {
+        console.log("in get user data")
+        var data;
+        var profFacultyUsers = []
+        let apiEndpoint = "http://mobile-app.ddns.uark.edu/CRUDapis/users/getAllUsers";
+        console.log(apiEndpoint)
+        // call api endpoint, sending in user to add to db
+        fetch(apiEndpoint,)
+            .then((response) => response.text())
+            .then((json) => {
+                // parse the response & extract data
+                data = JSON.parse(json)
+                console.log(data.result)
+                console.log("AB TO PARSE")
+                profFacultyUsers = data.result.filter(function (user) {
+                  return user.userSTATUS === "faculty" || user.userSTATUS === "staff"
+                })
+                console.log("PROF FACULTY")
+                console.log(profFacultyUsers)
+        })
+        .catch((error) => console.error(error))
+        .finally(() => {
+            this.setState({profFaculty: profFacultyUsers})
+        })
+    }
+
 
       async getToken() {
         try {
@@ -156,6 +184,9 @@ class Connections extends Component {
         } catch (error) {
           console.log("Something went wrong", error);
         }
+        let userId = await AsyncStorage.getItem("user");
+        this.getUserData(this.state.user, 0)
+        this.getAllUsers()
         this.setState({userLoaded: true})
         // this.setState({loading: false})
       }  
@@ -205,18 +236,33 @@ class Connections extends Component {
         ) 
      })}</AllUsersList>
 
+     let profFacultyList = 
+      <AllUsersList>{this.state.profFaculty.map((user, index) => {
+        return this.state.user !== user.userID ?  (
+         <ProfileCard 
+             setModalVisible={this.setModalVisible}
+             user={user}
+             key={index}
+        /> 
+        ) : null
+     })}</AllUsersList>
+
     return (
         <ThemeProvider theme={ this.props.theme }>
             
             <Container>
+              
             <HeaderContainer>
                 <HeaderText>connections</HeaderText>
-                <Subtitle>here you can view all your current connections and their profiles.
-                </Subtitle>
+                {this.state.userData.userSTATUS === "student" ? <Subtitle>here you can view all your current connections and their profiles.
+                </Subtitle> : <Subtitle>here you can see all the other faculty/staff that are part of social debug!
+                </Subtitle>}
             </HeaderContainer>
             
               {console.log("about to render map")}
-              {this.state.matches.length === this.state.likedUsers.length ? userList : null }
+              {console.log(this.state.userData.userSTATUS)}
+              {this.state.matches.length === this.state.likedUsers.length && this.state.userData.userSTATUS === "student" ? userList : null }
+              {this.state.profFaculty&& this.state.userData.userSTATUS !== "student" ? profFacultyList : null }
  
                 <Modal isVisible={this.state.modalVisible}>
                     <ModalContainer>

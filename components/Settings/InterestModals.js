@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Button, ButtonText } from '../../theming/masterStyle'
-import { ModalView, Title, FormInput, BioInput } from '../../theming/settingStyle'
+import { ModalView, Title, FormInput, BioInput, EditItem } from '../../theming/settingStyle'
 import CustomRatings from '../CustomRatings'
 import LottieView from 'lottie-react-native';
 import { Subtitle, Line } from '../../theming/masterStyle'
@@ -23,6 +23,7 @@ import { Subtitle, Line } from '../../theming/masterStyle'
                 icon={props.icon}
                 readOnly={false}
             />
+            <EditItem onPress={()=>props.updateState(props.ratingType, 0)} style={{alignSelf: 'center'}}>tap to rate 0</EditItem>
             <Line/>
             <Subtitle>edit your comment:</Subtitle>
             <BioInput 

@@ -15,6 +15,7 @@ import InfoModal from '../InfoModal'
 import Modal from 'react-native-modal';
 import { ModalContainer } from '../../theming/settingStyle'
 import CheckBox from 'react-native-checkbox-lite';
+import firebaseSDK from '../../firebaseSDK';
 
 //info modal
 const infoData = {
@@ -65,6 +66,20 @@ class SignUp extends Component {
         }
       }  
 
+      async onPressCreate (info){
+		try {
+			const user = {
+				name: info.user,
+				email: info.user + "@uark.edu",
+				password: info.password
+			};
+			await firebaseSDK.createAccount(user);
+        console.log(user);
+		} catch ({ message }) {
+			console.log('create account failed. catch error:' + message);
+		}
+	};
+
 
       async storeToken(user) {
         try {
@@ -106,6 +121,7 @@ class SignUp extends Component {
             .catch((error) => console.error(error))
             .finally(() => {
                 // if successful addition to db, navigate to create profile
+                this.onPressCreate(info)
                 if (this.state.success === true) {
                     this.storeToken(info.user.toLowerCase())
                      console.log("successfully stored user in async storage!")
