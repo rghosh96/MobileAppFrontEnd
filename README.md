@@ -24,13 +24,12 @@ Directions for getting on the VPN can be found here: https://its.uark.edu/networ
 6. Your web browser should pop up, and you can run on iOS or Android simulator. To run on a physical device, you should see a QR code in the bottom left. Scan this on your phone (for iPhone, via the camera app, for Android, from inside the Expo Client app)
 7. And there u go!
 
-**NOTE**
-To run on Android simulator:
-8. Navigate to android emulator folder, ex 
+**To run on Android simulator:**
+1. Navigate to android emulator folder, ex 
 `$ cd /Users/rashighosh/Library/Android/sdk/emulator`
-9. Display which simulators you have with: 
+2. Display which simulators you have with: 
 `$ ./emulator -list-avds`
-10. Pick a simulator and run it.
+3. Pick a simulator and run it.
 `$ ./emulator -avd Pixel_3a_API_27`
 
 **IMPORTANT** app does not currently work on android, due to some npm package version mismatches with the current expo sdk version.. this is a fix for future work. The issue is detailed here: https://github.com/lottie-react-native/lottie-react-native/issues/617
