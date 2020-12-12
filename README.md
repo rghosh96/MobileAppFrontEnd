@@ -1,43 +1,36 @@
-# Mobile Project
-### Running the Project
-Download Expo on your device. Clone repo, cd into folder, and run `expo start`. Scan the QR code on your devices camera, and watch the app pop up!
-To run on Android:
-1. Navigate to android emulator folder, ex 
+
+# Social Debug: A CSCE Social Media Application.
+## Running the Project
+*IMPORTANT*: currently does not work on Android, ONLY on iOS. see information at the very bottom.
+
+### Install the Expo CLI on your command line:
+Instructions can be found here: https://docs.expo.io/workflow/expo-cli/
+
+### Download the Expo Client app on your phone:
+Go to your app store, and download Expo Client (if you want to run on a physical device)
+
+### Connect to the UARK VPN
+You need to be connected both on your computer AND your phone!
+Directions for getting on the VPN can be found here: https://its.uark.edu/network-access/vpn/index.php
+(On your phone, download the Global Protect app)
+
+### Run the app!
+**NOTE:** if trying to run on android simulator, see note below before following these steps
+1. Clone this repository.
+2. Navigate into the root directory
+3. To be safe, run `expo upgrade`
+4. Run `npm install`
+5. Run `expo start`
+6. Your web browser should pop up, and you can run on iOS or Android simulator. To run on a physical device, you should see a QR code in the bottom left. Scan this on your phone (for iPhone, via the camera app, for Android, from inside the Expo Client app)
+7. And there u go!
+
+**NOTE**
+To run on Android simulator:
+8. Navigate to android emulator folder, ex 
 `$ cd /Users/rashighosh/Library/Android/sdk/emulator`
-3. Display which simulators you have with: 
+9. Display which simulators you have with: 
 `$ ./emulator -list-avds`
-4. Pick a simulator and run it.
+10. Pick a simulator and run it.
 `$ ./emulator -avd Pixel_3a_API_27`
 
-## Theming with Redux 
-![](https://img.shields.io/badge/native-component-9cf?style=for-the-badge&logo=react) ![](https://img.shields.io/badge/redux-store-blueviolet?style=for-the-badge&logo=redux) ![](https://img.shields.io/badge/css-styling-ff69b4?style=for-the-badge&logo=css3)
-
-## [component].js. ![](https://img.shields.io/badge/native-component-9cf?style=flat-square&logo=react)
-**The following imports are necessary at the top of each component:**
-`import { connect } from 'react-redux'`
-`import { ThemeProvider } from 'styled-components/native'`
-
-**Passing theme to a generic component**
-Connect the entire app to Redux via the connect function we imported, passing in `mapStateToProps` as the first parameter. Define the `mapStateToProps(state)` function, returning the `theme` property from the themeReducer.
-Wrap the entire component in `<ThemeProvider theme={ this.props.theme }>`
-
-**Changing Themes in Settings.js**
-For the `Settings.js` component (in which we can actually change themes), the following additional imports are necessary:
-`import { pickTheme } from '../redux/actions'`
-`import { [ all themes ] } from '../theming/themes'`
-Additionally, we will need to pass `{pickTheme}` as a second parameter to the connect function. Then, the `onClick()` callback within the component call `this.props.pickTheme([themeName])` to change themes accordingly.
-
-
-
-## action.js ![](https://img.shields.io/badge/redux-store-blueviolet?style=flat-square&logo=redux)
-From the settings page, when the `pickTheme` action is called, the action takes the single parameter of `theme` and dispatches this action to the themeReducer.js.
-
-## themeReducer.js ![](https://img.shields.io/badge/redux-store-blueviolet?style=flat-square&logo=redux)
-Inside themeReducer.js, it stores an initial state with one property: the theme. By default it is `oliveTheme`.
-When the reducer receives the `PICK_THEME` action type (from our dispatched action), it triggers a state change which updates the theme.
-
-## styles ![](https://img.shields.io/badge/css-styling-ff69b4?style=flat-square&logo=css3)
-Now that our components are linked to the theme via ThemeProvider, and our entire application has access to the theme via the Redux store, we can use these theme properties to style our components. In all the style files, simply set a CSS attribute with the following syntax:
-```javascript
-[propertyName]: ${props => props.theme.[PROPERTY_NAME]};
-```
+**IMPORTANT** app does not currently work on android, due to some npm package version mismatches with the current expo sdk version.. this is a fix for future work. The issue is detailed here: https://github.com/lottie-react-native/lottie-react-native/issues/617
